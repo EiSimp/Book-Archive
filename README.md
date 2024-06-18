@@ -1,13 +1,13 @@
-# Book-Archive
+# PagePals
 
 
 
-<b>The Book Archive App</b> offers users a personalized Bookshelf to track and review their reading. Upon signing up, users can create a bookshelf where they record the books they've read, write short comments, give star ratings, and archive memorable phrases with page numbers. The app includes a search feature (utilizing the Google Books API) to allow users to search for books, view detailed information, and read other users’ comments. Users can upload books they have read, are currently reading, or plan to read on their Bookshelf. With the books they have read, users receive personalized book recommendations. Another key feature is that users can create book clubs with others. Once users create a book club, they can schedule or join virtual book club meetings to discuss books and share reviews with other members. This platform fosters a community of book enthusiasts who can share insights and recommendations.
+<b>PagePals</b> offers users a personalized Bookshelf to track and review their reading. Upon signing up, users can create a bookshelf where they record the books they've read, write short comments, give star ratings, and archive memorable phrases with page numbers. The app includes a search feature (utilizing the Google Books API) to allow users to search for books, view detailed information, and read other users’ comments. Users can upload books they have read, are currently reading, or plan to read on their Bookshelf. With the books they have read, users receive personalized book recommendations. Another key feature is that users can create book clubs with others. Once users create a book club, they can schedule or join virtual book club meetings to discuss books and share reviews with other members. This platform fosters a community of book enthusiasts who can share insights and recommendations.
 
 
 ## Customer
 
-The target customers for the Book Archive App are avid readers and book enthusiasts who enjoy keeping a record of their reading journey. This includes individuals who like to reflect on their readings, share insights with others, and discover new books based on community feedback. The app appeals to people who value organization, detailed record-keeping, and active participation in a reading community.
+The target customers for PagePals are avid readers and book enthusiasts who enjoy keeping a record of their reading journey. This includes individuals who like to reflect on their readings, share insights with others, and discover new books based on community feedback. The app appeals to people who value organization, detailed record-keeping, and active participation in a reading community.
 
 
 ## Competitive Analysis
@@ -25,7 +25,7 @@ This project aims to combine the best features of existing solutions into a sing
 
 ### User Registration and Account Setup
 
-As a user, I will be able to easily register and set up my account in the Book Community App. This process will include providing basic information and creating a personalized profile.
+As a user, I will be able to easily register and set up my account in the PagePals. This process will include providing basic information and creating a personalized profile.
 
 ### Book Search and Bookshelf Management
 
@@ -48,4 +48,4 @@ I have the option to create my own book club or join existing ones. This include
 As a book club member, I can join virtual meetings directly through the app. These meetings provide a platform for in-depth discussions about our readings, allowing me to connect with other book enthusiasts and share insights in real time.
 
 
-By incorporating these features, the Book Community App creates a seamless and engaging experience for users, fostering a vibrant community of readers who can track their reading, discover new books, and participate in interactive discussions.
+By incorporating these features, PagePals creates a seamless and engaging experience for users, fostering a vibrant community of readers who can track their reading, discover new books, and participate in interactive discussions.
