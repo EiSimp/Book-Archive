@@ -34,3 +34,5 @@ build/
 
 ### MVN BUILD ###
 /target/
+
+.DS_Store
