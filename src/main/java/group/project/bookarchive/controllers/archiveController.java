@@ -7,6 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class archiveController {
     @GetMapping("/archives/view")
     public String getAllUsers(){
-         return "archives/homepage";
+         return "/homepage";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/homepage")
+    public String homepage() {
+        return "homepage";
+    }
+
+    @GetMapping("/signup")
+    public String signup(){
+        return "signup";
     }
 }
