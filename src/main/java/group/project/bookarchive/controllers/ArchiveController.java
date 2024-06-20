@@ -4,10 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class archiveController {
+public class ArchiveController {
     @GetMapping("/archives/view")
     public String getAllUsers(){
-         return "/homepage";
+         return "homepage";
     }
 
     @GetMapping("/login")
