@@ -5,9 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Archive</title>
+    <link rel="stylesheet" href="homepage.css">
 </head>
-
 <body>
+    <header>
+        <!--Header section of the homepage-->
+        <!--Automatically redirects to login page, unless logged in-->
+        <!--Logo button that redirects to the homepage, whenever clicked.-->
+        <a href ="/homepage" class="logo-button">
+            <span class="logo-text">PAGEPALS</span>
+        </a>
+        <nav>
+            <!--Button that goes to the book club section when clicked-->
+            <a href="#">Bookclubs</a>
+            <!--Button that goes to the "my records" section when clicked-->
+            <a href="#">My Record</a>
+        </nav>
+        <!--Search bar paired with search button beside it, currently just a placeholder-->
+        <div class="search-bar">
+            <input type="text" placeholder="Placeholder">
+            <button>Search</button>
+        </div>
+        <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
+        <div class="user-info">
+            <!--Change after login system is implemented-->
+            <span>HELLO, USERNAME</span>
+            <img src="#" alt ="User Icon" class="user-icon">
+        </div>
+    </header>
+
     <!--Link that will navigate to the login page-->
     <a href="/login">Login</a>
     <h1>hello there my friend - Joseph</h1>
