@@ -2,12 +2,20 @@ package group.project.bookarchive.models;
 //This is where we keep all user's data.
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 //Specifies that the class is an entity mapped to a database
 @Entity
 // Specifies the name of the table in the database
 @Table(name = "userinfo")
 public class User {
+    // Username/password validation parameters
+    public static final String USERNAME_REGEX = "^\\w{3,}$";
+    private static final String USERNAME_INVALID_MSG = "username must be at least 3 characters and contain only alphanumerics and underscores";
+    public static final String PASSWORD_REGEX = "^(?=.*\\w)(?=.*[^\\w\\s:])([^\\s]){8,16}$";
+    private static final String PASSWORD_INVALID_MSG = "password must be 8-16 characters, with at least 1 non-alphanumeric character";
+
     // Specifies the primary key of the entity
     @Id
     // Specifies that the generated key is generated automatically
@@ -15,9 +23,12 @@ public class User {
     private Long id;
     // Specifies that the username has to be unique and cannot be empty
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Name must not be empty")
+    @Pattern(regexp = USERNAME_REGEX, message = USERNAME_INVALID_MSG)
     private String username;
     // Specifies that the password cannot be empty
     @Column(nullable = false)
+    @Pattern(regexp = PASSWORD_REGEX, message = PASSWORD_INVALID_MSG)
     private String password;
     // Column for bio, added for testing
     @Column(length = 500)
