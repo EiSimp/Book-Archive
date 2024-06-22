@@ -24,4 +24,9 @@ public class ArchiveController {
     public String signup(){
         return "signup";
     }
+
+    @GetMapping("/myaccount")
+    public String login() {
+        return "myaccount";
+    }
 }
