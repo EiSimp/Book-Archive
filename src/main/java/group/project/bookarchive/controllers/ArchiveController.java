@@ -26,7 +26,7 @@ public class ArchiveController {
     }
 
     @GetMapping("/myaccount")
-    public String login() {
+    public String myaccount() {
         return "myaccount";
     }
 }
