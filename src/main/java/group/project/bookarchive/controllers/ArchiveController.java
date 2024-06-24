@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,8 +17,6 @@ import group.project.bookarchive.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -27,7 +27,7 @@ public class ArchiveController {
 
     @GetMapping("/")
     public RedirectView process() {
-        return new RedirectView("login");
+        return new RedirectView("/login");
     }
 
     @GetMapping("/archives/view")
@@ -78,8 +78,6 @@ public class ArchiveController {
 
     @PostMapping("/forgot")
     public String forgotPassword(@RequestBody String entity) {
-        // TODO: process POST request
-
         return entity;
     }
 
@@ -92,18 +90,15 @@ public class ArchiveController {
         return "login";
     }
 
-    // User Login
     @PostMapping("/login")
     public String login(@RequestParam Map<String, String> formData, Model model, HttpServletRequest request,
-            HttpSession session) {
-        // processing login
+                        HttpSession session) {
         String name = formData.get("username");
         String pwd = formData.get("password");
-        List<User> userlist = userRepository.findByUsernameAndPassword(name, pwd);
-        if (userlist.isEmpty()) {
+        List<User> userlist = userRepository.findByUsername(name);
+        if (userlist.isEmpty() || !new BCryptPasswordEncoder().matches(pwd, userlist.get(0).getPassword())) {
             return "login";
         } else {
-            // success
             User user = userlist.get(0);
             request.getSession().setAttribute("session_user", user);
             model.addAttribute("user", user);
