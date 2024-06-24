@@ -15,9 +15,7 @@ import group.project.bookarchive.models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findById(Long id);
-
     List<User> findByUsername(String username);
-
     List<User> findByUsernameAndPassword(String username, String password);
 
 }
