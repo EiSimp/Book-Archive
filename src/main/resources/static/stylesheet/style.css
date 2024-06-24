@@ -27,7 +27,7 @@ body {
     gap: 0;
 
 }
-
+/* wrapper for the left side of login and signup pages */
 .loginpage-wrapper-left {
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@ body {
     height: 100%;
 
 }
-
+/* wrapper for the right side of login and signup pages */
 .loginpage-wrapper-right {
     display: flex;
     align-items: center;
@@ -51,6 +51,7 @@ body {
 
 }
 
+/* logo style*/
 .logo {
     width: auto;
     height: auto;
@@ -70,6 +71,7 @@ body {
     margin: 0;
 }
 
+/*Web app description style*/
 p {
     font-family: 'Koulen';
     font-style: normal;
@@ -87,6 +89,7 @@ p {
     flex-grow: 0;
 }
 
+/* login/signup form wrapper*/
 .login-signup {
     display: grid;
     grid-template-columns: 1fr;
@@ -103,8 +106,8 @@ p {
     width: 80%;
     height: 80%;
 }
-
-header {
+/* login/signup form wrapper header*/
+.login-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
     flex-direction: row;
@@ -116,7 +119,7 @@ header {
     align-self: stretch;
     flex-grow: 0;
 }
-
+/* link for login and signup */
 a.login,
 a.signup {
 
@@ -144,7 +147,7 @@ a.signup:hover {
     text-underline-offset: 10px;
 }
 
-
+/* login form style */
 .form-wrapper {
     display: flex;
     flex-direction: column;
@@ -157,7 +160,7 @@ a.signup:hover {
     flex-grow: 1;
 }
 
-form {
+.login-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -173,6 +176,7 @@ form {
     flex-grow: 0;
 }
 
+/*login/signup input wrapper*/
 .input-username,
 .input-password {
     display: block;
@@ -183,7 +187,7 @@ form {
 label {
     color: #828282;
 }
-
+/* login and signup input fields*/
 input[type="text"],
 input[type="password"] {
     display: flex;
@@ -197,6 +201,7 @@ input[type="password"] {
     border-radius: 20px;
 }
 
+/*login button style*/
 .login-btn {
     width: 100%;
     padding: 10px;
