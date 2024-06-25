@@ -61,6 +61,21 @@ public class ArchiveController {
         return "forgotpwd";
     }
 
+    @GetMapping("/bookclubs")
+    public String bookclubs() {
+        return "bookclubs";
+    }
+
+    @GetMapping("/myrecord")
+    public String myrecord() {
+        return "myrecord";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "profilesetting";
+    }
+
     @PostMapping("/forgot")
     public String forgotPassword(@RequestBody String entity) {
         // TODO: process POST request
@@ -68,7 +83,6 @@ public class ArchiveController {
         return entity;
     }
 
-    //
     @PostMapping("/signup")
     public String addUser(@RequestParam Map<String, String> newUser, HttpServletResponse response) {
         String newName = newUser.get("username");
@@ -96,5 +110,4 @@ public class ArchiveController {
             return "homepage";
         }
     }
-
 }
