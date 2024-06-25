@@ -99,7 +99,6 @@ public class ArchiveController {
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, HttpSession session) {
         // Fetch the logged-in user's information (authentication logic here)
-        // Long userId = 1L; // Example user ID (replace with actual logic to fetch current user ID)
         
         User sessionUser = (User) session.getAttribute("session_user");
         
@@ -116,5 +115,6 @@ public class ArchiveController {
 
         return "myaccount";
     }
+
 
 }
