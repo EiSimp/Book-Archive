@@ -9,14 +9,12 @@
     <h1>My Profile</h1>
     <a href="/homepage">Homepage</a>
     
-    
     <div class="user-info">
         <h2>Account Details</h2>
-            <p><strong>Username:</strong> <span id="username">Username</span></p>
-            <p><strong>Birthday:</strong> June 22, 2024</p>
-            <p><strong>Account Created:</strong> January 1, 2023</p>
-            <p><strong>Bio:</strong> Lorem ipsum dolor sit amet, blah blah...</p>
-        
+        <p><strong>Username:</strong> <span id="usernameDisplay">Username</span> <a href="#" onclick="editField('username')">Edit</a></p>
+        <p><strong>Birthday:</strong> <span id="birthdayDisplay">June 22, 2024</span></p>
+        <p><strong>Account Created:</strong> January 1, 2023</p>
+        <p><strong>Bio:</strong> <span id="bioDisplay">Lorem ipsum dolor sit amet, blah blah...</span></p>
     </div>
     
     <div class="manage-account">
@@ -25,6 +23,30 @@
         <br>
         <a href="#">Delete Account</a>
     </div>
+    
+    <!-- form to change user info
+    empty at start up, until user clicks edit -->
+
+    <div id="editForm" style="display: none;">
+        <h2>Edit Account Details</h2>
+        <form id="editFormContent">
+            <label for="editUsername">Username:</label><br>
+            <input type="text" id="editUsername" name="editUsername" required><br><br>
+    
+            <label for="editBirthday">Birthday:</label><br>
+            <input type="date" id="editBirthday" name="editBirthday"><br><br>
+            
+            <label for="dateCreated">Date Created:</label><br>
+            <input type="text" id="dateCreated" name="dateCreated" readonly><br><br>
+    
+            <label for="editBio">Bio:</label><br>
+            <textarea id="editBio" name="editBio" placeholder="Enter your bio..."></textarea><br><br>
+    
+            <button type="submit">Save Changes</button>
+            <button type="button" onclick="cancelEdit()">Cancel</button>
+        </form>
+    </div>
+    
 
 </body>
 </html>
