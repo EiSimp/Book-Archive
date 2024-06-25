@@ -4,47 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
+    <script src="/javascript/editAccount.js"></script>
 </head>
 <body>
     <h1>My Profile</h1>
     <a href="/homepage">Homepage</a>
     
-    <div class="user-info">
+    <div class="user-info" id="userDisplay">
         <h2>Account Details</h2>
-        <p><strong>Username:</strong> <span id="usernameDisplay">Username</span> <a href="#" onclick="editField('username')">Edit</a></p>
+        <a href="#" onclick="editField()">Edit</a>
+        <p><strong>Username:</strong> <span id="usernameDisplay">Username</span></p>
         <p><strong>Birthday:</strong> <span id="birthdayDisplay">June 22, 2024</span></p>
-        <p><strong>Account Created:</strong> January 1, 2023</p>
+        <p><strong>Account Created:</strong> <span id="dateCreatedDisplay">January 1, 2023</span></p>
         <p><strong>Bio:</strong> <span id="bioDisplay">Lorem ipsum dolor sit amet, blah blah...</span></p>
     </div>
     
-    <div class="manage-account">
-        <h2>Manage Account</h2>
-        <a href="#">Change Password</a>
-        <br>
-        <a href="#">Delete Account</a>
-    </div>
-    
     <!-- form to change user info
-    empty at start up, until user clicks edit -->
-
+    form doesn't appear until user clicks edit -->
     <div id="editForm" style="display: none;">
         <h2>Edit Account Details</h2>
         <form id="editFormContent">
-            <label for="editUsername">Username:</label><br>
+            <label for="editUsername">Username:</label><br> 
             <input type="text" id="editUsername" name="editUsername" required><br><br>
     
             <label for="editBirthday">Birthday:</label><br>
             <input type="date" id="editBirthday" name="editBirthday"><br><br>
             
-            <label for="dateCreated">Date Created:</label><br>
+            <label for="dateCreated">Date Account Created:</label><br>
             <input type="text" id="dateCreated" name="dateCreated" readonly><br><br>
     
+            <!-- placeholder only appears if bio is empty -->
             <label for="editBio">Bio:</label><br>
             <textarea id="editBio" name="editBio" placeholder="Enter your bio..."></textarea><br><br>
     
-            <button type="submit">Save Changes</button>
             <button type="button" onclick="cancelEdit()">Cancel</button>
+            <button type="submit">Save Changes</button>
         </form>
+    </div>
+
+    <div class="manage-account">
+        <h2>Manage Account</h2>
+        <a href="#">Change Password</a>
+        <br>
+        <a href="#">Delete Account</a>
     </div>
     
 
