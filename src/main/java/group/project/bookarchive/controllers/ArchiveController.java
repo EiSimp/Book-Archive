@@ -83,7 +83,7 @@ public class ArchiveController {
     public String login(@RequestParam Map<String, String> formData, Model model, HttpServletRequest request,
             HttpSession session) {
         // processing login
-        String name = formData.get("name");
+        String name = formData.get("username");
         String pwd = formData.get("password");
         List<User> userlist = userRepository.findByUsernameAndPassword(name, pwd);
         if (userlist.isEmpty()) {
