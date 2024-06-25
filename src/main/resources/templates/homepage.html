@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Archive</title>
-    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="/stylesheet/homepage.css">
 </head>
 <body>
     <header>
@@ -30,9 +30,12 @@
         <div class="user-info">
             <!--Change after login system is implemented-->
             <span>HELLO, USERNAME</span>
-            <a href="/myaccount">
-                <img src="#" alt ="User Icon" class="user-icon">
-            </a>
+            <img src="#" alt ="User Icon" class="user-icon" id="user-icon">
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="/myaccount">My account</a>
+                <a href="#">Profile</a>
+                <a href="#">Log out</a>
+            </div>
         </div>
     </header>
 
@@ -41,6 +44,7 @@
     <h1>hello there my friend - Joseph</h1>
     <h1>Whats Up Bud - Daniel</h1>
 
+    <script src="/javascript/dropDown.js"></script>
 </body>
 
 </html>
