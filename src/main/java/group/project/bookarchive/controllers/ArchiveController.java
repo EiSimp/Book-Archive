@@ -39,11 +39,6 @@ public class ArchiveController {
         return "homepage";
     }
 
-    @GetMapping("/myaccount")
-    public String myaccount() {
-        return "myaccount";
-    }
-
     @GetMapping("/signup")
     public String signup() {
         return "signup";
@@ -99,6 +94,27 @@ public class ArchiveController {
             model.addAttribute("user", user);
             return "homepage";
         }
+    }
+
+    @GetMapping("/myaccount")
+    public String showMyAccount(Model model, HttpSession session) {
+        // Fetch the logged-in user's information (authentication logic here)
+        // Long userId = 1L; // Example user ID (replace with actual logic to fetch current user ID)
+        
+        User sessionUser = (User) session.getAttribute("session_user");
+        
+        if (sessionUser == null) {
+            // Handle case where user is not logged in
+            return "redirect:/login"; // Redirect to login page or handle appropriately
+        }
+        Long userId = sessionUser.getId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        model.addAttribute("user", user);
+
+        return "myaccount";
     }
 
 }

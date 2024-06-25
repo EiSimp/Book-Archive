@@ -1,7 +1,12 @@
 package group.project.bookarchive.models;
 //This is where we keep all user's data.
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 //Specifies that the class is an entity mapped to a database
 @Entity
