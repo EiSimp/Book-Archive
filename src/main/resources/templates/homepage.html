@@ -2,48 +2,97 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Archive</title>
-    <link rel="stylesheet" href="/stylesheet/homepage.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PagePals</title>
+    <link rel="stylesheet" href="/stylesheet/style.css" />
+    <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
-<body>
-    <header>
+
+<body class="main-body">
+    <header class="homepage-header">
         <!--Header section of the homepage-->
         <!--Automatically redirects to login page, unless logged in-->
-        <!--Logo button that redirects to the homepage, whenever clicked.-->
-        <a href ="/homepage" class="logo-button">
-            <span class="logo-text">PAGEPALS</span>
-        </a>
-        <nav>
+        <div class="homepage-header-left">
+            <!--Logo button that redirects to the homepage, whenever clicked.-->
+            <a href="/homepage" class="logo-button">PAGEPALS</a>
             <!--Button that goes to the book club section when clicked-->
-            <a href="#">Bookclubs</a>
+            <a href="#" class="nav-link">Bookclubs</a>
             <!--Button that goes to the "my records" section when clicked-->
-            <a href="#">My Record</a>
-        </nav>
-        <!--Search bar paired with search button beside it, currently just a placeholder-->
-        <div class="search-bar">
-            <input type="text" placeholder="Placeholder">
-            <button>Search</button>
+            <a href="#" class="nav-link">My Record</a>
         </div>
-        <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
-        <div class="user-info">
-            <!--Change after login system is implemented-->
-            <span>HELLO, USERNAME</span>
-            <img src="#" alt ="User Icon" class="user-icon" id="user-icon">
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="#">My account</a>
-                <a href="#">Profile</a>
-                <a href="#">Log out</a>
+        <div class="homepage-header-right">
+            <!--Search bar paired with search button beside it, currently just a placeholder-->
+            <div class="search-bar">
+                <input type="text" placeholder="Search" class="search-field" />
+                <button class="search-button">Search</button>
+            </div>
+            <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
+            <div class="user-info">
+                <span class="greeting-msg">HELLO, USERNAME</span>
+                <img src="/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="#" class="dropdown-menu-list">My account</a>
+                    <a href="#" class="dropdown-menu-list">Profile</a>
+                    <a href="#" class="dropdown-menu-list">Log out</a>
+                </div>
             </div>
         </div>
     </header>
-
-    <!--Link that will navigate to the login page-->
-    <a href="/login">Login</a>
-    <h1>hello there my friend - Joseph</h1>
-    <h1>Whats Up Bud - Daniel</h1>
-
+    <div class="content-container">
+        <div class="short-record">
+            <div class="short-record-column">
+                <span class="short-record-number">00</span>
+                <span class="short-record-label">Read<span>
+            </div>
+            <div class="short-record-column">
+                <span class="short-record-number">00</span>
+                <span class="short-record-label">Reading</span>
+            </div>
+            <div class="short-record-column">
+                <span class="short-record-number">00</span>
+                <span class="short-record-label">Collection</span>
+            </div>
+        </div>
+        <hr class="solid" id="divider-line">
+        <div class="bookshelf">
+            <div class="bookshelf-rack">
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <a href="#" class="add-book-link">ADD</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/javascript/dropDown.js"></script>
 </body>
 
