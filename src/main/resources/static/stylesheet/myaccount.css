@@ -501,6 +501,38 @@ color: #000000;
     text-decoration: none;
     text-align: center;
 }
+
+.accountDetails {
+    min-width: 90%;
+    max-width: 90%; 
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px;
+}
+
+#bioDisplay {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-align: left; /* Ensure text alignment */
+    line-height: 1.5; /* Adjust line height for readability */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    min-height: 100px;
+    height: auto; /* Allow height to adjust based on content */
+}
+
+#manageAccountDisplay {
+    min-width: 90%;
+    max-width: 90%; 
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px;
+}
+
+#manageAccountDisplay h2, form, a{
+    text-align: left;
+}
+
+
 /* copied from login and signup input fields */
 #editBio {
     display: flex;
@@ -527,8 +559,11 @@ color: #000000;
 }
 
 #editBio:hover {
-    overflow-y: auto; /* Activate vertical scrollbar when textarea is focused */
+    overflow-y: auto; /* Activate vertical scrollbar when textarea is hovered over */
 }
+
+
+
 
 
 

@@ -131,7 +131,7 @@ public class ArchiveController {
     @GetMapping("/logout")
     public String destroySession(HttpServletRequest request){
         request.getSession().invalidate();
-        return "/login";
+        return "redirect:/login";
     }
     
 }

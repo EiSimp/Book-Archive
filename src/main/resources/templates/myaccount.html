@@ -57,16 +57,8 @@
             <p><strong>Username:</strong> <span id="usernameDisplay" th:text="${user.username}">Username</span></p>
             <!-- Password display as part of test -->
             <p><strong>Password:</strong> <span id="passwordDisplay" th:text="${user.password}">Password</span></p>
-            <!-- Dates commented out because not implemented currently-->
-            <!-- <p><strong>Birthday:</strong> 
-            <span id="birthdayDisplay" th:text="${user.birthday} ? ${user.birthday} : 'June 22, 2024'"></span>
-            </p>
-            <p><strong>Date Account Created:</strong> 
-                <span id="dateCreatedDisplay" th:text="${user.dateCreated} ? ${user.dateCreated} : 'January 1, 1970'"></span>
-            </p> -->
             <!-- ${user.bio} ? ${user.bio} : means it'll display text after ':' if bio is empty -->
-            <p><strong>Bio:</strong> <span id="bioDisplay"
-                    th:text="${user.bio} ? ${user.bio} : 'Lorem ipsum dolor sit amet...'"></span></p>
+            <p><strong>Bio:</strong> <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : 'Enter your bio...'"></span></p>
         </div>
 
 
@@ -86,15 +78,8 @@
                 <label for="editPassword">Password:</label><br>
                 <input type="text" id="editPassword" name="editPassword" required><br><br>
 
-                <!-- Uncomment these for birthday and date created if we implement them -->
-                <!-- <label for="editBirthday">Birthday:</label><br>
-                <input type="date" id="editBirthday" name="editBirthday"><br><br>
-                
-                <label for="dateCreated">Date Account Created:</label><br>
-                <input type="text" id="dateCreated" name="dateCreated" readonly><br><br> -->
-
                 <label for="editBio">Bio:</label><br>
-                <textarea id="editBio" name="editBio" placeholder="Enter your bio..."></textarea><br><br>
+                <textarea id="editBio" name="editBio" placeholder="Enter your bio..." maxlength="500"></textarea><br><br>
 
                 <button type="button" onclick="cancelEdit()">Cancel</button>
                 <button type="submit">Save Changes</button>
@@ -106,7 +91,6 @@
             <form id="deleteForm">
                 <button type="button" onclick="deleteUser()">Delete Account</button><br><br>
             </form>
-
             <a href="/logout">Log Out</a>
         </div>
 
