@@ -128,5 +128,10 @@ public class ArchiveController {
         return "/myaccount";
     }
 
+    @GetMapping("/logout")
+    public String destroySession(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "/login";
+    }
     
 }
