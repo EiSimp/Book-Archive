@@ -13,7 +13,7 @@ import group.project.bookarchive.models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    @Override
     Optional<User> findById(Long id);
 
     List<User> findByUsername(String username);

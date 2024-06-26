@@ -25,6 +25,26 @@ function cancelEdit() {
     document.getElementById("userDisplay").style.display = "block";
 }
 
+function deleteUser() {
+    const userId = document.getElementById('userId').value;
+    fetch(`/user/${userId}`, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete user');
+        }
+        console.log('User deleted successfully');
+        // Redirect to login page
+        // TODO: can remove this line if forced redir. is done later
+        window.location.href = '/login';
+    })
+    .catch(error => {
+        console.error('Error deleting user:', error);
+        // Handle error (e.g., show error message)
+    });
+}
+
 function saveChanges() {
     const userId = document.getElementById('userId').value;
     const username = document.getElementById('editUsername').value;
@@ -32,21 +52,23 @@ function saveChanges() {
     const bio = document.getElementById('editBio').value;
 
     // requestParam making passing in values long :D
+    // update later with better fetch?
     fetch(`/user/${userId}?username=${username}&password=${password}&bio=${bio}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
         console.log('User updated successfully');
-        window.location.reload(); // Example to reload the page
-    })
-    .catch(error => {
-        console.error('Error updating user:', error);
-        // Handle error appropriately
-    });
+        window.location.reload(); // reload the page
+})
+.catch(error => {
+    console.error('Error updating user:', error);
+    // Put extra error handlers here
+});
+
 }

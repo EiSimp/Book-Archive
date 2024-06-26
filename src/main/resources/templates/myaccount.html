@@ -25,7 +25,7 @@
             <span id="dateCreatedDisplay" th:text="${user.dateCreated} ? ${user.dateCreated} : 'January 1, 1970'"></span>
         </p> -->
         <!-- ${user.bio} ? ${user.bio} : means it'll display text after ':' if bio is empty -->
-        <p><strong>Bio:</strong> <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : 'Lorem ipsum dolor sit amet, blah blah...'"></span></p>
+        <p><strong>Bio:</strong> <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : 'Lorem ipsum dolor sit amet...'"></span></p>
     </div>
     
     
@@ -34,7 +34,7 @@
     <div id="editForm" style="display: none;">
         <h2>Edit Account Details</h2>
         <!-- return false just disables default behaviour -->
-        <form id="editForm" th:action="@{/{id}(id=${user.id})}" onsubmit="saveChanges(); return false;">
+        <form id="editForm" th:action="@{/user/{id}(id=${user.id})}" onsubmit="saveChanges(); return false;">
             <!-- Hidden input field for user ID for passing into backend -->
             <input type="hidden" id="userId" name="userId" th:value="${user.id}">
 
@@ -45,7 +45,7 @@
             <label for="editPassword">Password:</label><br> 
             <input type="text" id="editPassword" name="editPassword" required><br><br>
             
-            <!-- Uncomment these for birthday and date created if needed -->
+            <!-- Uncomment these for birthday and date created if we implement them -->
             <!-- <label for="editBirthday">Birthday:</label><br>
             <input type="date" id="editBirthday" name="editBirthday"><br><br>
             
@@ -60,10 +60,14 @@
         </form>
     </div>
 
-    <div class="manage-account">
+    <div class="manageAccount">
         <h2>Manage Account</h2>
-        <a href="#">Change Password</a><br>
-        <a href="#">Delete Account</a><br><br>
+
+        <!-- <a href="#" id="deleteAccount">Delete Account</a><br><br> -->
+        <form id="deleteForm">
+            <button type="button" onclick="deleteUser()">Delete Account</button>
+        </form>
+                      
         <a href="#">Log Out</a>
     </div>
     
