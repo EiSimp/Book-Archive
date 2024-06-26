@@ -1,7 +1,6 @@
 package group.project.bookarchive.models;
 
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "userinfo")
