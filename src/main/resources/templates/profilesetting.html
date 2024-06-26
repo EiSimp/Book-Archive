@@ -31,17 +31,33 @@
                 <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
                 <div class="user-info">
                     <span class="greeting-msg">HELLO, USERNAME</span>
-                    <img src="/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
+                    <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
                     <div class="dropdown-menu" id="dropdown-menu">
                         <a href="#" class="dropdown-menu-list">My account</a>
-                        <a href="/profile" class="dropdown-menu-list">Profile</a>
+                        <a href="/profilesetting" class="dropdown-menu-list">Profile</a>
                         <a href="#" class="dropdown-menu-list">Log out</a>
                     </div>
                 </div>
             </div>
         </header>
         <div class="content-container">
-            <h1>This is Profile Setting page</h1>
+            <div id="heading">
+                <h1>Profile Setting</h1>
+            </div>
+                <hr class="solid">
+                <form>
+                    <input type="hidden" name="id" />
+                    <div>
+                        <label for="profilePhoto" class="form-label">Profile Photo</label>
+                        <input type="image" class="form-control" id="profilePhoto" name="profilePhoto" required>
+                    </div>
+                    <div>
+                        <label for="text" class="form-label">Bio</label>
+                        <input type="text" class="form-control" id="bio" name="bio" required>
+                    </div>
+                    <button type="submit">UPDATE</button>
+                </form>
+            </div>
         </div>
     </body>
 </html>
