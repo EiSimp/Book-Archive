@@ -1,0 +1,535 @@
+html {
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* body */
+body {
+    display: block;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), linear-gradient(90.22deg, #DBE6F6 0.19%, #C5796D 99.81%);
+
+}
+body.main-body {
+    padding:0 10% 0 10%;
+}
+
+/* login page */
+.loginpage-wrapper {
+    display: grid;
+    overflow-y: hidden;
+    align-items: center;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
+    gap: 0;
+
+}
+
+/* wrapper for the left side of login and signup pages */
+.loginpage-wrapper-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    top: 0;
+    margin: 0;
+    flex: none;
+    order: 0;
+    height: 100%;
+
+}
+
+/* wrapper for the right side of login and signup pages */
+.loginpage-wrapper-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: none;
+    height: 100%;
+
+}
+
+/* logo style*/
+.logo {
+    width: auto;
+    height: auto;
+    font-family: 'Koulen';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 116px;
+    display: block;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0;
+}
+
+/*Web app description style*/
+p {
+    font-family: 'Koulen';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 43px;
+    display: block;
+    align-items: center;
+    text-align: left;
+    margin: 0;
+
+    color: #000000;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* login/signup form wrapper*/
+.login-signup {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 4fr;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    width: 80%;
+    height: 80%;
+}
+
+/* login/signup form wrapper header*/
+.login-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* link for login and signup */
+a.login,
+a.signup {
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    display: block;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+    flex: none;
+    flex-grow: 0;
+    text-decoration: none;
+
+}
+
+a.login:hover,
+a.signup:hover {
+    text-decoration: underline;
+    text-decoration-color: #C5796D;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 10px;
+}
+
+/* login form style */
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 1;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20%;
+    width: 100%;
+    height: 100%;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/*login/signup input wrapper*/
+.input-username,
+.input-password {
+    display: block;
+    width: 100%;
+    height: fit-content;
+}
+
+label {
+    color: #828282;
+}
+
+/* login and signup input fields*/
+input[type="text"],
+input[type="password"] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 8px;
+    width: 100%;
+    height: fit-content;
+    border: none;
+    border-radius: 20px;
+}
+
+/*login button style*/
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background: #C5796D;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    border-style: none;
+}
+
+.login-btn:hover {
+    background: #895148;
+}
+
+#forgot-password {
+    color: #C5796D;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    align-content: end;
+}
+
+/* dashboardpage-wrapper */
+#dashboardpage-wrapper {
+    display: grid;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), linear-gradient(90.22deg, #DBE6F6 0.19%, #C5796D 99.81%);
+}
+
+/* Style for Homepage*/
+
+.homepage-header {
+    display: grid;
+    width: 100%;
+    height: 70px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.homepage-header-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    padding: 0px 0px 0px 20px;
+    gap: 10px;
+}
+
+/*Style for the logo button*/
+.logo-button {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-family: 'Koulen';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+/* nav links*/
+.nav-link {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: #000000;
+    height: 100%;
+}
+
+.nav-link:hover {
+    color: #828282;
+}
+
+/* right side of the header*/
+.homepage-header-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 0px 20px 0px 0px;
+    gap: 10px;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    padding: 0px;
+    gap: 10px;
+}
+
+input.search-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #E0E0E0;
+    /* Button Shadow */
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 30px;
+    height: 50%;
+}
+
+.search-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    height: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Button Shadow */
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 30px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px;
+}
+.search-button:hover {
+    background-color: #FFFFFF;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.greeting-msg {
+    font-family: 'Koulen';
+font-style: normal;
+font-size: 16px;
+line-height: 36px;
+display: flex;
+align-items: flex-end;
+
+color: #000000;
+}
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+    display: none;
+    /* Initially hidden */
+    position: absolute;
+    top: 50px;
+    /* Adjust based on header height */
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 1000;
+    /* Ensure it appears above other content */
+}
+
+/* Style for the links inside the dropdown menu */
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+}
+
+/*Changes link when hovered over*/
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Style for the user info section */
+.user-info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* To position the dropdown menu correctly */
+}
+
+/*Modifies the user icon*/
+.user-info .user-icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    /* Change cursor to pointer to indicate it's clickable */
+}
+#user-icon {
+    border: 3px solid #36363682;
+}
+/* Style for content container*/
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 80%;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 3px 5px 4px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+}
+/* Short record display section*/
+.short-record {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%
+}
+.short-record-column {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    
+}
+.short-record-number, .short-record-label {
+    display: block;
+    width:100%;
+    text-align: center;
+}
+
+#divider-line {
+    border: 1px solid #00000055;
+    width: 100%;
+}
+.bookshelf {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    
+}
+.bookshelf-rack {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    
+    height: 200;
+    flex-wrap: wrap;
+}
+.book-info-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff95;
+    border-radius: 10px;
+    padding:5px;
+    flex: 1 0 calc((100% - 64px) / 5);
+    max-width: calc((100% - 64px) / 5);
+    min-width: 100px;
+}
+
+.bookcover-image {
+    display:block;
+    border: 1px solid #0000007d;
+    width: 90%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+.add-book-link {
+    display: block;
+    width: 50%;
+    height: 100%;
+    text-decoration: none;
+    text-align: center;
+}
+/* copied from login and signup input fields */
+#editBio {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 8px;
+    width: 100%;
+    height: fit-content;
+    border: none;
+    border-radius: 20px;
+    resize: none;
+    overflow: hidden; /* Enable scrollbar when content exceeds dimensions */
+    box-sizing: border-box; /* Ensure padding and border are included in width and height */
+}
+
+#editBio::-webkit-scrollbar {
+    width: 0px;
+    background-color: transparent;
+}
+
+#editBio:focus {
+    overflow-y: auto; /* Activate vertical scrollbar when textarea is focused */
+}
+
+#editBio:hover {
+    overflow-y: auto; /* Activate vertical scrollbar when textarea is focused */
+}
+
+
+
+

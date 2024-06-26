@@ -15,6 +15,7 @@ function editField() {
 
     // Hide user display, show edit form
     document.getElementById("userDisplay").style.display = "none";
+    document.getElementById("manageAccountDisplay").style.display = "none";
     document.getElementById("editForm").style.display = "block";
 }
 
@@ -23,6 +24,7 @@ function cancelEdit() {
     // Hide edit form, show user display
     document.getElementById("editForm").style.display = "none";
     document.getElementById("userDisplay").style.display = "block";
+    document.getElementById("manageAccountDisplay").style.display = "block";
 }
 
 function deleteUser() {
