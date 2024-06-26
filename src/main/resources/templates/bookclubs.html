@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PagePals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheet/style.css" />
+    <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
+</head>
+
+<body class="main-body">
+        <header class="homepage-header">
+            <!--Header section of the homepage-->
+            <!--Automatically redirects to login page, unless logged in-->
+            <div class="homepage-header-left">
+                <!--Logo button that redirects to the homepage, whenever clicked.-->
+                <a href="/homepage" class="logo-button">PAGEPALS</a>
+                <!--Button that goes to the book club section when clicked-->
+                <a href="/bookclubs" class="nav-link">Bookclubs</a>
+                <!--Button that goes to the "my records" section when clicked-->
+                <a href="/myrecord" class="nav-link">My Record</a>
+            </div>
+            <div class="homepage-header-right">
+                <!--Search bar paired with search button beside it, currently just a placeholder-->
+                <div class="search-bar">
+                    <input type="text" placeholder="Search" class="search-field" />
+                    <button class="search-button">Search</button>
+                </div>
+                <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
+                <div class="user-info">
+                    <span class="greeting-msg">HELLO, USERNAME</span>
+                    <img src="/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
+                    <div class="dropdown-menu" id="dropdown-menu">
+                        <a href="#" class="dropdown-menu-list">My account</a>
+                        <a href="#" class="dropdown-menu-list">Profile</a>
+                        <a href="#" class="dropdown-menu-list">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="content-container">
+            <h1>This is bookclub page</h1>
+        </div>
+    </body>
+</html>
