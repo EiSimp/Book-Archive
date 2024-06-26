@@ -52,7 +52,7 @@ public class ArchiveController {
             return "login";
         } else {
             model.addAttribute("user", user);
-            return "users/protected";
+            return "homepage";
         }
     }
 
@@ -71,8 +71,8 @@ public class ArchiveController {
         return "myrecord";
     }
 
-    @GetMapping("/profile")
-    public String profile() {
+    @GetMapping("/profilesetting")
+    public String profileSetting() {
         return "profilesetting";
     }
 
