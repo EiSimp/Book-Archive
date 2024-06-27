@@ -94,7 +94,7 @@ p {
     overflow-y: auto; /* Activate vertical scrollbar when textarea is hovered over */
 }
 
-/*login button style*/
+/*Some copied from login button style*/
 .delete-btn {
     width: auto; /* Let the button width adjust based on content */
     min-width: 120px; /* Minimum width to ensure button is readable */
@@ -102,7 +102,7 @@ p {
     background: #ed4b32;
     border-radius: 8px;
     color: #FFFFFF;
-    font-family: 'Inter'; /* Use fallback font family */
+    font-family: 'Inter';
     font-weight: 500;
     font-size: 16px;
     border: none; /* Remove border */
@@ -115,6 +115,27 @@ p {
 
 .delete-btn:hover {
     background: #c63b26;
+}
+
+.changes-btn {
+    width: auto; /* Let the button width adjust based on content */
+    min-width: 120px; /* Minimum width to ensure button is readable */
+    padding: 10px 20px; /* Adjust padding for adequate space around text */
+    background: #C5796D;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 16px;
+    border: none; /* Remove border */
+    cursor: pointer; /* Show pointer cursor on hover */
+    display: inline-flex; /* Ensure button expands only as needed */
+    align-items: center;
+    justify-content: center;
+}
+
+.changes-btn:hover {
+    background: #895148;
 }
 
 
