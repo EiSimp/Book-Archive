@@ -8,6 +8,7 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 
+    <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/myaccount.css" />
     <script src="/javascript/editAccount.js"></script>
     <script src="/javascript/dropDown.js"></script>
@@ -54,32 +55,31 @@
             <h2>Account Details</h2>
             <a href="#" onclick="editField()">Edit</a>
 
-            <p><strong>Username:</strong> <span id="usernameDisplay" th:text="${user.username}">Username</span></p>
+            <p>Username: <span id="usernameDisplay" th:text="${user.username}">Username</span></p>
             <!-- Password display as part of test -->
-            <p><strong>Password:</strong> <span id="passwordDisplay" th:text="${user.password}">Password</span></p>
-            <!-- ${user.bio} ? ${user.bio} : means it'll display text after ':' if bio is empty -->
-            <p><strong>Bio:</strong> <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : 'Enter your bio...'"></span></p>
+            <p>Password: <span id="passwordDisplay" th:text="${user.password}">Password</span></p>
+            <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : 'Enter your bio (500 chars max)'"></span></p>
         </div>
 
 
         <!-- form to change user info
         form doesn't appear until user clicks edit -->
-        <div id="editForm" class="" style="display: none;">
+        <div id="editForm" style="display: none;">
             <h2>Edit Account Details</h2>
             <!-- return false just disables default behaviour -->
-            <form id="editForm" th:action="@{/user/{id}(id=${user.id})}" onsubmit="saveChanges(); return false;">
+            <form th:action="@{/user/{id}(id=${user.id})}" onsubmit="saveChanges(); return false;">
                 <!-- Hidden input field for user ID for passing into backend -->
                 <input type="hidden" id="userId" name="userId" th:value="${user.id}">
 
                 <label for="editUsername">Username:</label><br>
-                <input type="text" id="editUsername" name="editUsername" required><br><br>
+                <input type="text" id="editUsername" name="editUsername" maxlength="255" required><br><br>
 
                 <!-- remove later for security -->
                 <label for="editPassword">Password:</label><br>
-                <input type="text" id="editPassword" name="editPassword" required><br><br>
+                <input type="password" id="editPassword" name="editPassword" maxlength="255" required><br><br>
 
                 <label for="editBio">Bio:</label><br>
-                <textarea id="editBio" name="editBio" placeholder="Enter your bio..." maxlength="500"></textarea><br><br>
+                <textarea id="editBio" name="editBio" placeholder="Enter your bio (500 chars max)" maxlength="500"></textarea><br><br>
 
                 <button type="button" onclick="cancelEdit()">Cancel</button>
                 <button type="submit">Save Changes</button>

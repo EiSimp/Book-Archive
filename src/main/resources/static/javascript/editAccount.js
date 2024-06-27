@@ -1,5 +1,5 @@
 // Function to switch to edit mode
-// birthday fields are commented out, as dates are not implemented currently
+// birthday fields are removed, as dates are not implemented currently
 // Function to switch to edit mode
 function editField() {
     // Get current display values and populate edit form
