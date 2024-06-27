@@ -49,15 +49,15 @@ p {
 }
 
 #manageAccountDisplay {
-    padding-top: 10vh; /* Use viewport height for responsive padding */
-    width: 90%;
-    margin: 0 auto; /* Center the container horizontally */
     box-sizing: border-box; /* Include padding and border in the element's total width */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    min-height: 80%;
+    padding-bottom: 10vh; /* Set distance from the bottom of the box */
+    min-width: 90%;
+    max-width: 90%; 
+    margin-top: auto; /* Push to the bottom */
 }
+
 
 #manageAccountDisplay h2, form, a{
     text-align: left;
