@@ -22,13 +22,10 @@ public class SecurityConfig {
                         .anyRequest().hasRole("USER"))
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/homepage", true)
+                        .defaultSuccessUrl("/homepage?loginsuccess", true)
                         .permitAll())
                 .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logoutsuccess")
-                        .permitAll());
-
+                        .logoutSuccessUrl("/login?logoutsuccess"));
         return http.build();
     }
 
