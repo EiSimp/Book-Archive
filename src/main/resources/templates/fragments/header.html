@@ -12,19 +12,17 @@
     <div class="homepage-header-right">
         <!--Search bar paired with search button beside it, currently just a placeholder-->
         <div class="search-bar">
-            <input type="text" placeholder="Search" class="search-field" />
+            <input type="text" placeholder="Search books, authors, and collections" class="search-field" />
             <button class="search-button">Search</button>
         </div>
         <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
         <div class="user-info">
-            <span class="greeting-msg">HELLO, USERNAME</span>
+            <span class="greeting-msg" th:text="'Hello, ' + ${user.username}"></span>
             <!--used a default profile image for display purpose-->
             <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
             <div class="dropdown-menu" id="dropdown-menu">
                 <!--link to the account setting page-->
                 <a href="#" class="dropdown-menu-list">My account</a>
-                <!--link to profile setting page-->
-                <a href="/profilesetting" class="dropdown-menu-list">Profile</a>
                 <!--"link" to submit form with csrf token and log out-->
                 <form th:action="@{/logout}" method="post">
                     <a href="#" class="dropdown-menu-list" onclick="this.closest('form').submit();return false;">Log out</a>
