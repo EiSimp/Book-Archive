@@ -7,7 +7,14 @@ function editField() {
 
     document.getElementById("editUsername").value = username;
     document.getElementById("editPassword").value = password;
-    document.getElementById("editBio").value = bio;
+
+    if (bio == "") {
+        // If the bio section is empty
+        document.getElementById("editBio").value = ""; // Set the text box value to empty
+    } else {
+        // If the bio section contains actual bio content
+        document.getElementById("editBio").value = bio; // Set the text box value to the bio content
+    }
 
     // Hide user display, show edit form
     document.getElementById("userDisplay").style.display = "none";

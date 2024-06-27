@@ -58,7 +58,7 @@
             <p>Username: <span id="usernameDisplay" th:text="${user.username}">Username</span></p>
             <!-- Password display as part of test -->
             <p>Password: <span id="passwordDisplay" th:text="${user.password}">Password</span></p>
-            <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : 'Enter your bio (500 chars max)'"></span></p>
+            <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '"></span></p>
         </div>
 
 
