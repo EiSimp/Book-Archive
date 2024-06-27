@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
                     <a href="/signup" class="signup">Sign Up</a>
                 </header>
                 <div class="form-wrapper">
-                    <form id="login-form" action="/login" method="post" class="login-form">
+                    <form id="login-form" th:action="@{/login}" method="post" class="login-form">
                         <div class="input-username">
                             <label for="username">ID</label>
                             <input type="text" id="username" name="username" placeholder="ID" required>
