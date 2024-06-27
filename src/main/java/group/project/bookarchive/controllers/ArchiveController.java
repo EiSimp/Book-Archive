@@ -1,7 +1,8 @@
 package group.project.bookarchive.controllers;
 
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ArchiveController {
+
+    private static final Logger logger = Logger.getLogger(ArchiveController.class.getName());
 
     @Autowired
     private UserRepository userRepository;
@@ -77,9 +79,8 @@ public class ArchiveController {
     }
 
     @PostMapping("/forgot")
-    public String forgotPassword(@RequestBody String entity) {
+    public String forgotPassword(@RequestParam String entity) {
         // TODO: process POST request
-
         return entity;
     }
 
@@ -87,26 +88,28 @@ public class ArchiveController {
     public String addUser(@RequestParam Map<String, String> newUser, HttpServletResponse response) {
         String newName = newUser.get("username");
         String newPw = newUser.get("password");
-        userRepository.save(new User(newPw, newName));
+        logger.info("Signup attempt for user: " + newName);
+        userRepository.save(new User(newName, newPw));
         response.setStatus(HttpServletResponse.SC_CREATED);
+        logger.info("User created: " + newName);
         return "login";
     }
 
-    // User Login
     @PostMapping("/login")
     public String login(@RequestParam Map<String, String> formData, Model model, HttpServletRequest request,
-            HttpSession session) {
-        // processing login
+                        HttpSession session) {
         String name = formData.get("username");
         String pwd = formData.get("password");
+        logger.info("Login attempt for user: " + name);
         List<User> userlist = userRepository.findByUsernameAndPassword(name, pwd);
         if (userlist.isEmpty()) {
+            logger.warning("Login failed for user: " + name);
             return "login";
         } else {
-            // success
             User user = userlist.get(0);
             request.getSession().setAttribute("session_user", user);
             model.addAttribute("user", user);
+            logger.info("Login successful for user: " + name);
             return "homepage";
         }
     }
