@@ -30,12 +30,18 @@
                     <form id="signupform" action="#" th:action="@{/signup}" th:object="${signupform}" method="post"
                         class="login-form" novalidate>
                         <div class="input-username">
-                            <label for="username">ID</label>
-                            <input type="text" id="username" name="username" placeholder="ID" required>
+                            <label for="username" class="form-label">ID</label>
+                            <input type="text" id="username" th:field="*{username}"
+                                placeholder="ID" pattern="^\w+$" required>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="input-password">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Password" required>
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" th:field="*{password}"
+                                placeholder="Password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" required>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <!--if successfully signed up, redirect to login page-->
                         <button type="submit" class="login-btn">Sign Up</button>
@@ -44,5 +50,7 @@
             </div>
         </div>
     </div>
+
+    <script th:src="@{/javascript/signupValidation.js}"></script>
 </body>
 </html>
