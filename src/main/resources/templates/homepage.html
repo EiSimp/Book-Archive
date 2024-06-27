@@ -4,46 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Archive</title>
-    <link rel="stylesheet" href="/stylesheet/homepage.css">
+    <title>PagePals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheet/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
-<body>
-    <header>
-        <!--Header section of the homepage-->
-        <!--Automatically redirects to login page, unless logged in-->
-        <!--Logo button that redirects to the homepage, whenever clicked.-->
-        <a href ="/homepage" class="logo-button">
-            <span class="logo-text">PAGEPALS</span>
-        </a>
-        <nav>
-            <!--Button that goes to the book club section when clicked-->
-            <a href="#">Bookclubs</a>
-            <!--Button that goes to the "my records" section when clicked-->
-            <a href="#">My Record</a>
-        </nav>
-        <!--Search bar paired with search button beside it, currently just a placeholder-->
-        <div class="search-bar">
-            <input type="text" placeholder="Placeholder">
-            <button>Search</button>
-        </div>
-        <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
-        <div class="user-info">
-            <!--Change after login system is implemented-->
-            <span>HELLO, USERNAME</span>
-            <img src="#" alt ="User Icon" class="user-icon" id="user-icon">
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="#">My account</a>
-                <a href="#">Profile</a>
-                <a href="#">Log out</a>
+
+<body class="main-body">
+    <!--header-->
+    <div th:replace="fragments/header::header"></div>
+    
+    <!--content starts here-->
+    <div class="content-container">
+        <!--numbers are for display purpose, need to represent actual data later-->
+        <div class="short-record">
+            <div class="short-record-column">
+                <!--Total number of books the user read-->
+                <span class="short-record-number">00</span>
+                <span class="short-record-label">Read<span>
+            </div>
+            <div class="short-record-column">
+                <!--Total number of books the user is currently reading-->
+                <span class="short-record-number">00</span>
+                <span class="short-record-label">Reading</span>
+            </div>
+            <div class="short-record-column">
+                <!--Number of collections the user made-->
+                <span class="short-record-number">00</span>
+                <span class="short-record-label">Collection</span>
             </div>
         </div>
-    </header>
-
-    <!--Link that will navigate to the login page-->
-    <a href="/login">Login</a>
-    <h1>hello there my friend - Joseph</h1>
-    <h1>Whats Up Bud - Daniel</h1>
-
+        <hr class="solid" id="divider-line">
+        <!--personalized bookshelf-->
+        <div class="bookshelf">
+            <!--5 books are displayed for each line-->
+            <div class="bookshelf-rack">
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+                <div class="book-info-card">
+                    <img src="#" alt="bookcover-image" class="bookcover-image">
+                    <span>Book Title</span>
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/javascript/dropDown.js"></script>
 </body>
 

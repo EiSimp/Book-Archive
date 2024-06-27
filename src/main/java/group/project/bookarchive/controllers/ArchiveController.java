@@ -54,13 +54,28 @@ public class ArchiveController {
             return "login";
         } else {
             model.addAttribute("user", user);
-            return "users/protected";
+            return "homepage";
         }
     }
 
     @GetMapping("/forgot")
     public String forgotpwd() {
         return "forgotpwd";
+    }
+
+    @GetMapping("/bookclubs")
+    public String bookclubs() {
+        return "bookclubs";
+    }
+
+    @GetMapping("/myrecord")
+    public String myrecord() {
+        return "myrecord";
+    }
+
+    @GetMapping("/profilesetting")
+    public String profileSetting() {
+        return "profilesetting";
     }
 
     @PostMapping("/forgot")
