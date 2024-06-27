@@ -1,16 +1,12 @@
 // Function to switch to edit mode
-// birthday fields are removed, as dates are not implemented currently
-// Function to switch to edit mode
 function editField() {
     // Get current display values and populate edit form
     var username = document.getElementById("usernameDisplay").innerText;
     var password = document.getElementById("passwordDisplay").innerText;
-    //var birthday = document.getElementById("birthdayDisplay").innerText;
     var bio = document.getElementById("bioDisplay").innerText;
 
     document.getElementById("editUsername").value = username;
     document.getElementById("editPassword").value = password;
-    //document.getElementById("editBirthday").value = birthday;
     document.getElementById("editBio").value = bio;
 
     // Hide user display, show edit form
