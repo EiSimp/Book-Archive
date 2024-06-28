@@ -28,18 +28,18 @@
             <div class="detail">
                 <p>Username: <span id="usernameDisplay"
                         th:text="${user.username != null ? user.username : 'Username'}">Username</span> <a href="#"
-                        onclick="showEdit('editUsernameSection')"><i class="fas fa-pencil-alt"></i></a></p>
+                        onclick="showEdit('editUsernameSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
             </div>
 
             <div class="detail">
                 <p>Password: <span id="passwordDisplay"
                         th:text="${user.password != null ? user.password : 'Password'}">Password</span> <a href="#"
-                        onclick="showEdit('editPasswordSection')"><i class="fas fa-pencil-alt"></i></a></p>
+                        onclick="showEdit('editPasswordSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
             </div>
 
             <div class="detail">
                 <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '">Bio</span> <a href="#"
-                        onclick="showEdit('editBioSection')"><i class="fas fa-pencil-alt"></i></a></p>
+                        onclick="showEdit('editBioSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
             </div>
         </div>
 
