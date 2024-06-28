@@ -36,7 +36,6 @@
             <h2>Edit Account Details</h2>
             <!-- return false just disables default behaviour -->
             <form th:action="@{/user/{user.getId()}}" onsubmit="saveChanges(); return false;">
-                <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
                 <meta name="_csrf" th:content="${_csrf.token}" />
                 <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
                 <!-- Hidden input field for user ID for passing into backend -->
@@ -61,12 +60,13 @@
         <div id="manageAccountDisplay">
             <h2>Manage Account</h2><br>
             <form id="deleteForm" th:action="@{/user/{user.getId()}}" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');">
-            <!-- <form id="deleteForm" th:action="@{/user/{user.getId()}}"> -->
                 <meta name="_csrf" th:content="${_csrf.token}" />
                 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
                 <button type="button" class="delete-btn" onclick="deleteUser()">Delete Account</button><br><br>
             </form>
-            <a href="/logout">Log Out</a>
+            <form th:action="@{/logout}" method="post">
+                <a href="#" class="logout-btn changes-btn" onclick="this.closest('form').submit();return false;">Log out</a>
+            </form>
         </div>
 
     </div>

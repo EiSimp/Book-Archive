@@ -117,7 +117,7 @@ p {
     background: #c63b26;
 }
 
-.changes-btn {
+.changes-btn, .logout-button {
     width: auto; /* Let the button width adjust based on content */
     min-width: 120px; /* Minimum width to ensure button is readable */
     padding: 10px 20px; /* Adjust padding for adequate space around text */
@@ -133,6 +133,13 @@ p {
     align-items: center;
     justify-content: center;
 }
+
+.logout-btn {
+    min-width: 138px;
+}
+
+
+
 
 .changes-btn:hover {
     background: #895148;
