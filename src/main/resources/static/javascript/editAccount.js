@@ -31,6 +31,9 @@ function cancelEdit() {
 }
 
 function deleteUser() {
+    if (!confirm('Are you sure you want to delete your account?')) {
+        return; // Cancel deletion if user clicks Cancel in the dialog
+    }
 
     const userId = document.getElementById('userId').value;
     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
