@@ -8,20 +8,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import group.project.bookarchive.models.MailDTO;
 import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
 import group.project.bookarchive.security.SecurityUser;
+import group.project.bookarchive.services.MailService;
 import jakarta.validation.Valid;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ArchiveController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping("/archives/view")
     public String getAllUsers() {
@@ -69,13 +73,20 @@ public class ArchiveController {
     }
 
     @PostMapping("/forgot")
-    public String forgotPassword(@RequestBody String entity) {
-        // TODO: process POST request
-
-        return entity;
+    public String forgotPwdMail(@ModelAttribute MailDTO mailDto, Model model) {
+        if (mailDto.getEmail() == null || mailDto.getEmail().isEmpty()) {
+            model.addAttribute("error", "Email cannot be empty");
+            return "forgotpwd";
+        }
+        if (mailDto.getUsername() == null || mailDto.getUsername().isEmpty()) {
+            model.addAttribute("error", "Username cannot be empty");
+            return "forgotpwd";
+        }
+        mailService.sendPwdMail(mailDto);
+        System.out.println("sent email");
+        return "login";
     }
 
-    //
     @PostMapping("/signup")
     public String addUser(@Valid @ModelAttribute("signupform") SignupFormDTO form,
             BindingResult result,
