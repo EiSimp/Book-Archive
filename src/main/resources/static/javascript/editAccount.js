@@ -48,13 +48,12 @@ function deleteUser() {
             throw new Error('Failed to delete user');
         }
         console.log('User deleted successfully');
-        // Redirect to login page
-        // TODO: can remove this line if forced redir. is done later
+        // redirect to login
         window.location.href = '/login';
     })
     .catch(error => {
         console.error('Error deleting user:', error);
-        // Handle error (e.g., show error message)
+        
     });
 }
 
