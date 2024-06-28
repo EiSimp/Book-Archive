@@ -145,7 +145,7 @@ a.signup:hover {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 0 20%;
+    padding: 0 10%;
     width: 100%;
     height: 100%;
 
@@ -158,7 +158,8 @@ a.signup:hover {
 
 /*login/signup input wrapper*/
 .input-username,
-.input-password {
+.input-password,
+.input-email {
     display: block;
     width: 100%;
     height: fit-content;
@@ -170,7 +171,8 @@ label {
 
 /* login and signup input fields*/
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -208,4 +210,11 @@ input[type="password"] {
     font-size: 16px;
     line-height: 19px;
     align-content: end;
+}
+
+.forgotpwd-message {
+    font-family: 'Inter';
+    text-align: start;
+    font-size: 20px;
+    line-height: normal;
 }
