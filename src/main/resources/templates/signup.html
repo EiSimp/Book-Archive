@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PagePals: Sign Up</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css">
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
@@ -25,14 +27,21 @@
                 </header>
                 <!--sign up form-->
                 <div class="form-wrapper">
-                    <form action="/user" method="post" class="login-form">
+                    <form id="signupform" action="#" th:action="@{/signup}" th:object="${signupform}" method="post"
+                        class="login-form" novalidate>
                         <div class="input-username">
-                            <label for="username">ID</label>
-                            <input type="text" id="username" name="username" placeholder="ID" required>
+                            <label for="username" class="form-label">ID</label>
+                            <input type="text" id="username" th:field="*{username}"
+                                placeholder="ID" pattern="^\w+$" required>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="input-password">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Password" required>
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" th:field="*{password}"
+                                placeholder="Password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" required>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <!--if successfully signed up, redirect to login page-->
                         <button type="submit" class="login-btn">Sign Up</button>
@@ -41,5 +50,7 @@
             </div>
         </div>
     </div>
+
+    <script th:src="@{/javascript/signupValidation.js}"></script>
 </body>
 </html>

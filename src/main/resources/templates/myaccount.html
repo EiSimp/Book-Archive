@@ -15,39 +15,7 @@
 </head>
 
 <body class="main-body">
-    <header class="homepage-header">
-        <!--Header section of the homepage-->
-        <!--Automatically redirects to login page, unless logged in-->
-        <div class="homepage-header-left">
-            <!--Logo button that redirects to the homepage, whenever clicked.-->
-            <a href="/homepage" class="logo-button">PAGEPALS</a>
-            <!--Button that goes to the book club section when clicked-->
-            <a href="/bookclubs" class="nav-link">Bookclubs</a>
-            <!--Button that goes to the "my records" section when clicked-->
-            <a href="/myrecord" class="nav-link">My Record</a>
-        </div>
-        <div class="homepage-header-right">
-            <!--Search bar paired with search button beside it, currently just a placeholder-->
-            <div class="search-bar">
-                <input type="text" placeholder="Search" class="search-field" />
-                <button class="search-button">Search</button>
-            </div>
-            <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
-            <div class="user-info">
-                <span class="greeting-msg">HELLO, USERNAME</span>
-                <!--used a default profile image for display purpose-->
-                <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
-                <div class="dropdown-menu" id="dropdown-menu">
-                    <!--link to the account setting page-->
-                    <a href="/myaccount" class="dropdown-menu-list">My account</a>
-                    <!--link to profile setting page-->
-                    <a href="/profile" class="dropdown-menu-list">Profile</a>
-                    <!--link to log out-->
-                    <a href="/logout" class="dropdown-menu-list">Log out</a>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div th:replace="fragments/header::header"></div>
     <div class="content-container">
         <h1>My Account</h1>
 
@@ -55,9 +23,9 @@
             <h2>Account Details</h2>
             <a href="#" onclick="editField()">Edit</a>
 
-            <p>Username: <span id="usernameDisplay" th:text="${user.username}">Username</span></p>
+            <p>Username: <span id="usernameDisplay" th:text="${user.username != null ? user.username : 'Username'}">Username</span></p>
             <!-- Password display as part of test -->
-            <p>Password: <span id="passwordDisplay" th:text="${user.password}">Password</span></p>
+            <p>Password: <span id="passwordDisplay" th:text="${user.password != null ? user.password : 'Password'}">Password</span></p>
             <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '"></span></p>
         </div>
 
@@ -67,9 +35,13 @@
         <div id="editForm" style="display: none;">
             <h2>Edit Account Details</h2>
             <!-- return false just disables default behaviour -->
-            <form th:action="@{/user/{id}(id=${user.id})}" onsubmit="saveChanges(); return false;">
+            <form th:action="@{/user/{user.getId()}}" onsubmit="saveChanges(); return false;">
+                <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
+                <meta name="_csrf" th:content="${_csrf.token}" />
+                <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
                 <!-- Hidden input field for user ID for passing into backend -->
-                <input type="hidden" id="userId" name="userId" th:value="${user.id}">
+                <input type="hidden" id="userId" name="userId" th:value="${user.getId()}">
+
 
                 <label for="editUsername">Username:</label><br>
                 <input type="text" id="editUsername" name="editUsername" maxlength="255" required><br><br>
@@ -88,7 +60,10 @@
 
         <div id="manageAccountDisplay">
             <h2>Manage Account</h2><br>
-            <form id="deleteForm">
+            <form id="deleteForm" th:action="@{/user/{user.getId()}}" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');">
+            <!-- <form id="deleteForm" th:action="@{/user/{user.getId()}}"> -->
+                <meta name="_csrf" th:content="${_csrf.token}" />
+                <meta name="_csrf_header" th:content="${_csrf.headerName}" />
                 <button type="button" class="delete-btn" onclick="deleteUser()">Delete Account</button><br><br>
             </form>
             <a href="/logout">Log Out</a>

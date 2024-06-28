@@ -31,9 +31,14 @@ function cancelEdit() {
 }
 
 function deleteUser() {
+
     const userId = document.getElementById('userId').value;
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
     fetch(`/user/${userId}`, {
         method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
     })
     .then(response => {
         if (!response.ok) {
@@ -56,24 +61,30 @@ function saveChanges() {
     const password = document.getElementById('editPassword').value;
     const bio = document.getElementById('editBio').value;
 
-    // requestParam making passing in values long :D
-    // update later with better fetch?
-    fetch(`/user/${userId}?username=${username}&password=${password}&bio=${bio}`, {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+    const data = {
+        username: username,
+        password: password,
+        bio: bio
+    };
+
+    fetch(`/user/${userId}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
         },
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
         console.log('User updated successfully');
         window.location.reload(); // reload the page
-})
-.catch(error => {
-    console.error('Error updating user:', error);
-    // Put extra error handlers here
-});
-
+    })
+    .catch(error => {
+        console.error('Error updating user:', error);
+    });
 }

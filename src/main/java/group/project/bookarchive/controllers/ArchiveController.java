@@ -1,33 +1,30 @@
 package group.project.bookarchive.controllers;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
 
+import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import group.project.bookarchive.security.SecurityUser;
+import jakarta.validation.Valid;
 
 @Controller
 public class ArchiveController {
-
     @Autowired
     private UserRepository userRepository;
-
-    @GetMapping("/")
-    public RedirectView process() {
-        return new RedirectView("login");
-    }
 
     @GetMapping("/archives/view")
     public String getAllUsers() {
@@ -40,18 +37,17 @@ public class ArchiveController {
     }
 
     @GetMapping("/signup")
-    public String signup() {
+    public String signup(Model model) {
+        model.addAttribute("signupform", new SignupFormDTO());
         return "signup";
     }
 
     @GetMapping("/login")
-    public String getLogin(Model model, HttpServletRequest request, HttpSession session) {
-        User user = (User) session.getAttribute("session_user");
+    public String getLogin(Model model, @AuthenticationPrincipal SecurityUser user) {
         if (user == null) {
             return "login";
         } else {
-            model.addAttribute("user", user);
-            return "users/protected";
+            return "homepage";
         }
     }
 
@@ -70,8 +66,8 @@ public class ArchiveController {
         return "myrecord";
     }
 
-    @GetMapping("/profile")
-    public String profile() {
+    @GetMapping("/profilesetting")
+    public String profileSetting() {
         return "profilesetting";
     }
 
@@ -82,56 +78,63 @@ public class ArchiveController {
         return entity;
     }
 
+    //
     @PostMapping("/signup")
-    public String addUser(@RequestParam Map<String, String> newUser, HttpServletResponse response) {
-        String newName = newUser.get("username");
-        String newPw = newUser.get("password");
-        userRepository.save(new User(newPw, newName));
-        response.setStatus(HttpServletResponse.SC_CREATED);
-        return "login";
-    }
+    public String addUser(@Valid @ModelAttribute("signupform") SignupFormDTO form,
+            BindingResult result,
+            Model model) {
 
-    // User Login
-    @PostMapping("/login")
-    public String login(@RequestParam Map<String, String> formData, Model model, HttpServletRequest request,
-            HttpSession session) {
-        // processing login
-        String name = formData.get("username");
-        String pwd = formData.get("password");
-        List<User> userlist = userRepository.findByUsernameAndPassword(name, pwd);
-        if (userlist.isEmpty()) {
-            return "login";
-        } else {
-            // success
-            User user = userlist.get(0);
-            request.getSession().setAttribute("session_user", user);
-            model.addAttribute("user", user);
-            return "homepage";
+        if (userRepository.existsByUsername(form.getUsername())) {
+            result.rejectValue("username", "",
+                    "There is already an account registered with the same username");
         }
+
+        if (result.hasErrors()) {
+            model.addAttribute("signupform", form);
+            return "/signup";
+        }
+
+        userRepository.save(new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword())));
+        return "redirect:/login?signupsuccess";
     }
 
     @GetMapping("/myaccount")
-    public String showMyAccount(Model model, HttpSession session) {
-        
-        User sessionUser = (User) session.getAttribute("session_user");
-        
-        if (sessionUser == null) {
-            // Handle case where user is not logged in
-            return "redirect:/login"; // Redirect to login page
+    public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
+    if (user == null) {
+        // not sure if this check is necessary now
+        return "redirect:/login"; // Redirect to login page if user is not authenticated.
+    } else {
+        // Fetch updated user data from the database based on ID
+        Optional<User> userOptional = userRepository.findById(user.getId());
+
+        if (!userOptional.isPresent()) {
+            // Handle case where user with given ID does not exist
+            return "login"; // redirect to login
         }
-        Long userId = sessionUser.getId();
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
+        User updatedUser = userOptional.get();
+        SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+        
+        // Update user information in the session
+        ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).setDetails(updatedSecurityUser);
 
-        model.addAttribute("user", user);
-
-        return "/myaccount";
+        // Add updated user information to the model
+        model.addAttribute("user", updatedSecurityUser);
+        
+        return "myaccount";
     }
+}
 
-    @GetMapping("/logout")
-    public String destroySession(HttpServletRequest request){
-        request.getSession().invalidate();
-        return "redirect:/login";
-    }
+    // @GetMapping("/logout")
+    // public String destroySession(HttpServletRequest request) {
+    //     request.getSession().invalidate();
+    //     return "redirect:/login";
+    // }
     
+    // @GetMapping("/logout")
+    // public String logout(HttpServletRequest request, HttpServletResponse response) {
+    //     // Invalidate session and clear authentication
+    //     return "redirect:/login";
+    // }
 }
