@@ -8,6 +8,9 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 
+    <!-- I just added this for edit's pencil symbol -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/myaccount.css" />
     <script src="/javascript/editAccount.js"></script>
@@ -21,41 +24,71 @@
 
         <div class="accountDetails" id="userDisplay">
             <h2>Account Details</h2>
-            <a href="#" onclick="editField()">Edit</a>
 
-            <p>Username: <span id="usernameDisplay"
-                    th:text="${user.username != null ? user.username : 'Username'}">Username</span></p>
-            <!-- Password display as part of test -->
-            <p>Password: <span id="passwordDisplay"
-                    th:text="${user.password != null ? user.password : 'Password'}">Password</span></p>
-            <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '"></span></p>
+            <div class="detail">
+                <p>Username: <span id="usernameDisplay"
+                        th:text="${user.username != null ? user.username : 'Username'}">Username</span> <a href="#"
+                        onclick="showEdit('editUsernameSection')"><i class="fas fa-pencil-alt"></i></a></p>
+            </div>
+
+            <div class="detail">
+                <p>Password: <span id="passwordDisplay"
+                        th:text="${user.password != null ? user.password : 'Password'}">Password</span> <a href="#"
+                        onclick="showEdit('editPasswordSection')"><i class="fas fa-pencil-alt"></i></a></p>
+            </div>
+
+            <div class="detail">
+                <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '">Bio</span> <a href="#"
+                        onclick="showEdit('editBioSection')"><i class="fas fa-pencil-alt"></i></a></p>
+            </div>
         </div>
 
+        <input type="hidden" id="userId" name="userId" th:value="${user.getId()}">
+        <input type="hidden" id="origUsername" name="origUsername" th:value="${user.username}">
+        <input type="hidden" id="origPassword" name="origPassword" th:value="${user.password}">
+        <input type="hidden" id="origBio" name="origBio" th:value="${user.bio} ? ${user.bio} : ' '">
 
-        <!-- form to change user info
-        form doesn't appear until user clicks edit -->
-        <div id="editForm" style="display: none;">
-            <h2>Edit Account Details</h2>
-            <!-- return false just disables default behaviour -->
-            <form th:action="@{/user/{user.getId()}}" onsubmit="saveChanges(); return false;">
+
+
+        <div id="editUsernameSection" class="editForm" style="display: none;">
+            <h2>Edit Username</h2>
+            <form id="usernameForm" onsubmit="saveChanges('editUsernameSection'); return false;">
                 <meta name="_csrf" th:content="${_csrf.token}" />
                 <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
-                <!-- Hidden input field for user ID for passing into backend -->
-                <input type="hidden" id="userId" name="userId" th:value="${user.getId()}">
 
+                <label for="newUsername">New Username:</label><br>
+                <input type="text" id="newUsername" name="newUsername" maxlength="255" required><br><br>
 
-                <label for="editUsername">Username:</label><br>
-                <input type="text" id="editUsername" name="editUsername" maxlength="255" required><br><br>
+                <button type="button" class="changes-btn" onclick="cancelEdit('editUsernameSection')">Cancel</button>
+                <button type="submit" class="changes-btn">Save Changes</button>
+            </form>
+        </div>
 
-                <!-- remove later for security -->
-                <label for="editPassword">Password:</label><br>
-                <input type="password" id="editPassword" name="editPassword" maxlength="255" required><br><br>
+        <div id="editPasswordSection" class="editForm" style="display: none;">
+            <h2>Edit Password</h2>
+            <form id="passwordForm" onsubmit="saveChanges('editPasswordSection'); return false;">
+                <meta name="_csrf" th:content="${_csrf.token}" />
+                <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
 
-                <label for="editBio">Bio:</label><br>
-                <textarea id="editBio" name="editBio" placeholder="Enter your bio (500 chars max)"
-                    maxlength="500"></textarea><br><br>
+                <label for="newPassword">New Password:</label><br>
+                <input type="password" id="newPassword" name="newPassword" maxlength="255" required><br><br>
 
-                <button type="button" class="changes-btn" onclick="cancelEdit()">Cancel</button>
+                <button type="button" class="changes-btn" onclick="cancelEdit('editPasswordSection')">Cancel</button>
+                <button type="submit" class="changes-btn">Save Changes</button>
+            </form>
+        </div>
+
+        <div id="editBioSection" class="editForm" style="display: none;">
+            <h2>Edit Bio</h2>
+            <form id="bioForm" onsubmit="saveChanges('editBioSection'); return false;">
+                <meta name="_csrf" th:content="${_csrf.token}" />
+                <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
+
+                <label for="newBio">New Bio:</label><br>
+                <textarea id="newBio" name="newBio" maxlength="500"
+                    placeholder="Enter your bio (500 chars max)"></textarea><br><br>
+
+                <button type="button" class="changes-btn" onclick="cancelEdit('editBioSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
             </form>
         </div>
@@ -69,8 +102,7 @@
                 <button type="button" class="delete-btn" onclick="deleteUser()">Delete Account</button><br><br>
             </form>
             <form th:action="@{/logout}" method="post">
-                <a href="#" class="logout-btn changes-btn" onclick="this.closest('form').submit();return false;">Log
-                    out</a>
+                <a href="#" class="logout-btn changes-btn" onclick="this.closest('form').submit();return false;">Log out</a>
             </form>
         </div>
 

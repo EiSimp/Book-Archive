@@ -1,31 +1,39 @@
-// Function to switch to edit mode
-function editField() {
-    // Get current display values and populate edit form
-    var username = document.getElementById("usernameDisplay").innerText;
-    var password = document.getElementById("passwordDisplay").innerText;
-    var bio = document.getElementById("bioDisplay").innerText;
 
-    document.getElementById("editUsername").value = username;
-    document.getElementById("editPassword").value = password;
-
-    if (bio == "") {
-        // If the bio section is empty
-        document.getElementById("editBio").value = ""; // Set the text box value to empty
-    } else {
-        // If the bio section contains actual bio content
-        document.getElementById("editBio").value = bio; // Set the text box value to the bio content
+function showEdit(sectionId) {
+    switch (sectionId) {
+        case 'editUsernameSection':
+            var username = document.getElementById('usernameDisplay').innerText;
+            document.getElementById('newUsername').value = username;
+            break;
+        
+        case 'editPasswordSection':
+            // Clear previous inputs for security reasons or handle accordingly
+            document.getElementById('newPassword').value = '';
+            break;
+        
+        case 'editBioSection':
+            var bio = document.getElementById("bioDisplay").innerText;
+            if (bio == "") {
+                // If the bio section is empty
+                document.getElementById("newBio").value = ""; // Set the text box value to empty
+            } else {
+                // If the bio section contains actual bio content
+                document.getElementById("newBio").value = bio; // Set the text box value to the bio content
+            }
+            break;
+        
+        default:
+            break;
     }
 
+    document.getElementById(sectionId).style.display = 'block';
     // Hide user display, show edit form
     document.getElementById("userDisplay").style.display = "none";
     document.getElementById("manageAccountDisplay").style.display = "none";
-    document.getElementById("editForm").style.display = "block";
 }
 
-// Function to cancel edit mode
-function cancelEdit() {
-    // Hide edit form, show user display
-    document.getElementById("editForm").style.display = "none";
+function cancelEdit(sectionId) {
+    document.getElementById(sectionId).style.display = 'none';
     document.getElementById("userDisplay").style.display = "block";
     document.getElementById("manageAccountDisplay").style.display = "block";
 }
@@ -57,13 +65,35 @@ function deleteUser() {
         });
 }
 
-function saveChanges() {
-    const userId = document.getElementById('userId').value;
-    const username = document.getElementById('editUsername').value;
-    const password = document.getElementById('editPassword').value;
-    const bio = document.getElementById('editBio').value;
+function saveChanges(sectionID) {
+    var userId = document.getElementById('userId').value;
+
+    var username;
+    var password;
+    var bio;
 
     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+    switch (sectionID) {
+        case 'editUsernameSection':
+            username = document.getElementById('newUsername').value;
+            password = document.getElementById('origPassword').value;
+            bio = document.getElementById('origBio').value;
+            break;
+        case 'editPasswordSection':
+            username = document.getElementById('origUsername').value;
+            password = document.getElementById('newPassword').value;
+            bio = document.getElementById('origBio').value;
+            break;
+        case 'editBioSection':
+            username = document.getElementById('origUsername').value;
+            password = document.getElementById('origPassword').value;
+            bio = document.getElementById('newBio').value;
+            break;
+        default:
+            console.error('Invalid sectionID');
+            return;
+    }
 
     const data = {
         username: username,

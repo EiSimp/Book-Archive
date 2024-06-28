@@ -55,7 +55,6 @@ public class UserController {
         return userRepository.save(user);
     }
 
-
     //Deletes user
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id, HttpServletRequest request) {

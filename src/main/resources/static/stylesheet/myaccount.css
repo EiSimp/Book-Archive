@@ -17,7 +17,7 @@ p {
 }
 
 .accountDetails,
-#editForm {
+.editForm {
     min-width: 90%;
     max-width: 90%;
     margin: 0 auto;
@@ -79,7 +79,7 @@ a {
 
 
 /* copied from login and signup input fields */
-#editBio {
+#newBio {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -92,20 +92,20 @@ a {
     overflow: hidden;
     box-sizing: border-box;
     max-height: none;
-    height: 10vh;
+    height: 40vh;
 }
 
-#editBio::-webkit-scrollbar {
+#newBio::-webkit-scrollbar {
     width: 0px;
     background-color: transparent;
 }
 
-#editBio:focus {
+#newBio:focus {
     overflow-y: auto;
     /* Activate vertical scrollbar when textarea is focused */
 }
 
-#editBio:hover {
+#newBio:hover {
     overflow-y: auto;
     /* Activate vertical scrollbar when textarea is hovered over */
 }
