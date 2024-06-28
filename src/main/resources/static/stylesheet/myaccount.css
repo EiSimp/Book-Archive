@@ -7,7 +7,7 @@ p {
     line-height: 43px;
     display: block;
     align-items: center;
-    text-align: left; 
+    text-align: left;
     margin: 0;
 
     color: #000000;
@@ -16,16 +16,20 @@ p {
     flex-grow: 0;
 }
 
-.accountDetails, #editForm {
+.accountDetails,
+#editForm {
     min-width: 90%;
-    max-width: 90%; 
-    margin: 0 auto; /* Center the container horizontally */
+    max-width: 90%;
+    margin: 0 auto;
+    /* Center the container horizontally */
     display: flex;
     flex-direction: column;
 }
 
-#bioDisplay, #usernameDisplay, #passwordDisplay {
-    font-family:Calibri;
+#bioDisplay,
+#usernameDisplay,
+#passwordDisplay {
+    font-family: Calibri;
 }
 
 #bioDisplay {
@@ -34,32 +38,42 @@ p {
     overflow-wrap: break-word;
     text-align: left;
     line-height: 1.5;
-    box-sizing: border-box; 
-    height: auto; /* Allow height to adjust based on content */
+    box-sizing: border-box;
+    height: auto;
+    /* Allow height to adjust based on content */
 }
 
-#usernameDisplay, #passwordDisplay {
+#usernameDisplay,
+#passwordDisplay {
     width: 100%;
     overflow: hidden;
     overflow-wrap: break-word;
-    text-align: left; /* Ensure text alignment */
-    line-height: 1.5; /* Adjust line height for readability */
-    box-sizing: border-box; 
-    height: auto; /* Allow height to adjust based on content */
+    text-align: left;
+    /* Ensure text alignment */
+    line-height: 1.5;
+    /* Adjust line height for readability */
+    box-sizing: border-box;
+    height: auto;
+    /* Allow height to adjust based on content */
 }
 
 #manageAccountDisplay {
-    box-sizing: border-box; /* Include padding and border in the element's total width */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width */
     display: flex;
     flex-direction: column;
-    padding-bottom: 10vh; /* Set distance from the bottom of the box */
+    padding-bottom: 10vh;
+    /* Set distance from the bottom of the box */
     min-width: 90%;
-    max-width: 90%; 
-    margin-top: auto; /* Push to the bottom */
+    max-width: 90%;
+    margin-top: auto;
+    /* Push to the bottom */
 }
 
 
-#manageAccountDisplay h2, form, a{
+#manageAccountDisplay h2,
+form,
+a {
     text-align: left;
 }
 
@@ -74,7 +88,7 @@ p {
     width: 100%;
     border: none;
     border-radius: 20px;
-    resize:none;
+    resize: none;
     overflow: hidden;
     box-sizing: border-box;
     max-height: none;
@@ -87,49 +101,63 @@ p {
 }
 
 #editBio:focus {
-    overflow-y: auto; /* Activate vertical scrollbar when textarea is focused */
+    overflow-y: auto;
+    /* Activate vertical scrollbar when textarea is focused */
 }
 
 #editBio:hover {
-    overflow-y: auto; /* Activate vertical scrollbar when textarea is hovered over */
+    overflow-y: auto;
+    /* Activate vertical scrollbar when textarea is hovered over */
 }
 
 /*Some copied from login button style*/
 .delete-btn {
-    width: auto; /* Let the button width adjust based on content */
-    min-width: 120px; /* Minimum width to ensure button is readable */
-    padding: 10px 20px; /* Adjust padding for adequate space around text */
+    width: auto;
+    /* Let the button width adjust based on content */
+    min-width: 120px;
+    /* Minimum width to ensure button is readable */
+    padding: 10px 20px;
+    /* Adjust padding for adequate space around text */
     background: #ed4b32;
     border-radius: 8px;
     color: #FFFFFF;
     font-family: 'Inter';
     font-weight: 500;
     font-size: 16px;
-    border: none; /* Remove border */
-    cursor: pointer; /* Show pointer cursor on hover */
-    display: inline-flex; /* Ensure button expands only as needed */
+    border: none;
+    /* Remove border */
+    cursor: pointer;
+    /* Show pointer cursor on hover */
+    display: inline-flex;
+    /* Ensure button expands only as needed */
     align-items: center;
     justify-content: center;
 }
-
 
 .delete-btn:hover {
     background: #c63b26;
 }
 
-.changes-btn, .logout-button {
-    width: auto; /* Let the button width adjust based on content */
-    min-width: 120px; /* Minimum width to ensure button is readable */
-    padding: 10px 20px; /* Adjust padding for adequate space around text */
+.changes-btn,
+.logout-button {
+    width: auto;
+    /* Let the button width adjust based on content */
+    min-width: 120px;
+    /* Minimum width to ensure button is readable */
+    padding: 10px 20px;
+    /* Adjust padding for adequate space around text */
     background: #C5796D;
     border-radius: 8px;
     color: #FFFFFF;
     font-family: 'Inter';
     font-weight: 500;
     font-size: 16px;
-    border: none; /* Remove border */
-    cursor: pointer; /* Show pointer cursor on hover */
-    display: inline-flex; /* Ensure button expands only as needed */
+    border: none;
+    /* Remove border */
+    cursor: pointer;
+    /* Show pointer cursor on hover */
+    display: inline-flex;
+    /* Ensure button expands only as needed */
     align-items: center;
     justify-content: center;
 }
@@ -138,16 +166,6 @@ p {
     min-width: 138px;
 }
 
-
-
-
 .changes-btn:hover {
     background: #895148;
 }
-
-
-
-
-
-
-

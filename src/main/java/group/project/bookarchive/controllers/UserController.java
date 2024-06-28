@@ -47,10 +47,8 @@ public class UserController {
     }
     
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id,
-                        @RequestBody UserUpdateRequest request) {
-        User user = userRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
         user.setBio(request.getBio());

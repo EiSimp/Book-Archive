@@ -43,18 +43,18 @@ function deleteUser() {
             'X-CSRF-TOKEN': csrfToken
         },
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to delete user');
-        }
-        console.log('User deleted successfully');
-        // redirect to login
-        window.location.href = '/login';
-    })
-    .catch(error => {
-        console.error('Error deleting user:', error);
-        
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete user');
+            }
+            console.log('User deleted successfully');
+            // redirect to login
+            window.location.href = '/login';
+        })
+        .catch(error => {
+            console.error('Error deleting user:', error);
+
+        });
 }
 
 function saveChanges() {
@@ -79,14 +79,14 @@ function saveChanges() {
         },
         body: JSON.stringify(data)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        console.log('User updated successfully');
-        window.location.reload(); // reload the page
-    })
-    .catch(error => {
-        console.error('Error updating user:', error);
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('User updated successfully');
+            window.location.reload(); // reload the page
+        })
+        .catch(error => {
+            console.error('Error updating user:', error);
+        });
 }

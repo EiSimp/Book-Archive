@@ -23,9 +23,11 @@
             <h2>Account Details</h2>
             <a href="#" onclick="editField()">Edit</a>
 
-            <p>Username: <span id="usernameDisplay" th:text="${user.username != null ? user.username : 'Username'}">Username</span></p>
+            <p>Username: <span id="usernameDisplay"
+                    th:text="${user.username != null ? user.username : 'Username'}">Username</span></p>
             <!-- Password display as part of test -->
-            <p>Password: <span id="passwordDisplay" th:text="${user.password != null ? user.password : 'Password'}">Password</span></p>
+            <p>Password: <span id="passwordDisplay"
+                    th:text="${user.password != null ? user.password : 'Password'}">Password</span></p>
             <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '"></span></p>
         </div>
 
@@ -50,7 +52,8 @@
                 <input type="password" id="editPassword" name="editPassword" maxlength="255" required><br><br>
 
                 <label for="editBio">Bio:</label><br>
-                <textarea id="editBio" name="editBio" placeholder="Enter your bio (500 chars max)" maxlength="500"></textarea><br><br>
+                <textarea id="editBio" name="editBio" placeholder="Enter your bio (500 chars max)"
+                    maxlength="500"></textarea><br><br>
 
                 <button type="button" class="changes-btn" onclick="cancelEdit()">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
@@ -59,13 +62,15 @@
 
         <div id="manageAccountDisplay">
             <h2>Manage Account</h2><br>
-            <form id="deleteForm" th:action="@{/user/{user.getId()}}" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');">
+            <form id="deleteForm" th:action="@{/user/{user.getId()}}" method="post"
+                onsubmit="return confirm('Are you sure you want to delete your account?');">
                 <meta name="_csrf" th:content="${_csrf.token}" />
                 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
                 <button type="button" class="delete-btn" onclick="deleteUser()">Delete Account</button><br><br>
             </form>
             <form th:action="@{/logout}" method="post">
-                <a href="#" class="logout-btn changes-btn" onclick="this.closest('form').submit();return false;">Log out</a>
+                <a href="#" class="logout-btn changes-btn" onclick="this.closest('form').submit();return false;">Log
+                    out</a>
             </form>
         </div>
 
