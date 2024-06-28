@@ -23,6 +23,8 @@
             <div class="dropdown-menu" id="dropdown-menu">
                 <!--link to the account setting page-->
                 <a href="#" class="dropdown-menu-list">My account</a>
+                <!--link to profile setting page-->	
+                <a href="/profilesetting" class="dropdown-menu-list">Profile</a>
                 <!--"link" to submit form with csrf token and log out-->
                 <form th:action="@{/logout}" method="post">
                     <a href="#" class="dropdown-menu-list" onclick="this.closest('form').submit();return false;">Log out</a>
