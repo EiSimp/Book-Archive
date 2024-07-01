@@ -25,7 +25,9 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/homepage?loginsuccess", true)
                         .permitAll())
                 .logout((logout) -> logout
-                        .logoutSuccessUrl("/login?logoutsuccess"));
+                        .logoutSuccessUrl("/login?logoutsuccess"))
+                .passwordManagement(customizer -> customizer
+                        .changePasswordPage("/change-password"));
         return http.build();
     }
 
