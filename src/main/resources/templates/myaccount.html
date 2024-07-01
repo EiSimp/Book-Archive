@@ -33,8 +33,8 @@
 
             <div class="detail">
                 <p>Password: <span id="passwordDisplay"
-                        th:text="${user.password != null ? user.password : 'Password'}">Password</span> <a href="#"
-                        onclick="showEdit('editPasswordSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
+                        th:text="${user.password != null ? user.password : 'Password'}">Password</span> <a href="/passwordchange">
+                            <i class="fas fa-pencil-alt pencil-icon"></i></a></p>
             </div>
 
             <div class="detail">
@@ -62,7 +62,7 @@
             </form>
         </div>
 
-        <div id="editPasswordSection" class="editForm" style="display: none;">
+        <!-- <div id="editPasswordSection" class="editForm" style="display: none;">
             <h2>Edit Password</h2>
             <form id="passwordForm" onsubmit="saveChanges('editPasswordSection'); return false;">
                 <meta name="_csrf" th:content="${_csrf.token}" />
@@ -74,7 +74,7 @@
                 <button type="button" class="changes-btn" onclick="cancelEdit('editPasswordSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
             </form>
-        </div>
+        </div> -->
 
         <div id="editBioSection" class="editForm" style="display: none;">
             <h2>Edit Bio</h2>

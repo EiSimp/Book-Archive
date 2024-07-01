@@ -80,11 +80,6 @@ function saveChanges(sectionID) {
             password = document.getElementById('origPassword').value;
             bio = document.getElementById('origBio').value;
             break;
-        case 'editPasswordSection':
-            username = document.getElementById('origUsername').value;
-            password = document.getElementById('newPassword').value;
-            bio = document.getElementById('origBio').value;
-            break;
         case 'editBioSection':
             username = document.getElementById('origUsername').value;
             password = document.getElementById('origPassword').value;
