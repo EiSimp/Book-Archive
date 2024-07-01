@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
@@ -98,6 +99,38 @@ public class ArchiveController {
         return "redirect:/login?signupsuccess";
     }
 
+
+    // mapping for change password page
+    @GetMapping("/passwordchange")
+    public String changePassword() {
+        return "passwordchange";
+    }
+    // post for change password
+    @PostMapping("/change-password")
+    public String changePassword(@AuthenticationPrincipal SecurityUser user,
+                                 @RequestParam("current-password") String currentPassword,
+                                 @RequestParam("new-password") String newPassword,
+                                 @RequestParam("confirm-password") String confirmPassword,
+                                 Model model) {
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "New password and confirmation do not match");
+            return "passwordchange";
+        }
+
+        User currentUser = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
+            model.addAttribute("error", "Current password is incorrect");
+            return "passwordchange";
+        }
+
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(currentUser);
+
+        return "redirect:/homepage?passwordchangesuccess";
+    }
+    
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
         if (user == null) {

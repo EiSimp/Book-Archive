@@ -48,8 +48,6 @@
         <input type="hidden" id="origPassword" name="origPassword" th:value="${user.password}">
         <input type="hidden" id="origBio" name="origBio" th:value="${user.bio} ? ${user.bio} : ' '">
 
-
-
         <div id="editUsernameSection" class="editForm" style="display: none;">
             <h2>Edit Username</h2>
             <form id="usernameForm" onsubmit="saveChanges('editUsernameSection'); return false;">
