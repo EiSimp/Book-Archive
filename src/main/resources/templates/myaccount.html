@@ -62,20 +62,6 @@
             </form>
         </div>
 
-        <!-- <div id="editPasswordSection" class="editForm" style="display: none;">
-            <h2>Edit Password</h2>
-            <form id="passwordForm" onsubmit="saveChanges('editPasswordSection'); return false;">
-                <meta name="_csrf" th:content="${_csrf.token}" />
-                <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
-
-                <label for="newPassword">New Password:</label><br>
-                <input type="password" id="newPassword" name="newPassword" maxlength="255" required><br><br>
-
-                <button type="button" class="changes-btn" onclick="cancelEdit('editPasswordSection')">Cancel</button>
-                <button type="submit" class="changes-btn">Save Changes</button>
-            </form>
-        </div> -->
-
         <div id="editBioSection" class="editForm" style="display: none;">
             <h2>Edit Bio</h2>
             <form id="bioForm" onsubmit="saveChanges('editBioSection'); return false;">
