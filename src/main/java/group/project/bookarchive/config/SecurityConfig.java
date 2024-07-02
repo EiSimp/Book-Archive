@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import group.project.bookarchive.security.SecurityUser;
 import jakarta.servlet.DispatcherType;
 
 @Configuration
@@ -19,21 +18,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authz) -> authz
                         .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/login", "/signup", "/forgot", "/stylesheet/**", "/javascript/**",
-                                "/images/**")
-                        .permitAll()
+                        .requestMatchers("/login", "/signup", "/forgot", "/stylesheet/**", "/javascript/**", "/images/**").permitAll()
                         .anyRequest().hasRole("USER"))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/homepage?loginsuccess", true)
-                        .successHandler((request, response, authentication) -> {
-                            SecurityUser user = (SecurityUser) authentication.getPrincipal();
-                            if (user.isTempPwd()) {
-                                response.sendRedirect("/change-password");
-                            } else {
-                                response.sendRedirect("/homepage");
-                            }
-                        })
                         .permitAll())
                 .logout((logout) -> logout
                         .logoutSuccessUrl("/login?logoutsuccess"))

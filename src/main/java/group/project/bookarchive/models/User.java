@@ -19,9 +19,6 @@ public class User {
     @Column(length = 500)
     private String bio;
 
-    @Column(nullable = false)
-    private boolean tempPwd;
-
     public User() {
     }
 
@@ -66,13 +63,5 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public boolean getTempPwd() {
-        return this.tempPwd;
-    }
-
-    public void setTempPwd(boolean tempPwd) {
-        this.tempPwd = tempPwd;
     }
 }
