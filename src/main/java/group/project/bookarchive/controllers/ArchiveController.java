@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import group.project.bookarchive.models.MailDTO;
 import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
 import group.project.bookarchive.security.SecurityUser;
+import group.project.bookarchive.services.MailService;
 import jakarta.validation.Valid;
 
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ArchiveController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping("/archives/view")
     public String getAllUsers() {
@@ -70,13 +75,20 @@ public class ArchiveController {
     }
 
     @PostMapping("/forgot")
-    public String forgotPassword(@RequestBody String entity) {
-        // TODO: process POST request
-
-        return entity;
+    public String forgotPwdMail(@ModelAttribute MailDTO mailDto, Model model) {
+        if (mailDto.getEmail() == null || mailDto.getEmail().isEmpty()) {
+            model.addAttribute("error", "Email cannot be empty");
+            return "forgotpwd";
+        }
+        if (mailDto.getUsername() == null || mailDto.getUsername().isEmpty()) {
+            model.addAttribute("error", "Username cannot be empty");
+            return "forgotpwd";
+        }
+        mailService.sendPwdMail(mailDto);
+        System.out.println("sent email");
+        return "login";
     }
 
-    //
     @PostMapping("/signup")
     public String addUser(@Valid @ModelAttribute("signupform") SignupFormDTO form,
             BindingResult result,
@@ -96,25 +108,26 @@ public class ArchiveController {
         return "redirect:/login?signupsuccess";
     }
 
-
     // mapping for change password page
     @GetMapping("/passwordchange")
     public String changePassword() {
         return "passwordchange";
     }
+
     // post for change password
     @PostMapping("/change-password")
     public String changePassword(@AuthenticationPrincipal SecurityUser user,
-                                 @RequestParam("current-password") String currentPassword,
-                                 @RequestParam("new-password") String newPassword,
-                                 @RequestParam("confirm-password") String confirmPassword,
-                                 Model model) {
+            @RequestParam("current-password") String currentPassword,
+            @RequestParam("new-password") String newPassword,
+            @RequestParam("confirm-password") String confirmPassword,
+            Model model) {
         if (!newPassword.equals(confirmPassword)) {
             model.addAttribute("error", "New password and confirmation do not match");
             return "passwordchange";
         }
 
-        User currentUser = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        User currentUser = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {

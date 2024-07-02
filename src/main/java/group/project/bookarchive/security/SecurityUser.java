@@ -8,8 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import group.project.bookarchive.models.User;
 
-
-public class SecurityUser implements UserDetails{
+public class SecurityUser implements UserDetails {
     private final User decorated;
 
     public SecurityUser(final User decorated) {
@@ -26,10 +25,13 @@ public class SecurityUser implements UserDetails{
         return decorated.getPassword();
     }
 
-    
+    public boolean isTempPwd() {
+        return decorated.isTempPwd();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "ROLE_USER");
     }
-    
+
 }
