@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import group.project.bookarchive.controllers.UserController;
 import group.project.bookarchive.models.User;
-import group.project.bookarchive.models.UserUpdateRequest;
 import group.project.bookarchive.repositories.UserRepository;
 
 @WebMvcTest(UserController.class)
@@ -109,8 +108,8 @@ public class UserControllerTests {
     @WithMockUser(username = "testuser", roles = {"USER"})
     public void testUpdateUser() throws Exception {
         // Mock data
+        // First user will have an ID of 1
         Long userId = 1L;
-        UserUpdateRequest updateRequest = new UserUpdateRequest("updateduser", "updatedpassword", "Updated bio");
         User existingUser = new User("testuser", "password");
 
         // Mock repository behavior
@@ -129,6 +128,28 @@ public class UserControllerTests {
         // Verify repository methods were called once with correct parameters
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).save(any(User.class));
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    @Test
+    @WithMockUser(username = "testuser", roles = {"USER"})
+    public void testGetUserById() throws Exception {
+        // Mock data
+        // First user will have an ID of 1
+        Long userId = 1L;
+        User user = new User("testuser", "password");
+
+        // Mock repository behavior
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        // Perform the GET request and validate the response
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/{id}", userId))
+                 .andExpect(status().isOk())
+                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("testuser"))
+                 .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password"));
+
+        // Verify repository method was called once with correct parameter
+        verify(userRepository, times(1)).findById(userId);
         verifyNoMoreInteractions(userRepository);
     }
 
