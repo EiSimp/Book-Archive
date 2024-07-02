@@ -25,24 +25,15 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String bio, boolean tempPwd) {
-        this.username = username;
-        this.password = password;
-        this.bio = bio;
-        this.tempPwd = false;
-    }
-
     public User(String username, String password, String bio) {
         this.username = username;
         this.password = password;
         this.bio = bio;
-        this.tempPwd = false;
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.tempPwd = false;
     }
 
     public Long getId() {

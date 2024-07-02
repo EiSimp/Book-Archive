@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .successHandler((request, response, authentication) -> {
                             SecurityUser user = (SecurityUser) authentication.getPrincipal();
                             if (user.isTempPwd()) {
-                                response.sendRedirect("/passwordchange");
+                                response.sendRedirect("/change-password");
                             } else {
                                 response.sendRedirect("/homepage");
                             }

@@ -31,6 +31,9 @@ public class MailService {
     private JavaMailSender javaMailSender;
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     private SpringTemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
@@ -46,7 +49,6 @@ public class MailService {
             tmpPwd.append(charSet[index]);
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedTempPwd = passwordEncoder.encode(tmpPwd.toString());
 
         User user = userRepository.findByUsername(dto.getUsername())
@@ -56,9 +58,9 @@ public class MailService {
         userRepository.save(user);
 
         Context context = new Context();
-        context.setVariable("temporaryPwd", tmpPwd.toString());
+        context.setVariable("temporaryPwd", tmpPwd);
 
-        String body = templateEngine.process("/emails/temporaryPasswordEmail", context);
+        String body = templateEngine.process("/temporaryPasswordEmail", context);
 
         try {
             MimeMessage message = javaMailSender.createMimeMessage();

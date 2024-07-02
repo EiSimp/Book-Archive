@@ -126,7 +126,6 @@ public class ArchiveController {
         }
 
         currentUser.setPassword(passwordEncoder.encode(newPassword));
-        currentUser.setTempPwd(false);
         userRepository.save(currentUser);
 
         return "redirect:/homepage?passwordchangesuccess";
