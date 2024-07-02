@@ -1,5 +1,8 @@
 package group.project.bookarchive.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +24,10 @@ public class User {
 
     @Column(nullable = false)
     private boolean tempPwd;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> roles = new HashSet<>();
 
     public User() {
     }
@@ -68,11 +75,24 @@ public class User {
         this.bio = bio;
     }
 
-    public boolean isTempPwd() {
+    public boolean getTempPwd() {
         return this.tempPwd;
     }
 
     public void setTempPwd(boolean tempPwd) {
         this.tempPwd = tempPwd;
     }
+
+    public Set<UserRole> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(UserRole role) {
+        this.roles.add(role);
+    }
+
 }

@@ -25,8 +25,8 @@ public class SecurityUser implements UserDetails {
         return decorated.getPassword();
     }
 
-    public boolean isTempPwd() {
-        return decorated.isTempPwd();
+    public boolean getTempPwd() {
+        return decorated.getTempPwd();
     }
 
     @Override

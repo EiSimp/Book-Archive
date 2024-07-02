@@ -14,6 +14,8 @@ public class GlobalControllerAdvice {
     public void addUserToModel(Model model, @AuthenticationPrincipal SecurityUser user) {
         if (user != null) {
             model.addAttribute("user", user);
+            model.addAttribute("loggedinUser", user.getUsername());
+            model.addAttribute("roles", user.getAuthorities());
         }
     }
 }
