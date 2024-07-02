@@ -108,7 +108,7 @@ public class UserControllerTests {
     @WithMockUser(username = "testuser", roles = {"USER"})
     public void testUpdateUser() throws Exception {
         // Mock data
-        // First user will have an ID of 1
+        // First created user will have an ID of 1
         Long userId = 1L;
         User existingUser = new User("testuser", "password");
 
@@ -135,7 +135,7 @@ public class UserControllerTests {
     @WithMockUser(username = "testuser", roles = {"USER"})
     public void testGetUserById() throws Exception {
         // Mock data
-        // First user will have an ID of 1
+        // First created user will have an ID of 1
         Long userId = 1L;
         User user = new User("testuser", "password");
 
@@ -150,6 +150,28 @@ public class UserControllerTests {
 
         // Verify repository method was called once with correct parameter
         verify(userRepository, times(1)).findById(userId);
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    @Test
+    @WithMockUser(username = "testuser", roles = {"USER"})
+    public void testDeleteUser() throws Exception {
+        // Mock data
+        // First created user will have an ID of 1
+        Long userId = 1L;
+        User existingUser = new User("testuser", "password");
+
+        // Mock repository behavior
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+
+        // Perform the DELETE request and validate the response
+        mockMvc.perform(MockMvcRequestBuilders.delete("/user/{id}", userId)
+                .with(csrf())) // Include CSRF token
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("redirect:/login")); // Check redirect URL
+
+        // Verify repository method was called once with correct parameter
+        verify(userRepository, times(1)).deleteById(userId);
         verifyNoMoreInteractions(userRepository);
     }
 
