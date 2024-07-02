@@ -153,6 +153,7 @@ public class UserControllerTests {
         verifyNoMoreInteractions(userRepository);
     }
 
+
     @Test
     @WithMockUser(username = "testuser", roles = {"USER"})
     public void testDeleteUser() throws Exception {
@@ -174,6 +175,8 @@ public class UserControllerTests {
         verify(userRepository, times(1)).deleteById(userId);
         verifyNoMoreInteractions(userRepository);
     }
+
+
 
 }
 
