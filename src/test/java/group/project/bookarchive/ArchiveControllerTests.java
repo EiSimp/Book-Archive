@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,7 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,7 +73,8 @@ public class ArchiveControllerTests {
     // public void testGetLogin_authenticated() throws Exception {
     //     mockMvc.perform(get("/login"))
     //             .andExpect(status().isOk())
-    //             .andExpect(MockMvcResultMatchers.view().name("homepage"));
+    //             .andExpect(status().is2xxSuccessful());
+    //.andExpect(redirectedUrlPattern("/homepage*")); // Check if the URL starts with /homepage
     // }
 
     // @Test
@@ -118,6 +122,28 @@ public class ArchiveControllerTests {
         mockMvc.perform(get("/passwordchange"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("passwordchange"));
+    }
+
+
+
+    @Test
+    @WithMockUser(username = "testuser", roles = {"USER"})
+    public void testChangePassword_Post_PasswordsDoNotMatch() throws Exception {
+        String currentPassword = "currentPassword";
+        String newPassword = "newPassword";
+        String confirmPassword = "confirmPassword"; // Different from newPassword
+        
+        mockMvc.perform(MockMvcRequestBuilders.post("/change-password")
+            .param("current-password", currentPassword)
+            .param("new-password", newPassword)
+            .param("confirm-password", confirmPassword)
+            .with(csrf()))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.view().name("passwordchange"))
+            .andExpect(MockMvcResultMatchers.model().attributeExists("error"))
+            .andExpect(MockMvcResultMatchers.model().attribute("error", "New password and confirmation do not match"));
+
+        verifyNoInteractions(userRepository); // No repository interaction expected in this case
     }
 
 

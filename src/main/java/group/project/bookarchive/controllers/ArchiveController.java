@@ -134,7 +134,6 @@ public class ArchiveController {
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
         if (user == null) {
-            // not sure if this check is necessary now
             return "redirect:/login"; // Redirect to login page if user is not authenticated.
         } else {
             // Fetch updated user data from the database based on ID
