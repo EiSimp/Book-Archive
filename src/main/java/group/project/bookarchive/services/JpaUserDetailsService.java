@@ -19,10 +19,11 @@ public class JpaUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) {
         final Optional<User> user = this.repository.findByUsername(username);
 
-        return user.map(SecurityUser::new).orElseThrow(()-> new UsernameNotFoundException("Unknown user " + username));
+        return user.map(SecurityUser::new).orElseThrow(() -> new UsernameNotFoundException("Unknown user " + username));
     }
 
     public JpaUserDetailsService(UserRepository repository) {
         this.repository = repository;
     }
+
 }

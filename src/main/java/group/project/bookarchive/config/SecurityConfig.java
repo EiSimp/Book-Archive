@@ -23,7 +23,8 @@ public class SecurityConfig {
                                                 .requestMatchers("/login", "/signup", "/forgot", "/stylesheet/**",
                                                                 "/javascript/**", "/images/**")
                                                 .permitAll()
-                                                .anyRequest().hasRole("USER"))
+                                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                                .anyRequest().hasAnyRole("USER", "ADMIN"))
                                 .formLogin(form -> form
                                                 .loginPage("/login")
                                                 .defaultSuccessUrl("/homepage?loginsuccess", true)

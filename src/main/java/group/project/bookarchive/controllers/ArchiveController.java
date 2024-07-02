@@ -1,13 +1,17 @@
 package group.project.bookarchive.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import group.project.bookarchive.models.MailDTO;
 import group.project.bookarchive.models.SignupFormDTO;
@@ -15,11 +19,14 @@ import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
 import group.project.bookarchive.security.SecurityUser;
 import group.project.bookarchive.services.MailService;
+import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class ArchiveController {
@@ -27,11 +34,21 @@ public class ArchiveController {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService service;
+
+    @Autowired
     private MailService mailService;
 
-    @GetMapping("/archives/view")
-    public String getAllUsers() {
-        return "homepage";
+    @GetMapping("/")
+    public RedirectView process() {
+        return new RedirectView("login");
+    }
+
+    @GetMapping("/admin/users")
+    public String getAllUsers(Model model) {
+        List<User> listUsers = service.listAll();
+        model.addAttribute("listUsers", listUsers);
+        return "users";
     }
 
     @GetMapping("/homepage")
@@ -74,6 +91,11 @@ public class ArchiveController {
         return "profilesetting";
     }
 
+    @GetMapping("/header")
+    public String getHeader() {
+        return "fragments/header.html";
+    }
+
     @PostMapping("/forgot")
     public String forgotPwdMail(@ModelAttribute MailDTO mailDto, Model model) {
         if (mailDto.getEmail() == null || mailDto.getEmail().isEmpty()) {
@@ -104,7 +126,9 @@ public class ArchiveController {
             return "/signup";
         }
 
-        userRepository.save(new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword())));
+        service.registerDefaultUser(userRepository
+                .save(new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword()))));
+        ;
         return "redirect:/login?signupsuccess";
     }
 
@@ -136,8 +160,10 @@ public class ArchiveController {
         }
 
         currentUser.setPassword(passwordEncoder.encode(newPassword));
+        currentUser.setTempPwd(false);
         userRepository.save(currentUser);
 
         return "redirect:/homepage?passwordchangesuccess";
     }
+
 }
