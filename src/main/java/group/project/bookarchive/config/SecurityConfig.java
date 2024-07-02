@@ -18,7 +18,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authz) -> authz
                         .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/login", "/signup", "/forgot", "/stylesheet/**", "/javascript/**", "/images/**").permitAll()
+                        .requestMatchers("/login", "/signup", "/forgot", "/stylesheet/**", "/myaccount", "/javascript/**", "/images/**").permitAll()
                         .anyRequest().hasRole("USER"))
                 .formLogin(form -> form
                         .loginPage("/login")
