@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -47,12 +47,26 @@ public class ArchiveControllerTests {
     // For authentication
     @BeforeEach
     public void setup() {
+
+        org.springframework.security.core.userdetails.UserDetails userDetails =
+                org.springframework.security.core.userdetails.User.withUsername("testuser")
+                        .password("testpassword")
+                        .authorities(new SimpleGrantedAuthority("ROLE_USER"))
+                        .build();
+
+        // Authentication auth = mock(Authentication.class);
+        // SecurityContext securityContext = mock(SecurityContext.class);
+        // when(securityContext.getAuthentication()).thenReturn(auth);
+        // SecurityContextHolder.setContext(securityContext);
+
         Authentication auth = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(auth);
-        SecurityContextHolder.setContext(securityContext);
+        when(auth.getName()).thenReturn(userDetails.getUsername());
+        when(auth.getPrincipal()).thenReturn(userDetails);
+       // when(auth.getAuthorities()).thenReturn(userDetails.getAuthorities());
+        when(auth.isAuthenticated()).thenReturn(true);
 
-
+        // Set the Authentication object in SecurityContextHolder
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
     
     @Test
@@ -139,8 +153,5 @@ public class ArchiveControllerTests {
         verifyNoInteractions(userRepository); // No repository interaction expected in this case
     }
     
-
-
-
 }
 

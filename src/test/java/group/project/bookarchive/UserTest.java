@@ -36,7 +36,17 @@ public class UserTest {
         
         user.setBio("New bio");
         assertEquals("New bio", user.getBio());
+
+
+        user.setUsername("old_user");
+        assertEquals("old_user", user.getUsername());
+        
+        user.setPassword("old_password");
+        assertEquals("old_password", user.getPassword());
+        
+        user.setBio("Old bio");
+        assertEquals("Old bio", user.getBio());
     }
 
-    
+
 }

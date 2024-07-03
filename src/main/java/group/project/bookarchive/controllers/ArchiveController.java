@@ -133,9 +133,9 @@ public class ArchiveController {
     
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
-        if (user == null) {
-            return "redirect:/login"; // Redirect to login page if user is not authenticated.
-        } else {
+        // if (user == null) {
+        //     return "redirect:/login"; // Redirect to login page if user is not authenticated.
+        // } else {
             // Fetch updated user data from the database based on ID
             Optional<User> userOptional = userRepository.findById(user.getId());
 
@@ -156,6 +156,6 @@ public class ArchiveController {
             
             return "myaccount";
         }
-    }
+    //}
 
 }
