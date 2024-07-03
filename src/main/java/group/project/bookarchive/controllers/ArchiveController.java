@@ -108,7 +108,7 @@ public class ArchiveController {
         }
         mailService.sendPwdMail(mailDto);
         System.out.println("sent email");
-        return "redirect:/login?emailsent";
+        return "redirect:/login";
     }
 
     @PostMapping("/signup")
