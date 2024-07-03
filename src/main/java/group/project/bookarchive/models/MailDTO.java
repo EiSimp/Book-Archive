@@ -1,8 +1,15 @@
 package group.project.bookarchive.models;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+
 public class MailDTO {
 
+    @NotEmpty(message = "Username cannot be empty")
     private String username;
+
+    @NotEmpty(message = "Email cannot be empty")
+    @Email(message = "Invalid email format")
     private String email;
 
     public MailDTO() {
