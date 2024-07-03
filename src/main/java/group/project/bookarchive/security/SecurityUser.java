@@ -28,6 +28,18 @@ public class SecurityUser implements UserDetails {
         return decorated.getPassword();
     }
 
+
+    public String getBio() {
+        return decorated.getBio();
+    }
+
+    
+    public Long getId() {
+        return decorated.getId();
+    }
+
+
+    
     public boolean getTempPwd() {
         return decorated.getTempPwd();
     }

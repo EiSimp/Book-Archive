@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import group.project.bookarchive.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+    @Override
+    Optional<User> findById(Long id);
     Optional<User> findByUsername(String username);
     boolean existsByUsername(String username);
     List<User> findByUsernameAndPassword(String username, String password);
