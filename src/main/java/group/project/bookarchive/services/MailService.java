@@ -58,7 +58,7 @@ public class MailService {
         Context context = new Context();
         context.setVariable("temporaryPwd", tmpPwd.toString());
 
-        String body = templateEngine.process("/emails/temporaryPasswordEmail", context);
+        String body = templateEngine.process("emails/temporaryPasswordEmail", context);
 
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
