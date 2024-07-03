@@ -1,30 +1,28 @@
 package group.project.bookarchive;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.ui.Model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import group.project.bookarchive.controllers.ArchiveController;
+import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
-
+import group.project.bookarchive.services.MailService;
+import group.project.bookarchive.services.UserService;
 
 @WebMvcTest(ArchiveController.class)
 public class ArchiveControllerTests {
@@ -35,46 +33,29 @@ public class ArchiveControllerTests {
     @MockBean
     private UserRepository userRepository;
 
-    @Mock
-    private UserDetailsService userDetailsService;
+    @MockBean
+    private UserService userService;
 
-    @InjectMocks
-    public ArchiveController archiveController;
+    @MockBean
+    private MailService mailService;
 
-    @Mock
-    private Model model;
-
-    // For authentication
-    @BeforeEach
-    public void setup() {
-
-        org.springframework.security.core.userdetails.UserDetails userDetails =
-                org.springframework.security.core.userdetails.User.withUsername("testuser")
-                        .password("testpassword")
-                        .authorities(new SimpleGrantedAuthority("ROLE_USER"))
-                        .build();
-
-        // Authentication auth = mock(Authentication.class);
-        // SecurityContext securityContext = mock(SecurityContext.class);
-        // when(securityContext.getAuthentication()).thenReturn(auth);
-        // SecurityContextHolder.setContext(securityContext);
-
-        Authentication auth = mock(Authentication.class);
-        when(auth.getName()).thenReturn(userDetails.getUsername());
-        when(auth.getPrincipal()).thenReturn(userDetails);
-       // when(auth.getAuthorities()).thenReturn(userDetails.getAuthorities());
-        when(auth.isAuthenticated()).thenReturn(true);
-
-        // Set the Authentication object in SecurityContextHolder
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-    
     @Test
-    @WithMockUser(username = "testuser", roles = {"USER"})
+    @WithMockUser(username = "admin", roles = {"ADMIN"}) // Example admin role for testing
     public void testGetAllUsers() throws Exception {
-    mockMvc.perform(get("/archives/view"))
-            .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.view().name("homepage"));
+        // Mock data
+        User user1 = new User("user1", "password1");
+        User user2 = new User("user2", "password2");
+        List<User> userList = Arrays.asList(user1, user2);
+
+        // Mock behavior of service.listAll() to return userList
+        when(userService.listAll()).thenReturn(userList);
+
+        // Perform GET request and verify expectations
+        mockMvc.perform(get("/admin/users"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("users"))
+               .andExpect(model().attributeExists("listUsers"))
+               .andExpect(model().attribute("listUsers", userList));
     }
 
     @Test
@@ -152,6 +133,7 @@ public class ArchiveControllerTests {
 
         verifyNoInteractions(userRepository); // No repository interaction expected in this case
     }
+
+    
     
 }
-

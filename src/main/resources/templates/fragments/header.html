@@ -1,4 +1,5 @@
-<header class="homepage-header">
+
+<header class="homepage-header" th:fragment="header">
     <!--Header section of the homepage-->
     <!--Automatically redirects to login page, unless logged in-->
     <div class="homepage-header-left">
@@ -16,8 +17,8 @@
             <button class="search-button">Search</button>
         </div>
         <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
-        <div class="user-info">
-            <span class="greeting-msg">HELLO, USERNAME</span>
+        <div class="user-info" th:inline="text">
+            <span class="greeting-msg"th:text="|Hello, ${loggedinUser} |"></span>
             <!--used a default profile image for display purpose-->
             <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
             <div class="dropdown-menu" id="dropdown-menu">
@@ -25,6 +26,9 @@
                 <a href="/myaccount" class="dropdown-menu-list">My account</a>
                 <!--link to profile setting page-->
                 <a href="/profilesetting" class="dropdown-menu-list">Profile</a>
+                <a href="/passwordchange" style="text-decoration: none;">
+                    Change Password</a>
+                <a href ="/admin/users" sec:authorize="${hasRole('[ROLE_ADMIN]')}" class="dropdown-menu-list"> User List</a>
                 <!--"link" to submit form with csrf token and log out-->
                 <form th:action="@{/logout}" method="post">
                     <a href="#" class="dropdown-menu-list" onclick="this.closest('form').submit();return false;">Log out</a>

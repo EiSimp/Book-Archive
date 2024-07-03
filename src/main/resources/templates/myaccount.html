@@ -31,9 +31,8 @@
                         onclick="showEdit('editUsernameSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
             </div>
 
-            <div class="detail">
-                <p>Password: <span id="passwordDisplay"
-                        th:text="${user.password != null ? user.password : 'Password'}">Password</span> <a href="/passwordchange">
+            <div class="detail"> <!-- for the hashed password: th:text="${user.password != null ? user.password : 'Password'}" -->
+                <p>Password: <span id="passwordDisplay">********</span> <a href="/passwordchange">
                             <i class="fas fa-pencil-alt pencil-icon"></i></a></p>
             </div>
 

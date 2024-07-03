@@ -2,7 +2,6 @@ package group.project.bookarchive;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,8 +33,6 @@ import group.project.bookarchive.repositories.UserRepository;
 
 @WebMvcTest(UserController.class)
 public class UserControllerTests {
-
-    private static final Logger logger = Logger.getLogger(UserControllerTests.class.getName());
 
     @Autowired
     private MockMvc mockMvc;
@@ -179,4 +176,5 @@ public class UserControllerTests {
 
 
 }
+
 
