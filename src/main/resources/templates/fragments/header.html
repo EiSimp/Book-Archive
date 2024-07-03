@@ -28,7 +28,7 @@
                 <a href="/profilesetting" class="dropdown-menu-list">Profile</a>
                 <a href="/passwordchange" style="text-decoration: none;">
                     Change Password</a>
-                <a href ="/admin/users" sec:authorize="${hasRole('[ROLE_ADMIN]')}" class="dropdown-menu-list"> User List</a>
+                <a href ="/admin/users" sec:authorize="${hasRole('ROLE_ADMIN')}" class="dropdown-menu-list"> User List</a>
                 <!--"link" to submit form with csrf token and log out-->
                 <form th:action="@{/logout}" method="post">
                     <a href="#" class="dropdown-menu-list" onclick="this.closest('form').submit();return false;">Log out</a>
