@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:th="https://www.thymeleaf.org" >
 
 <head>
     <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
 
 <body class="main-body">
         <!--Header section of the homepage-->
-        <div th:replace="fragments/header::header"></div>
+        <div th:replace="~{fragments/header.html}"></div>
         <div class="content-container">
             <div id="heading">
                 <h1>Profile Setting</h1>
