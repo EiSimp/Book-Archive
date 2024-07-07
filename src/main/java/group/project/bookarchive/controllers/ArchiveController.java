@@ -84,11 +84,6 @@ public class ArchiveController {
         return "myrecord";
     }
 
-    @GetMapping("/profilesetting")
-    public String profileSetting() {
-        return "profilesetting";
-    }
-
     @GetMapping("/header")
     public String getHeader() {
         return "fragments/header.html";
@@ -164,32 +159,33 @@ public class ArchiveController {
         return "redirect:/homepage?passwordchangesuccess";
     }
 
-    
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
         // if (user == null) {
-        //     return "redirect:/login"; // Redirect to login page if user is not authenticated.
+        // return "redirect:/login"; // Redirect to login page if user is not
+        // authenticated.
         // } else {
-            // Fetch updated user data from the database based on ID
-            Optional<User> userOptional = userRepository.findById(user.getId());
+        // Fetch updated user data from the database based on ID
+        Optional<User> userOptional = userRepository.findById(user.getId());
 
-            if (!userOptional.isPresent()) {
-                // Handle case where user with given ID does not exist
-                return "login"; // redirect to login
-            }
-
-            // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
-            User updatedUser = userOptional.get();
-            SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
-            
-            // Update user information in the session
-            ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).setDetails(updatedSecurityUser);
-
-            // Add updated user information to the model
-            model.addAttribute("user", updatedSecurityUser);
-            
-            return "myaccount";
+        if (!userOptional.isPresent()) {
+            // Handle case where user with given ID does not exist
+            return "login"; // redirect to login
         }
-    //}
+
+        // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
+        User updatedUser = userOptional.get();
+        SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+
+        // Update user information in the session
+        ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                .setDetails(updatedSecurityUser);
+
+        // Add updated user information to the model
+        model.addAttribute("user", updatedSecurityUser);
+
+        return "myaccount";
+    }
+    // }
 
 }
