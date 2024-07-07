@@ -1,61 +1,62 @@
-/*Style for the logo button*/
-.logo-button {
+/*Style for homepage*/
+
+/* Style for content container*/
+.content-container {
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    text-decoration: none;
-    color: black;
-    font-size: 24px;
-    font-weight: bold;
+    min-height: 80%;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 3px 5px 4px rgba(0, 0, 0, 0.3);
+    padding: 10px;
 }
-/*Style for the navigation links*/
-nav a {
-    margin-right: 20px;
-    text-decoration: none;
-    color: black;
+/* Short record display section*/
+.short-record {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%
 }
-/*Style for the header section*/
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #f8f8f8;
-}
-/* Style for the dropdown menu */
-.dropdown-menu {
-    display: none; /* Initially hidden */
-    position: absolute;
-    top: 50px; /* Adjust based on header height */
-    right: 0;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    z-index: 1000; /* Ensure it appears above other content */
-}
-/* Style for the links inside the dropdown menu */
-.dropdown-menu a {
+.short-record-column {
     display: block;
-    padding: 10px 20px;
-    text-decoration: none;
-    color: black;
-}
-/*Changes link when hovered over*/
-.dropdown-menu a:hover {
-    background-color: #f1f1f1;
-}
-/* Style for the user info section */
-.user-info {
-    display: flex;
+    justify-content: center;
     align-items: center;
-    position: relative; /* To position the dropdown menu correctly */
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    
 }
-/*Modifies the user icon*/
-.user-info .user-icon {
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    margin-left: 10px;
-    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+.short-record-number, .short-record-label {
+    display: block;
+    width:100%;
+    text-align: center;
 }
 
+#divider-line {
+    border: 1px solid #00000055;
+    width: 100%;
+}
+.bookshelf {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    
+}
+.bookshelf-rack {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    
+    height: 200;
+    flex-wrap: wrap;
+}
+
+h3 {
+    text-align: left;
+    width: 90%;
+}
