@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,6 +27,12 @@ import group.project.bookarchive.security.SecurityUser;
 import group.project.bookarchive.services.MailService;
 import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Controller
 public class ArchiveController {
@@ -52,6 +60,19 @@ public class ArchiveController {
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(@RequestParam("q") Optional<String> q, Model model) {
+        try {
+            String url = "https://www.googleapis.com/books/v1/volumes?q=" + q.get();
+            String res = fetchJsonFromUrl(url);
+            model.addAttribute("q", res);
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("q", "error");
+        }
+        return "search";
     }
 
     @GetMapping("/signup")
@@ -164,32 +185,53 @@ public class ArchiveController {
         return "redirect:/homepage?passwordchangesuccess";
     }
 
-    
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
         // if (user == null) {
-        //     return "redirect:/login"; // Redirect to login page if user is not authenticated.
+        // return "redirect:/login"; // Redirect to login page if user is not
+        // authenticated.
         // } else {
-            // Fetch updated user data from the database based on ID
-            Optional<User> userOptional = userRepository.findById(user.getId());
+        // Fetch updated user data from the database based on ID
+        Optional<User> userOptional = userRepository.findById(user.getId());
 
-            if (!userOptional.isPresent()) {
-                // Handle case where user with given ID does not exist
-                return "login"; // redirect to login
-            }
-
-            // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
-            User updatedUser = userOptional.get();
-            SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
-            
-            // Update user information in the session
-            ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).setDetails(updatedSecurityUser);
-
-            // Add updated user information to the model
-            model.addAttribute("user", updatedSecurityUser);
-            
-            return "myaccount";
+        if (!userOptional.isPresent()) {
+            // Handle case where user with given ID does not exist
+            return "login"; // redirect to login
         }
-    //}
+
+        // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
+        User updatedUser = userOptional.get();
+        SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+
+        // Update user information in the session
+        ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                .setDetails(updatedSecurityUser);
+
+        // Add updated user information to the model
+        model.addAttribute("user", updatedSecurityUser);
+
+        return "myaccount";
+    }
+    // }
+
+    public static String fetchJsonFromUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            return response.toString();
+        } else {
+            throw new IOException("Failed to fetch content from URL. Response code: " + responseCode);
+        }
+    }
 
 }
