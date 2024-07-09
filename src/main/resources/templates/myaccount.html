@@ -16,27 +16,36 @@
 </head>
 
 <body class="main-body">
-    <div th:replace="fragments/header::header"></div>
+    <div th:replace="~{fragments/header.html}"></div>
     <div class="content-container">
-        <h1>My Account</h1>
 
-        <div class="accountDetails" id="userDisplay">
-            <h2>Account Details</h2>
+        <div id="userDisplay">
+            <h3>Account Details</h3>
+            <div class="accountDetails">
+                <div class="detail">
+                    <p>Username: <span id="usernameDisplay"
+                            th:text="${user.username != null ? user.username : 'Username'}">Username</span> <a href="#"
+                            onclick="showEdit('editUsernameSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a>
+                    </p>
+                </div>
 
-            <div class="detail">
-                <p>Username: <span id="usernameDisplay"
-                        th:text="${user.username != null ? user.username : 'Username'}">Username</span> <a href="#"
-                        onclick="showEdit('editUsernameSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
-            </div>
-
-            <div class="detail"> <!-- for the hashed password: th:text="${user.password != null ? user.password : 'Password'}" -->
-                <p>Password: <span id="passwordDisplay">********</span> <a href="/passwordchange">
+                <div class="detail">
+                    <!-- for the hashed password: th:text="${user.password != null ? user.password : 'Password'}" -->
+                    <p>Password: <span id="passwordDisplay">********</span> <a href="/passwordchange">
                             <i class="fas fa-pencil-alt pencil-icon"></i></a></p>
-            </div>
+                </div>
 
-            <div class="detail">
-                <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '">Bio</span> <a href="#"
-                        onclick="showEdit('editBioSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
+                <div class="detail">
+                    <p>Email: <span id="emailDisplay" th:text="${user.email} ? ${user.email} : ' '">Email</span><a
+                            href="#" onclick="showEdit('editEmailSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a>
+                    </p>
+
+                </div>
+
+                <div class="detail">
+                    <p>Bio: <span id="bioDisplay" th:text="${user.bio} ? ${user.bio} : ' '">Bio</span> <a href="#"
+                            onclick="showEdit('editBioSection')"><i class="fas fa-pencil-alt pencil-icon"></i></a></p>
+                </div>
             </div>
         </div>
 
@@ -44,6 +53,7 @@
         <input type="hidden" id="origUsername" name="origUsername" th:value="${user.username}">
         <input type="hidden" id="origPassword" name="origPassword" th:value="${user.password}">
         <input type="hidden" id="origBio" name="origBio" th:value="${user.bio} ? ${user.bio} : ' '">
+        <input type="hidden" id="origEmail" name="origEmail" th:value="${user.email} ? ${user.email} : ' '">
 
         <div id="editUsernameSection" class="editForm" style="display: none;">
             <h2>Edit Username</h2>
@@ -55,6 +65,19 @@
                 <input type="text" id="newUsername" name="newUsername" maxlength="255" required><br><br>
 
                 <button type="button" class="changes-btn" onclick="cancelEdit('editUsernameSection')">Cancel</button>
+                <button type="submit" class="changes-btn">Save Changes</button>
+            </form>
+        </div>
+        <div id="editEmailSection" class="editForm" style="display: none;">
+            <h2>Edit Email Address</h2>
+            <form id="emailForm" onsubmit="saveChanges('editEmailSection'); return false;">
+                <meta name="_csrf" th:content="${_csrf.token}" />
+                <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
+
+                <label for="newEmail">New Email:</label><br>
+                <input type="email" id="newEmail" name="newEmail" required><br><br>
+
+                <button type="button" class="changes-btn" onclick="cancelEdit('editEmailSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
             </form>
         </div>
@@ -75,24 +98,27 @@
         </div>
 
         <div id="manageAccountDisplay">
-            <h2>Manage Account</h2><br>
-            <form id="deleteForm" th:action="@{/user/{user.getId()}}" method="post"
-                onsubmit="return confirm('Are you sure you want to delete your account?');">
-                <meta name="_csrf" th:content="${_csrf.token}" />
-                <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-                <button type="button" class="delete-btn" onclick="deleteUser()">Delete Account</button><br><br>
-            </form>
-            <form th:action="@{/logout}" method="post">
-                <a href="#" class="logout-btn changes-btn" onclick="this.closest('form').submit();return false;">Log out</a>
-            </form>
+            <h3>Manage Account</h3>
+            <div id="formcontainer">
+                <form id="deleteForm" th:action="@{/user/{user.getId()}}" method="post"
+                    onsubmit="return confirm('Are you sure you want to delete your account?');">
+                    <meta name="_csrf" th:content="${_csrf.token}" />
+                    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+                    <button type="button" class="delete-btn" onclick="deleteUser()">Delete Account</button>
+                </form>
+                <form th:action="@{/logout}" method="post">
+                    <a href="#" class="logout-btn" onclick="this.closest('form').submit();return false;">Log
+                        out</a>
+                </form>
+            </div>
         </div>
 
     </div>
     <div>
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
-        <script src="/javascript/editAccount.js"></script>
-        <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/editAccount.js"></script>
+    <script src="/javascript/dropDown.js"></script>
 </body>
 
 </html>
