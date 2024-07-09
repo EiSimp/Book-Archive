@@ -1,0 +1,10 @@
+.rating__input {
+	display: none; /* 라디오버튼 hide */
+}
+
+.rating__label .star-icon {
+	width: 24px;
+	height: 24px;
+	display: block;
+	background-repeat: no-repeat;
+}

@@ -1,3 +1,4 @@
+/* Style for collection/book cards*/
 ul.cardlist {
     list-style-type: none;
     width: 100%;
@@ -9,7 +10,7 @@ ul.cardlist {
 
 li.card-li {
     display: inline-block;
-    width: 18%;
+    width: 15%;
 }
 
 .collection-card, .book-card {
@@ -75,6 +76,10 @@ ul.card-description-li {
 
 }
 
-.card-numOfBooks, .card-author {
+.card-numOfBooks {
     color: #8c8c8c;
+}
+.card-rate {
+    color: rgb(174, 121, 41);
+    font-weight: 300;
 }

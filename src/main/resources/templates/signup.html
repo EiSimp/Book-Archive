@@ -33,14 +33,26 @@
                         <div class="input-username">
                             <label for="username" class="form-label">ID</label>
                             <input type="text" id="username" th:field="*{username}"
-                                placeholder="ID" pattern="^\w+$" required>
+                                placeholder="ID" pattern="^\w+$" required />
                             <div class="invalid-feedback">
                             </div>
                         </div>
                         <div class="input-password">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" id="password" th:field="*{password}"
-                                placeholder="Password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" required>
+                                placeholder="Password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" required />
+                            <div class="invalid-feedback">
+                            </div>
+                        </div>
+                        <div class="input-password">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" id="password2" name="password2" placeholder="Confirm password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" required />
+                            <div class="invalid-feedback">
+                            </div>
+                        </div>
+                        <div class="input-email">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="YourEmailAddress@email.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
                             <div class="invalid-feedback">
                             </div>
                         </div>
