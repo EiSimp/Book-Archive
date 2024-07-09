@@ -99,9 +99,16 @@ public class ArchiveController {
             model.addAttribute("error", "Username cannot be empty");
             return "forgotpwd";
         }
-        mailService.sendPwdMail(mailDto);
-        System.out.println("sent email");
-        return "redirect:/login";
+
+        Optional<User> user = userRepository.findByUsernameAndEmail(mailDto.getUsername(), mailDto.getEmail());
+        if (user.isPresent()) {
+            mailService.sendPwdMail(mailDto);
+            System.out.println("sent email");
+            return "redirect:/login";
+        } else {
+            model.addAttribute("error", "User not found");
+            return "forgotpwd";
+        }
     }
 
     @PostMapping("/signup")
@@ -114,14 +121,19 @@ public class ArchiveController {
                     "There is already an account registered with the same username");
         }
 
+        if (userRepository.existsByEmail(form.getEmail())) {
+            result.rejectValue("email", "", "There is already an account registered with the same email address");
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("signupform", form);
             return "/signup";
         }
 
-        service.registerDefaultUser(userRepository
-                .save(new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword()))));
-        ;
+        User user = new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword()),
+                form.getEmail());
+
+        service.registerDefaultUser(userRepository.save(user));
         return "redirect:/login?signupsuccess";
     }
 
