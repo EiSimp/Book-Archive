@@ -84,6 +84,11 @@ public class ArchiveController {
         return "myrecord";
     }
 
+    @GetMapping("/profilesetting")
+    public String profileSetting() {
+        return "profilesetting";
+    }
+
     @GetMapping("/header")
     public String getHeader() {
         return "fragments/header.html";
