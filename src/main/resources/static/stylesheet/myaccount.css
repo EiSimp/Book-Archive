@@ -54,7 +54,6 @@ p {
     /* Adjust line height for readability */
     box-sizing: border-box;
     height: auto;
-    /* Allow height to adjust based on content */
 }
 
 #manageAccountDisplay {
