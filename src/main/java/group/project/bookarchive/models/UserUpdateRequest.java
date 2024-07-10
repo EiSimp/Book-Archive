@@ -19,6 +19,13 @@ public class UserUpdateRequest {
         this.bio = bio;
     }
 
+    public UserUpdateRequest(String username, String password, String email, String bio) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.bio = bio;
+    }
+
     public UserUpdateRequest(String username, String password, String bio, String email, Set<String> roles) {
         this.username = username;
         this.password = password;

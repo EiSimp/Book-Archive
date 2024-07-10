@@ -89,6 +89,11 @@ public class ArchiveController {
         return "fragments/header.html";
     }
 
+    @GetMapping("/bookdetail")
+    public String getBookDetail() {
+        return "bookdetail";
+    }
+
     @PostMapping("/forgot")
     public String forgotPwdMail(@ModelAttribute MailDTO mailDto, Model model) {
         if (mailDto.getEmail() == null || mailDto.getEmail().isEmpty()) {

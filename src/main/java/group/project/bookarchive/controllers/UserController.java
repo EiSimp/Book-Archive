@@ -57,6 +57,7 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
         user.setBio(request.getBio());
         return userRepository.save(user);
     }
