@@ -88,11 +88,14 @@ ul.card-description-li {
 }
 
 .comment-card {
+    display: grid;
+    grid-template-rows: 3fr 1fr;
     background-color: #ffffff;
     border-radius: 5px;
     width: 300px;
     height: 250px;
     padding: 10px;
+    gap: 10px;
 }
 
 .comment-profile-img {
@@ -104,7 +107,14 @@ ul.card-description-li {
 p {
     color: #414141;
 }
+.comment-text-holder {
+    background-color: #f0f0f0e8;
+    padding: 5px;
+    margin: 3px;
+    border-radius: 10px;
+}
 
 .comment-info-holder {
     display: flex;
+    gap: 10px;
 }
