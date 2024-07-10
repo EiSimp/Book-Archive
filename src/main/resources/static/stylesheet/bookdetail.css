@@ -5,9 +5,94 @@
 	width: 100%;
 }
 
+.detail-leftside {
+	margin: 20px;
+}
+.bookinfo {
+	font-weight: 500;
+	font-size: large;
+}
+.cover-holder {
+	background-color: #d2d2d2;
+	border-radius: 5px;
+	padding-bottom: calc(100%*(294 / 210));
+}
+
+.detail-header-holder {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	list-style-type: none;
+	margin: 10px 0 0 0;
+}
+
+.detail-header-ul {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	list-style-type: none;
+	padding: 0;
+	width:100%;
+	margin: 0;
+}
+
+.detail-header {
+	height: 60px;
+	display: flex;
+	align-items: center;
+}
+
+li {
+	display: flex;
+	height: inherit;
+	margin: 0;
+	align-items: center;
+}
+
+.detail-header-icon {
+	margin: 0 5px;
+	height: 30px;
+}
+
+.detail-icons {
+	display: flex;
+	flex-direction: column;
+	width: 70px;
+	align-items: center;
+}
+
+.first {
+	width: 100%;
+}
+
+.addbooksread {
+	margin: 0 0 0 auto;
+}
+
+.detail-icons-btn {
+	appearance: none;
+	cursor: pointer;
+  	background: none;
+  	border: none;
+	width: 70px;
+	font-size: small;
+	font-weight: 500;
+	color: #505050;
+}
+
 .starpoint_wrap {
+	display: flex;
+	flex-shrink: 0;
+	height: 30px;
+	width: 160px;
+}
+
+.func-description {
+	align-content: end;
+	color: #505050;
+	font-size: small;
 	height: fit-content;
-	width: fit-content;
+	font-weight: 500;
 }
 
 .starpoint_box {
