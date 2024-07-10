@@ -32,16 +32,18 @@ public class SecurityUser implements UserDetails {
     public String getBio() {
         return decorated.getBio();
     }
-
     
     public Long getId() {
         return decorated.getId();
     }
-
-
     
     public boolean getTempPwd() {
         return decorated.getTempPwd();
+    }
+
+    public String getProfilePhoto()
+    {
+        return decorated.getProfilePhoto();
     }
 
     @Override

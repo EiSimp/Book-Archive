@@ -1,4 +1,10 @@
-.user-icon {
-    max-width: 100px; /* Adjust size as needed */
-    border-radius: 50%; /* Rounded profile image */
+/* copied from style.css */
+.profile-user-icon {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    align-items: end;
+    margin-bottom: 10px;
+    object-fit: cover; /* Maintains aspect ratio and covers the container */
+    border: 3px solid #36363682;
 }

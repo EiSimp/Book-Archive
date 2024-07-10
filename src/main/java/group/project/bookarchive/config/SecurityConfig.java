@@ -44,6 +44,7 @@ public class SecurityConfig {
                                                 .changePasswordPage("/change-password"));
                 return http.build();
         }
+        
 
         @Bean
         public PasswordEncoder passwordEncoder() {

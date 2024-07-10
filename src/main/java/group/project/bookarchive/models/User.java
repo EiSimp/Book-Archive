@@ -34,6 +34,9 @@ public class User {
     @Column(nullable = false)
     private boolean tempPwd;
 
+    @Column(nullable = false)
+    private String profilePhoto;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<UserRole> roles = new HashSet<>();
@@ -45,11 +48,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.bio = bio;
+        this.profilePhoto = "/images/defaultProfile.png";
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.profilePhoto = "/images/defaultProfile.png";
     }
 
     public Long getId() {
@@ -102,6 +107,16 @@ public class User {
 
     public void addRole(UserRole role) {
         this.roles.add(role);
+    }
+
+    public void setProfilePhoto(String url)
+    {
+        this.profilePhoto = url;
+    }
+
+    public String getProfilePhoto()
+    {
+        return this.profilePhoto;
     }
 
 }

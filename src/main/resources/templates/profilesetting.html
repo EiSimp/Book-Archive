@@ -19,25 +19,22 @@
                 <h1>Profile Setting</h1>
             </div>
                 <hr class="solid">
-                <form action="/update-profile" method="POST">
-                    <input type="hidden" name="id" />
-                    <div>
-                        <label for="profilePhoto" class="form-label">Profile Photo</label>
+                <form action="/update-profile" method="POST" th:action="@{/update-profile}" th:object="${user}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" th:field="*{id}" />
+                    <div class="user-icon-container">
                         <!-- Default profile image -->
-                        <img src="/images/defaultProfile.png" alt="Default Profile" class="user-icon" id="user-icon" />
-                        <!-- Dropdown for selecting profile photo -->
-                         <br>
+                        <img th:src="${user.getProfilePhoto()}"alt="User Icon" class="profile-user-icon" id="profile-user-icon" />
                         <select id="profilePhoto" name="profilePhoto" class="form-control" required>
-                            <option value="/images/defaultProfile.png">Default Profile</option>
-                            <option value="/images/profile1.jpg">Profile 1</option>
-                            <option value="/images/profile2.jpg">Profile 2</option>
-                            <option value="/images/profile3.jpg">Profile 3</option>
-                            <!-- Add more options as needed -->
+                            <option value="/images/defaultProfile.png" th:selected="${user.profilePhoto == '/images/defaultProfile.png'}">Default Profile</option>
+                            <option value="/images/flowers.jpg" th:selected="${user.profilePhoto == '/images/flowers.jpg'}">Profile 1 - Sunflowers</option>
+                            <option value="/images/shapes.jpg" th:selected="${user.profilePhoto == '/images/shapes.jpg'}">Profile 2 - Shapes</option>
+                            <option value="/images/globe.jpg" th:selected="${user.profilePhoto == '/images/globe.jpg'}">Profile 3 - Globe</option>
                         </select>
                     </div>
                     <div>
                         <label for="bio" class="form-label">Bio</label>
-                        <input type="text" class="form-control" id="bio" name="bio">
+                        <input type="text" class="form-control" id="bio" th:field= "${user.bio}" required>
                     </div>
                     <button type="submit">UPDATE</button>
                 </form>

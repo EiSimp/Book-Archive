@@ -20,7 +20,7 @@
         <div class="user-info" th:inline="text">
             <span class="greeting-msg"th:text="|Hello, ${loggedinUser} |"></span>
             <!--used a default profile image for display purpose-->
-            <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon" id="user-icon" />
+            <img th:src="${profilePicture}"alt="User Icon" class="user-icon" id="user-icon" />
             <div class="dropdown-menu" id="dropdown-menu">
                 <!--link to the account setting page-->
                 <a href="/myaccount" class="dropdown-menu-list">My account</a>
