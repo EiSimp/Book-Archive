@@ -86,3 +86,25 @@ ul.card-description-li {
     color: rgb(174, 121, 41);
     font-weight: 300;
 }
+
+.comment-card {
+    background-color: #ffffff;
+    border-radius: 5px;
+    width: 300px;
+    height: 250px;
+    padding: 10px;
+}
+
+.comment-profile-img {
+    height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+p {
+    color: #414141;
+}
+
+.comment-info-holder {
+    display: flex;
+}
