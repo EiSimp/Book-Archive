@@ -12,7 +12,7 @@
 
 .starpoint_box {
 	position:relative;
-	background:url(https://hsecode.github.io/images_codepen/codepen_sp_star.png) 0 0 no-repeat;
+	background:url(/images/star-rating.png) 0 0 no-repeat;
 	font-size:0;
 }
 .starpoint_box .starpoint_bg {
@@ -20,14 +20,15 @@
 	position:absolute;
 	top:0;
 	left:0;
-	height:18px;
-	background:url(https://hsecode.github.io/images_codepen/codepen_sp_star.png) 0 -20px no-repeat;
+	height:80px;
+	background:url(/images/star-rating.png) 0 -40px no-repeat;
+
 	pointer-events:none;
 }
 .starpoint_box .label_star {
 	display:inline-block;
-	width:10px;
-	height:18px;
+	width:22px;
+	height:40px;
 	box-sizing:border-box;
 }
 
