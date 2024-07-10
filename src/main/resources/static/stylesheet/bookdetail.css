@@ -13,6 +13,7 @@
 .starpoint_box {
 	position:relative;
 	background:url(/images/star-rating.png) 0 0 no-repeat;
+	background-size: 160px 60px;
 	font-size:0;
 }
 .starpoint_box .starpoint_bg {
@@ -20,15 +21,16 @@
 	position:absolute;
 	top:0;
 	left:0;
-	height:80px;
-	background:url(/images/star-rating.png) 0 -40px no-repeat;
+	height:30px;
+	background:url(/images/star-rating.png) 0 -30px no-repeat;
+	background-size: 160px 60px;
 
 	pointer-events:none;
 }
 .starpoint_box .label_star {
 	display:inline-block;
-	width:22px;
-	height:40px;
+	width:16px;
+	height:30px;
 	box-sizing:border-box;
 }
 
