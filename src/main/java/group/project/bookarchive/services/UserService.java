@@ -23,6 +23,14 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public boolean usernameExists(String username) {
+        return userRepo.existsByUsername(username);
+    }
+
+    public boolean emailExists(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
     public void registerDefaultUser(User user) {
         UserRole roleUser = roleRepo.findByName("User");
         user.addRole(roleUser);
