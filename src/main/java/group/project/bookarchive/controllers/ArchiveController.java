@@ -99,6 +99,11 @@ public class ArchiveController {
         return "bookdetail";
     }
 
+    @GetMapping("/search")
+    public String getSearchResult() {
+        return "searchresult";
+    }
+
     @PostMapping("/forgot")
     public String forgotPwdMail(@ModelAttribute MailDTO mailDto, Model model) {
         if (mailDto.getEmail() == null || mailDto.getEmail().isEmpty()) {
