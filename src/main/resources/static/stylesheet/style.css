@@ -63,9 +63,9 @@ body.main-body {
 
 /* nav links*/
 .nav-link {
-    font-family: 'Inter';
+    
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
     line-height: 24px;
     display: flex;
@@ -186,7 +186,7 @@ input.search-field {
 
 /*Changes link when hovered over*/
 .dropdown-menu a:hover {
-    background-color: #d2fcfc97;
+    background-color: #c5d3d362;
 }
 
 /* Style for the user info section */
