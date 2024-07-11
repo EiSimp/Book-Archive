@@ -1,9 +1,12 @@
 package group.project.bookarchive.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -142,7 +145,7 @@ public class ArchiveController {
 
         if (result.hasErrors()) {
             model.addAttribute("signupform", form);
-            return "/signup";
+            return "signup";
         }
 
         User user = new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword()),
@@ -150,6 +153,22 @@ public class ArchiveController {
 
         service.registerDefaultUser(userRepository.save(user));
         return "redirect:/login?signupsuccess";
+    }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam String username) {
+        boolean exists = service.usernameExists(username);// logic to check if username exists
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmail(@RequestParam String email) {
+        boolean exists = service.emailExists(email);// logic to check if email exists
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
     }
 
     // mapping for change password page
