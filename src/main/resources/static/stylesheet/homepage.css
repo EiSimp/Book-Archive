@@ -46,13 +46,12 @@
     height: 100%;
     
 }
+
 .bookshelf-rack {
     display: flex;
     flex-direction: row;
     gap: 16px;
     align-items: center;
-    
-    height: 200;
     flex-wrap: wrap;
 }
 
