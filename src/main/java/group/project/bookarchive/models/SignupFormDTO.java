@@ -1,15 +1,21 @@
 package group.project.bookarchive.models;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public class SignupFormDTO {
+
+    @NotBlank(message = "Please enter a username")
     @Pattern(regexp = "^\\w+$", message = "Username must have only letters, numbers, and underscores")
     private String username;
 
+    @NotBlank(message = "Please enter a password")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z]).{8,}$", message = "Password must contain at least 1 uppercase letter and 1 digit, and be at least 8 characters")
     private String password;
 
-    @Pattern(regexp = "^[A-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Z0-9.-]+$", message = "Email address must be valid")
+    @NotBlank(message = "Please enter a email address")
+    @Email(message = "Email address must be valid")
     private String email;
 
     public String getUsername() {
