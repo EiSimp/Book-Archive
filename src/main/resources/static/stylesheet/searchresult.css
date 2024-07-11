@@ -8,6 +8,7 @@
 	cursor: pointer;
   	background: none;
   	border: none;
+    font-size: large;
 }
 
 .result-display-header-btn:hover {
