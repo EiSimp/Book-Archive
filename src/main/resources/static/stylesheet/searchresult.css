@@ -1,0 +1,15 @@
+.result-display-container {
+    width: 100%;
+    height: 100%;
+}
+
+.result-display-header-btn {
+    appearance: none;
+	cursor: pointer;
+  	background: none;
+  	border: none;
+}
+
+.result-display-header-btn:hover {
+    font-weight: bold;
+}
