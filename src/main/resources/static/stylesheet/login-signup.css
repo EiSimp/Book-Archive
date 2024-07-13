@@ -133,7 +133,6 @@ a.signup:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 20px;
     flex: none;
     order: 1;
     align-self: stretch;

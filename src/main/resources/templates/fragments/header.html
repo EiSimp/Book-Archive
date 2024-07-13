@@ -13,8 +13,11 @@
     <div class="homepage-header-right">
         <!--Search bar paired with search button beside it, currently just a placeholder-->
         <div class="search-bar">
-            <input type="text" placeholder="Search" class="search-field" />
+            <input type="search" placeholder="Search" class="search-field" />
+            <a href="/search">
             <button class="search-button">Search</button>
+            </a>
+        </a>
         </div>
         <!--Username display with icon next to it, when Icon is clicked, has a dropdown menu-->
         <div class="user-info" th:inline="text">
@@ -26,8 +29,6 @@
                 <a href="/myaccount" class="dropdown-menu-list">My account</a>
                 <!--link to profile setting page-->
                 <a href="/profilesetting" class="dropdown-menu-list">Profile</a>
-                <a href="/passwordchange" style="text-decoration: none;">
-                    Change Password</a>
                 <a href ="/admin/users" sec:authorize="${hasRole('ROLE_ADMIN')}" class="dropdown-menu-list"> User List</a>
                 <!--"link" to submit form with csrf token and log out-->
                 <form th:action="@{/logout}" method="post">

@@ -7,6 +7,7 @@
     <title>PagePals: A List of Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css" />
+    <link rel="stylesheet" href="/stylesheet/userlist.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
 
@@ -14,14 +15,18 @@
         <!--Header section of the homepage-->
         <div th:replace="~{fragments/header.html}"></div>
         <div class="content-container">
-            <h1>A List of Users</h1>
+            <h2>User List</h2>
             <table>
                 <thead>
                     <tr>
                         <th>User ID</th>
                         <th>Username</th>
                         <th>Roles</th>
-                        <th>TempPwd</th>
+                        <th>Temporary Password</th>
+                        <th>Email</th>
+                        <th>Comments</th>
+                        <th>Collections</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,11 +35,18 @@
                         <td th:text="${user.Username}">Username</td>
                         <td th:text="${user.roles}">Roles</td>
                         <td th:text="${user.TempPwd}">TempPwd</td>
-                        <td><a href="#">Edit</a></td>
+                        <td th:text="${user.email}">Email</td>
+                        <td>num of comments</td>
+                        <td>num of collections</td>
+                        <td><button type="button">Delete</button>
                     </tr>
                 </tbody>
             </table>
         </div>
     </body>
+    <div>
+        <footer th:replace="fragments/footer::footer"></footer>
+    </div>
     <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/deleteUser.js"></script>
 </html>

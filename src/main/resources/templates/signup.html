@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -28,19 +28,31 @@
                 </header>
                 <!--sign up form-->
                 <div class="form-wrapper">
-                    <form id="signupform" action="#" th:action="@{/signup}" th:object="${signupform}" method="post"
+                    <form id="signupform" th:action="@{/signup}" th:object="${signupform}" method="post"
                         class="login-form" novalidate>
                         <div class="input-username">
                             <label for="username" class="form-label">ID</label>
                             <input type="text" id="username" th:field="*{username}"
-                                placeholder="ID" pattern="^\w+$" required>
+                                placeholder="ID" pattern="^\w+$" name="username" required />
                             <div class="invalid-feedback">
                             </div>
                         </div>
                         <div class="input-password">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" id="password" th:field="*{password}"
-                                placeholder="Password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" required>
+                                placeholder="Password" pattern="^(?=.*[0-9])(?=.*[A-Z]).{8,}$" name="password" required />
+                            <div class="invalid-feedback">
+                            </div>
+                        </div>
+                        <div class="input-password">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" id="password2" placeholder="Confirm password" required />
+                            <div class="invalid-feedback">
+                            </div>
+                        </div>
+                        <div class="input-email">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="YourEmailAddress@email.com" name="email" required />
                             <div class="invalid-feedback">
                             </div>
                         </div>
