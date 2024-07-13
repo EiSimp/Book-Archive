@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -48,6 +49,9 @@ public class ArchiveController {
     @Autowired
     private MailService mailService;
 
+    @Value("${google.api.key}")
+    private String apiKey;
+
     @GetMapping("/")
     public RedirectView process() {
         return new RedirectView("login");
@@ -68,7 +72,7 @@ public class ArchiveController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
         try {
-            String url = "https://www.googleapis.com/books/v1/volumes?q=" + q.get();
+            String url = "https://www.googleapis.com/books/v1/volumes?q=" + q.orElse("") + "&key=" + apiKey;
             String res = fetchJsonFromUrl(url);
             model.addAttribute("q", res);
         } catch (IOException e) {
