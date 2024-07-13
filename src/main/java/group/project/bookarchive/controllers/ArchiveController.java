@@ -17,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -28,6 +30,12 @@ import group.project.bookarchive.security.SecurityUser;
 import group.project.bookarchive.services.MailService;
 import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Controller
 public class ArchiveController {
@@ -55,6 +63,19 @@ public class ArchiveController {
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
+        try {
+            String url = "https://www.googleapis.com/books/v1/volumes?q=" + q.get();
+            String res = fetchJsonFromUrl(url);
+            model.addAttribute("q", res);
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("q", "error");
+        }
+        return "searchresult";
     }
 
     @GetMapping("/signup")
@@ -100,11 +121,6 @@ public class ArchiveController {
     @GetMapping("/bookdetail")
     public String getBookDetail() {
         return "bookdetail";
-    }
-
-    @GetMapping("/search")
-    public String getSearchResult() {
-        return "searchresult";
     }
 
     @PostMapping("/forgot")
@@ -233,5 +249,25 @@ public class ArchiveController {
         return "myaccount";
     }
     // }
+
+    public static String fetchJsonFromUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            return response.toString();
+        } else {
+            throw new IOException("Failed to fetch content from URL. Response code: " + responseCode);
+        }
+    }
 
 }
