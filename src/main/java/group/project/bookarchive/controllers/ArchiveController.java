@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Controller
 public class ArchiveController {
@@ -72,12 +74,14 @@ public class ArchiveController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
         try {
-            String url = "https://www.googleapis.com/books/v1/volumes?q=" + q.orElse("") + "&key=" + apiKey;
+            String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
+            String url = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&key=" + apiKey;
             String res = fetchJsonFromUrl(url);
-            model.addAttribute("q", res);
+            model.addAttribute("results", res);
+            model.addAttribute("query", q.orElse(""));
         } catch (IOException e) {
             e.printStackTrace();
-            model.addAttribute("q", "error");
+            model.addAttribute("results", "error");
         }
         return "searchresult";
     }
