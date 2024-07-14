@@ -9,6 +9,7 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/searchresult.css" />
+    <link rel="stylesheet" href="/stylesheet/card.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
 
@@ -22,12 +23,12 @@
                 <button class="result-display-header-btn" type="button">Collections</button>
             </div>
             <hr class="solid" id="divider-line">
-            <div>
-                search result display area
-                <script th:inline="javascript">
-                    let a = [[${ results }]]
-                    console.log(JSON.parse(a))
-                </script>
+            <div class="bookshelf-rack">
+                <ul class="cardlist">
+                    <li th:each="book : ${results}" class="card-li">
+                        <div th:replace="~{fragments/bookcard.html}"></div>
+                    </li>
+                </ul>
             </div>
         </div>
 

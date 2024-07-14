@@ -1,15 +1,18 @@
+
 <a href="/bookdetail" class="detail-link">
     <div class="book-card">
         <div class="card-thumbnail-holder">
             <div class="thumbnail-m">
-                <div class="thumbnail-image-m">img</div>
+                <div class="thumbnail-image-m">
+                    <img class="thumbnail-image-m" th:src="${book.thumbnail}" alt="Book Thumbnail" />
+                </div>
             </div>
         </div>
     </div>
     <div class="card-description">
         <ul class="card-description-li">
-            <li class="card-title">Book Title</li>
-            <li class="card-rate">Rated ★ 0.0</li>
+            <li class="card-title" th:text="${book.title}">Book Title</li>
+            <li class="card-rate" th:text="'Rated ★ ' + ${book.averageRating}">Rated ★ 0.0</li>
         </ul>
     </div>
 </a>
