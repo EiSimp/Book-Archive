@@ -1,5 +1,6 @@
 package group.project.bookarchive.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import group.project.bookarchive.models.Book;
 import group.project.bookarchive.models.MailDTO;
 import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
@@ -75,9 +82,25 @@ public class ArchiveController {
     public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
         try {
             String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
-            String url = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&key=" + apiKey;
-            String res = fetchJsonFromUrl(url);
-            model.addAttribute("results", res);
+            String url = UriComponentsBuilder.fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
+                    .queryParam("q", query).queryParam("key", apiKey).toUriString();
+
+            RestTemplate restTemplate = new RestTemplate();
+            String res = restTemplate.getForObject(url, String.class);
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(res);
+            List<Book> books = new ArrayList<>();
+
+            for (JsonNode item : root.path("items")) {
+                Book book = new Book();
+                book.setTitle(item.path("volumeInfo").path("title").asText());
+                book.setAverageRating(item.path("volumeInfo").path("averageRating").asDouble(0.0));
+                book.setThumbnail(item.path("volumeInfo").path("imageLinks").path("thumbnail").asText());
+                books.add(book);
+
+            }
+            model.addAttribute("results", books);
             model.addAttribute("query", q.orElse(""));
         } catch (IOException e) {
             e.printStackTrace();
