@@ -1,6 +1,5 @@
 package group.project.bookarchive.controllers;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -44,13 +43,13 @@ public class UserController {
 
     // Creates a new user
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public User createUser(@RequestParam String username, @RequestParam String password) {
+    public User createUser(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.setEmail(email);
         return userRepository.save(user);
     }
-    
 
     // Updates user
     @PutMapping("/{id}")
@@ -58,6 +57,7 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
         user.setBio(request.getBio());
         return userRepository.save(user);
     }

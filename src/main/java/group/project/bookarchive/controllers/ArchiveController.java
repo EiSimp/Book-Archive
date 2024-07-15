@@ -1,9 +1,13 @@
 package group.project.bookarchive.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -26,6 +32,14 @@ import group.project.bookarchive.services.MailService;
 import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Controller
 public class ArchiveController {
     @Autowired
@@ -36,6 +50,9 @@ public class ArchiveController {
 
     @Autowired
     private MailService mailService;
+
+    @Value("${google.api.key}")
+    private String apiKey;
 
     @GetMapping("/")
     public RedirectView process() {
@@ -52,6 +69,21 @@ public class ArchiveController {
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
+        try {
+            String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
+            String url = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&key=" + apiKey;
+            String res = fetchJsonFromUrl(url);
+            model.addAttribute("results", res);
+            model.addAttribute("query", q.orElse(""));
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("results", "error");
+        }
+        return "searchresult";
     }
 
     @GetMapping("/signup")
@@ -124,6 +156,11 @@ public class ArchiveController {
         return "fragments/header.html";
     }
 
+    @GetMapping("/bookdetail")
+    public String getBookDetail() {
+        return "bookdetail";
+    }
+
     @PostMapping("/forgot")
     public String forgotPwdMail(@ModelAttribute MailDTO mailDto, Model model) {
         if (mailDto.getEmail() == null || mailDto.getEmail().isEmpty()) {
@@ -134,9 +171,16 @@ public class ArchiveController {
             model.addAttribute("error", "Username cannot be empty");
             return "forgotpwd";
         }
-        mailService.sendPwdMail(mailDto);
-        System.out.println("sent email");
-        return "redirect:/login";
+
+        Optional<User> user = userRepository.findByUsernameAndEmail(mailDto.getUsername(), mailDto.getEmail());
+        if (user.isPresent()) {
+            mailService.sendPwdMail(mailDto);
+            System.out.println("sent email");
+            return "redirect:/login";
+        } else {
+            model.addAttribute("error", "User not found");
+            return "forgotpwd";
+        }
     }
 
     @PostMapping("/signup")
@@ -149,15 +193,36 @@ public class ArchiveController {
                     "There is already an account registered with the same username");
         }
 
-        if (result.hasErrors()) {
-            model.addAttribute("signupform", form);
-            return "/signup";
+        if (userRepository.existsByEmail(form.getEmail())) {
+            result.rejectValue("email", "", "There is already an account registered with the same email address");
         }
 
-        service.registerDefaultUser(userRepository
-                .save(new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword()))));
-        ;
+        if (result.hasErrors()) {
+            model.addAttribute("signupform", form);
+            return "signup";
+        }
+
+        User user = new User(form.getUsername(), new BCryptPasswordEncoder().encode(form.getPassword()),
+                form.getEmail());
+
+        service.registerDefaultUser(userRepository.save(user));
         return "redirect:/login?signupsuccess";
+    }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam String username) {
+        boolean exists = service.usernameExists(username);// logic to check if username exists
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmail(@RequestParam String email) {
+        boolean exists = service.emailExists(email);// logic to check if email exists
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
     }
 
     // mapping for change password page
@@ -194,7 +259,6 @@ public class ArchiveController {
         return "redirect:/homepage?passwordchangesuccess";
     }
 
-    
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
         if (user == null) {
@@ -203,17 +267,18 @@ public class ArchiveController {
             // Fetch updated user data from the database based on ID
             Optional<User> userOptional = userRepository.findById(user.getId());
 
-            if (!userOptional.isPresent()) {
-                // Handle case where user with given ID does not exist
-                return "login"; // redirect to login
-            }
+        if (!userOptional.isPresent()) {
+            // Handle case where user with given ID does not exist
+            return "login"; // redirect to login
+        }
 
-            // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
-            User updatedUser = userOptional.get();
-            SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
-            
-            // Update user information in the session
-            ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).setDetails(updatedSecurityUser);
+        // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
+        User updatedUser = userOptional.get();
+        SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+
+        // Update user information in the session
+        ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                .setDetails(updatedSecurityUser);
 
             // Add updated user information to the model
             model.addAttribute("user", updatedSecurityUser);
@@ -241,6 +306,27 @@ public class ArchiveController {
 
         // Redirect to a success page or return a success message
         return "redirect:/profilesetting?success";  // Redirect to profile page after update
+    }
+        
+
+    public static String fetchJsonFromUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            return response.toString();
+        } else {
+            throw new IOException("Failed to fetch content from URL. Response code: " + responseCode);
+        }
     }
 
 }

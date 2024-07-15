@@ -1,81 +1,110 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PagePals</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="/stylesheet/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/stylesheet/style.css" />
+    <link rel="stylesheet" href="/stylesheet/card.css" />
+    <link rel="stylesheet" href="/stylesheet/homepage.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
 
 <body class="main-body">
     <!--header-->
     <div th:replace="~{fragments/header.html}"></div>
-    
+
     <!--content starts here-->
     <div class="content-container">
         <!--numbers are for display purpose, need to represent actual data later-->
         <div class="short-record">
             <div class="short-record-column">
-                <!--Total number of books the user read-->
-                <span class="short-record-number">00</span>
-                <span class="short-record-label">Read<span>
+                <div>
+                    <!--Total number of books the user read-->
+                    <span class="short-record-number">00</span>
+                    <span class="short-record-label">Read</span>
+                </div>
             </div>
             <div class="short-record-column">
-                <!--Total number of books the user is currently reading-->
-                <span class="short-record-number">00</span>
-                <span class="short-record-label">Reading</span>
+                <div>
+                    <!--Total number of books the user is currently reading-->
+                    <span class="short-record-number">00</span>
+                    <span class="short-record-label">Reading</span>
+                </div>
             </div>
             <div class="short-record-column">
-                <!--Number of collections the user made-->
-                <span class="short-record-number">00</span>
-                <span class="short-record-label">Collection</span>
+                <div>
+                    <!--Number of collections the user made-->
+                    <span class="short-record-number">00</span>
+                    <span class="short-record-label">To read</span>
+                </div>
             </div>
         </div>
         <hr class="solid" id="divider-line">
         <!--personalized bookshelf-->
+        <h3> Books Display</h3>
         <div class="bookshelf">
             <!--5 books are displayed for each line-->
             <div class="bookshelf-rack">
-                <div class="book-info-card">
-                    <img src="#" alt="bookcover-image" class="bookcover-image">
-                    <span>Book Title</span>
-                    <span>John Doe</span>
-                </div>
-                <div class="book-info-card">
-                    <img src="#" alt="bookcover-image" class="bookcover-image">
-                    <span>Book Title</span>
-                    <span>John Doe</span>
-                </div>
-                <div class="book-info-card">
-                    <img src="#" alt="bookcover-image" class="bookcover-image">
-                    <span>Book Title</span>
-                    <span>John Doe</span>
-                </div>
-                <div class="book-info-card">
-                    <img src="#" alt="bookcover-image" class="bookcover-image">
-                    <span>Book Title</span>
-                    <span>John Doe</span>
-                </div>
-                <div class="book-info-card">
-                    <img src="#" alt="bookcover-image" class="bookcover-image">
-                    <span>Book Title</span>
-                    <span>John Doe</span>
-                </div>
-                <div class="book-info-card">
-                    <img src="#" alt="bookcover-image" class="bookcover-image">
-                    <span>Book Title</span>
-                    <span>John Doe</span>
-                </div>
+                <ul class="cardlist">
+                    <li class="card-li">
+                        <div th:replace="~{fragments/bookcard.html}">
+                        </div>
+                    </li>
+                    <li class="card-li">
+                        <div th:replace="~{fragments/bookcard.html}">
+                        </div>
+                    </li>
+                    <li class="card-li">
+                        <div th:replace="~{fragments/bookcard.html}">
+                        </div>
+                    </li>
+                    <li class="card-li">
+                        <div th:replace="~{fragments/bookcard.html}">
+                        </div>
+                    </li>
+                    <li class="card-li">
+                        <div th:replace="~{fragments/bookcard.html}">
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
+        <hr class="solid" id="divider-line">
+        <h3>Collections</h3>
+        <ul class="cardlist">
+            <li class="card-li">
+                <div th:replace="~{fragments/collectioncard.html}">
+                </div>
+            </li>
+            <li class="card-li">
+                <div th:replace="~{fragments/collectioncard.html}">
+                </div>
+            </li>
+            <li class="card-li">
+                <div th:replace="~{fragments/collectioncard.html}">
+                </div>
+            </li>
+            <li class="card-li">
+                <div th:replace="~{fragments/collectioncard.html}">
+                </div>
+            </li>
+            <li class="card-li">
+                <div th:replace="~{fragments/collectioncard.html}">
+                </div>
+            </li>
+            <li class="card-li">
+                <div th:replace="~{fragments/collectioncard.html}">
+                </div>
+            </li>
+        </ul>
     </div>
     <div>
-        <a href="/passwordchange" style="text-decoration: none;">
-            <button type="button">Change Password</button>
-        </a>
+        <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
     <script src="/javascript/dropDown.js"></script>
 </body>

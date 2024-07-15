@@ -20,8 +20,10 @@ public class SecurityConfig {
                                 .authorizeHttpRequests((authz) -> authz
                                                 .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)
                                                 .permitAll()
-                                                .requestMatchers("/login", "/signup", "/forgot", "/myaccount", "/stylesheet/**",
-                                                                "/javascript/**", "/images/**")
+                                                .requestMatchers("/login", "/signup", "/forgot", "/myaccount",
+                                                                "/stylesheet/**",
+                                                                "/javascript/**", "/images/**", "/check-username",
+                                                                "/check-email")
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .anyRequest().hasAnyRole("USER", "ADMIN"))

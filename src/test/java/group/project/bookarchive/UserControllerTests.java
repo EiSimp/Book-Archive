@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import group.project.bookarchive.controllers.UserController;
@@ -53,9 +54,9 @@ public class UserControllerTests {
     @WithMockUser(username = "testuser", roles = {"USER"})
     public void testGetAllUsers() throws Exception {
         // Mock data
-        User user1 = new User("user1", "password1"); // User with empty bio
-        User user2 = new User("user2", "password2", "User 2's bio");
-        User user3 = new User("user3", "password1", ""); // User with empty bio
+        User user1 = new User("user1", "password1", "fakeemail@gmail.com"); 
+        User user2 = new User("user2", "password2", "fakeemail2@gmail.com");
+        User user3 = new User("user3", "password1", "fakeemail3@gmail.com"); 
         List<User> userList = Arrays.asList(user1, user2, user3);
 
         // Mock repository behavior
@@ -66,10 +67,11 @@ public class UserControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].username").value("user1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].bio").value(Matchers.anyOf(Matchers.nullValue(), Matchers.emptyString()))) // Handle null/empty bio
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].email").value("fakeemail@gmail.com")) // Ensure emails are not empty
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].username").value("user2"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bio").value("User 2's bio")) // Ensure bio is not empty
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].email").value("fakeemail2@gmail.com")) // Ensure emails are not empty
                 .andExpect(MockMvcResultMatchers.jsonPath("$[2].username").value("user3"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bio").value("")); // Handle empty bio
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].email").value("fakeemail3@gmail.com")); 
         
         verify(userRepository, times(1)).findAll();
         verifyNoMoreInteractions(userRepository);
@@ -81,7 +83,8 @@ public class UserControllerTests {
         // Mock data
         String username = "newuser";
         String password = "newpassword";
-        User newUser = new User(username, password);
+        String email = "fakeemail@gmail.com";
+        User newUser = new User(username, password, email);
 
         // Mock repository behavior
         when(userRepository.save(any(User.class))).thenReturn(newUser);
@@ -91,6 +94,7 @@ public class UserControllerTests {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("username", "newuser")
                 .param("password", "newpassword")
+                .param("email", email)
                 .with(csrf())) // Include CSRF token
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(username))
@@ -107,8 +111,20 @@ public class UserControllerTests {
         // Mock data
         // First created user will have an ID of 1
         Long userId = 1L;
-        User existingUser = new User("testuser", "password");
+        User existingUser = new User("testuser", "password", "fakeemail@gmail.com");
 
+        // Mock repository behavior
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Perform the PUT request and validate the response
+        // mockMvc.perform(MockMvcRequestBuilders.put("/user/{id}", userId)
+        //         .contentType(MediaType.APPLICATION_JSON)
+        //         .content("{\"username\": \"updateduser\", \"password\": \"updatedpassword\", \"bio\": \"Updated bio\"}")
+        //         .with(csrf())) // Include CSRF token
+        //         .andExpect(status().isOk())
+        //         .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("updateduser"))
+        //         .andExpect(MockMvcResultMatchers.jsonPath("$.bio").value("Updated bio"));
         // Mock repository behavior
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -116,12 +132,13 @@ public class UserControllerTests {
         // Perform the PUT request and validate the response
         mockMvc.perform(MockMvcRequestBuilders.put("/user/{id}", userId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\": \"updateduser\", \"password\": \"updatedpassword\", \"bio\": \"Updated bio\"}")
+                .content("{\"username\": \"updateduser\", \"password\": \"updatedpassword\", \"email\": \"updatedemail@gmail.com\", \"bio\": \"Updated bio\"}")
                 .with(csrf())) // Include CSRF token
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("updateduser"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.bio").value("Updated bio"));
-
+                .andExpect(jsonPath("$.username").value("updateduser"))
+                .andExpect(jsonPath("$.email").value("updatedemail@gmail.com"))
+                .andExpect(jsonPath("$.bio").value("Updated bio"));
+                
         // Verify repository methods were called once with correct parameters
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).save(any(User.class));
@@ -134,7 +151,7 @@ public class UserControllerTests {
         // Mock data
         // First created user will have an ID of 1
         Long userId = 1L;
-        User user = new User("testuser", "password");
+        User user = new User("testuser", "password", "fakeemail@gmail.com");
 
         // Mock repository behavior
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -157,7 +174,7 @@ public class UserControllerTests {
         // Mock data
         // First created user will have an ID of 1
         Long userId = 1L;
-        User existingUser = new User("testuser", "password");
+        User existingUser = new User("testuser", "password", "fakeemail@gmail.com");
 
         // Mock repository behavior
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));

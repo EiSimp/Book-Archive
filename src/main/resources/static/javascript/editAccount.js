@@ -10,6 +10,11 @@ function showEdit(sectionId) {
             // Clear previous inputs for security reasons or handle accordingly
             document.getElementById('newPassword').value = '';
             break;
+
+        case 'editEmailSection':
+            var email = document.getElementById("emailDisplay").innerText;
+            document.getElementById("newEmail").value = email;
+            break;
         
         case 'editBioSection':
             var bio = document.getElementById("bioDisplay").innerText;
@@ -34,8 +39,8 @@ function showEdit(sectionId) {
 
 function cancelEdit(sectionId) {
     document.getElementById(sectionId).style.display = 'none';
-    document.getElementById("userDisplay").style.display = "block";
-    document.getElementById("manageAccountDisplay").style.display = "block";
+    document.getElementById("userDisplay").style.display = "flex";
+    document.getElementById("manageAccountDisplay").style.display = "flex";
 }
 
 function deleteUser() {
@@ -70,6 +75,7 @@ function saveChanges(sectionID) {
 
     var username;
     var password;
+    var email;
     var bio;
 
     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
@@ -78,11 +84,19 @@ function saveChanges(sectionID) {
         case 'editUsernameSection':
             username = document.getElementById('newUsername').value;
             password = document.getElementById('origPassword').value;
+            email = document.getElementById('origEmail').value;
+            bio = document.getElementById('origBio').value;
+            break;
+        case 'editEmailSection':
+            username = document.getElementById('origUsername').value;
+            password = document.getElementById('origPassword').value;
+            email = document.getElementById('newEmail').value;
             bio = document.getElementById('origBio').value;
             break;
         case 'editBioSection':
             username = document.getElementById('origUsername').value;
             password = document.getElementById('origPassword').value;
+            email = document.getElementById('origEmail').value;
             bio = document.getElementById('newBio').value;
             break;
         default:
@@ -93,6 +107,7 @@ function saveChanges(sectionID) {
     const data = {
         username: username,
         password: password,
+        email: email,
         bio: bio
     };
 
