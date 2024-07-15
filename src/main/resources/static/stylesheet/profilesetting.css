@@ -1,31 +1,46 @@
+
 .profile-form {
-    width: 100%;
     padding: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: #c5796d6c;
+    border: 1px solid #d8f6ff;
     border-radius: 8px;
-    margin: auto; /* Center the form horizontally */
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items to the left */
-    min-width: 90%;
+    align-items: stretch; /* Ensure items stretch to full width */
+    width: 90%;
     max-width: 90%;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+    margin: 2%;
+}
+
+#profilePhoto {
+    width: 200px; /* Adjust width as needed */
+    padding: 8px; /* Adjust padding for spacing */
+    font-size: 16px; /* Adjust font size */
+    border: 1px solid #ccc; /* Add border for visual clarity */
+    border-radius: 8px; /* Add border-radius for rounded corners */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
 }
 
 .user-icon-container {
     display: flex;
-    align-items: center; /* Align items vertically */
+    align-items: center;
     margin-bottom: 20px;
 }
 
+.form-label::before {
+    content: "\1F4D6"; /* Unicode book icon */
+    margin-right: 5px; /* Adjust spacing */
+}
+
 .profile-user-icon {
-    min-height: 100px;
-    max-height: 100px;
-    min-width: 100px;
-    max-width: 100px;
+    min-height: 150px;
+    max-height: 150px;
+    min-width: 150px;
+    max-width: 150px;
     margin-right: 5px;
     border-radius: 50%;
-    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    object-fit: cover;
     border: 3px solid #36363682;
 }
 
@@ -37,14 +52,6 @@
     font-weight: bold;
 }
 
-.form-control {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 .changes-btn {
     width: auto;
     min-width: 120px;
@@ -52,18 +59,57 @@
     background-color: #C5796D;
     border-radius: 8px;
     color: #FFFFFF;
-    font-family: 'Inter', sans-serif;
     font-weight: 500;
     font-size: 16px;
     border: none;
     cursor: pointer;
-    display: inline-flex;
-    align-items:flex-end;
-    justify-content: center;
-    align-self: flex-end;
-    margin-top: 20px; /* Adjust spacing from previous element */
+    align-self: flex-end; /* Align button to the right */
+    margin-top: 20px; /* Adjust spacing */
 }
 
 .changes-btn:hover {
     background-color: #a86458; /* Adjust hover background color */
+}
+
+textarea.bioInput {
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Add border-radius if desired */
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 40px;
+    max-height: 40vh;
+    overflow-y: auto; /* Enable vertical scroll if content exceeds max-height */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+    resize: none; /* Disable textarea resizing */
+    height:20vh;
+    margin-bottom: 10px;
+}
+
+textarea.bioInput::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for WebKit (Chrome, Safari, Opera) */
+}
+
+textarea.bioInput:focus,
+textarea.bioInput:hover {
+    outline: none; /* Remove default focus outline */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+    overflow-y: auto; /* Ensure vertical scrollbar shows when needed */
+}
+
+p {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 43px;
+    display: block;
+    align-items: center;
+    text-align: left;
+
+    color: #000000;
 }
