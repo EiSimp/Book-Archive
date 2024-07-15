@@ -1,0 +1,233 @@
+
+/*Design for Create board pop up*/
+#create-bookshelf-popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+.popup-content {
+    background-color: #fff;
+    padding: 40px 20px 20px 20px; /* Double the top padding */
+    border: none;
+    width: 90%; /* Close to full width */
+    max-width: 500px; /* Maximum width of the popup */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* Rounder corners */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between elements */
+}
+.popup-content h2 {
+    margin-top: 0; /* Remove default margin */
+    margin-bottom: 20px; /* Increase margin below */
+    text-align: center; /* Center the title */
+    font-size: 24px; /* Match the size */
+}
+.popup-content label {
+    display: block;
+    margin-bottom: 2px; /* Bring closer to text box */
+    font-weight: bold;
+    font-size: 16px; /* Match the size */
+}
+.popup-content input[type="text"] {
+    width: 100%;
+    padding: 12px; /* Adjust padding */
+    margin-bottom: 10px; /* Reduce margin below */
+    border: 1px solid #ccc; /* Restore original border color */
+    border-radius: 6px;
+    font-size: 16px; /* Match the size */
+    margin-top: -10px; /* Bring closer to label */
+}
+.popup-content .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px; /* Match the size */
+}
+.popup-content .checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+    width: 25px; /* Increase checkbox size */
+    height: 25px; /* Increase checkbox size */
+    border: 2px solid #555; /* Dark grey border */
+    border-radius: 4px; /* Rounded corners */
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+.popup-content .checkbox-container input[type="checkbox"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.popup-content .checkbox-container input[type="checkbox"]:checked::before {
+    content: '\2713'; /* Checkmark */
+    color: white;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+    font-size: 20px;
+}
+.popup-content .button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+.popup-content button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px; /* Match the size */
+}
+.popup-content button:hover {
+    background-color: #0056b3;
+}
+/*Bookshelf Layout for 5 bookshelves per row. */
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin: 0 20px; /* Add horizontal margin to ensure space on the right */
+    padding: 20px; /* Add padding to the grid container */
+}
+
+.bookshelf {
+    position: relative;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.bookshelf:hover {
+    transform: scale(1.05);
+}
+
+.bookshelf-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.bookshelf-details {
+    font-size: 14px;
+    color: #777;
+}
+/* Edit button*/
+.edit-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: none;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.bookshelf:hover .edit-btn {
+    display: block;
+}
+/*Edit button design*/
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border: none;
+    width: 90%; /* Close to full width */
+    max-width: 500px; /* Maximum width of the popup */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between elements */
+}
+
+.modal-content h2 {
+    margin-top: 0; /* Remove default margin */
+    text-align: center; /* Center the title */
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 8px; /* Space below label */
+}
+
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px; /* Space below input */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content .checkbox-container {
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* Match the size */
+}
+
+.modal-content .checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+    width: 20px; /* Adjust checkbox size */
+    height: 20px; /* Adjust checkbox size */
+    cursor: pointer;
+}
+
+.modal-content .button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content button:hover {
+    background-color: #0056b3;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -277,5 +277,4 @@ public class ArchiveController {
             throw new IOException("Failed to fetch content from URL. Response code: " + responseCode);
         }
     }
-
 }
