@@ -29,7 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import group.project.bookarchive.models.Book;
+import group.project.bookarchive.models.BookDTO;
 import group.project.bookarchive.models.MailDTO;
 import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
@@ -79,29 +79,53 @@ public class ArchiveController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
+    public String getSearchResult(@RequestParam("q") Optional<String> q, @RequestParam("page") Optional<Integer> page,
+            Model model) {
+        int currentPage = page.orElse(1);
+        int booksPerPage = 18;
         try {
             String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
-            String url = UriComponentsBuilder.fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
-                    .queryParam("q", query).queryParam("key", apiKey).toUriString();
+            String url = UriComponentsBuilder.fromHttpUrl("https://www.googleapis.com/books/v1/volumes/")
+                    .queryParam("q", query)
+                    .queryParam("startIndex", (currentPage - 1) * booksPerPage)
+                    .queryParam("maxResults", booksPerPage)
+                    .queryParam("key", apiKey)
+                    .toUriString();
 
             RestTemplate restTemplate = new RestTemplate();
             String res = restTemplate.getForObject(url, String.class);
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(res);
-            List<Book> books = new ArrayList<>();
+            List<BookDTO> books = new ArrayList<>();
 
             for (JsonNode item : root.path("items")) {
-                Book book = new Book();
+                BookDTO book = new BookDTO();
                 book.setTitle(item.path("volumeInfo").path("title").asText());
+                book.setBookID(item.path("id").asText());
                 book.setAverageRating(item.path("volumeInfo").path("averageRating").asDouble(0.0));
                 book.setThumbnail(item.path("volumeInfo").path("imageLinks").path("thumbnail").asText());
                 books.add(book);
-
             }
+
+            int totalItems = root.path("totalItems").asInt();
+            int totalPages = (int) Math.ceil((double) totalItems / booksPerPage);
+            boolean hasMorePages = currentPage < totalPages;
+            boolean isNotFirstPage = (currentPage != 1);
+
+            int pageGroupSize = 10;
+            int currentGroupStart = ((currentPage - 1) / pageGroupSize) * pageGroupSize + 1;
+            int currentGroupEnd = Math.min(currentGroupStart + pageGroupSize - 1, totalPages);
+
             model.addAttribute("results", books);
             model.addAttribute("query", q.orElse(""));
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("currentGroupEnd", currentGroupEnd);
+            model.addAttribute("currentGroupStart", currentGroupStart);
+            model.addAttribute("hasMorePages", hasMorePages);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("isNotFirstPage", isNotFirstPage);
+
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("results", "error");
