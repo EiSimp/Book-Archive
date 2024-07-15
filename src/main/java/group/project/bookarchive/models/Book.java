@@ -1,15 +1,18 @@
 package group.project.bookarchive.models;
 
 public class Book {
+
     private String title;
+    private String bookId;
     private double averageRating;
     private String thumbnail;
 
     public Book() {
     }
 
-    public Book(String title, double averageRating, String thumbnail) {
+    public Book(String title, String bookId, double averageRating, String thumbnail) {
         this.title = title;
+        this.bookId = bookId;
         this.averageRating = averageRating;
         this.thumbnail = thumbnail;
     }
@@ -36,6 +39,14 @@ public class Book {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookID(String bookId) {
+        this.bookId = bookId;
     }
 
 }
