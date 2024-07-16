@@ -86,7 +86,7 @@ async function saveChanges(sectionID) {
             const usernameNotAvailable = await checkUsernameIsTaken(formData.username);
 
             if (usernameNotAvailable) {
-                displayError('usernameError', 'Username is already taken');
+                displayError('usernameError', 'Error: Username is already taken');
                 return;
             } else {
                 hideError('usernameError');
@@ -97,7 +97,7 @@ async function saveChanges(sectionID) {
             const emailNotAvailable = await checkEmailIsTaken(formData.email);
 
             if (emailNotAvailable) {
-                displayError('emailError', 'Email is already taken');
+                displayError('emailError', 'Error: Email is already taken');
                 return;
             } else {
                 hideError('emailError');
@@ -145,7 +145,7 @@ function validateFormData(formData) {
 
     // Validate username (only letters, numbers, and underscores)
     if ('username' in formData && !isValidUsername(formData.username)) {
-        displayError('usernameError', 'Username must have only letters, numbers, and underscores');
+        displayError('usernameError', 'Error: Username must have only letters, numbers, and underscores');
         isValid = false;
     } else {
         hideError('usernameError');
@@ -153,7 +153,7 @@ function validateFormData(formData) {
 
     // Validate email format
     if ('email' in formData && !isValidEmail(formData.email)) {
-        displayError('emailError', 'Invalid email format');
+        displayError('emailError', 'Error: Invalid email format');
         isValid = false;
     } else {
         hideError('emailError');
@@ -206,11 +206,13 @@ function isValidUsername(username) {
     return /^\w+$/.test(username);
 }
 
+// might not be necessary since input is email type
 function isValidEmail(email) {
-    // Basic email format validation (you may need more stringent validation)
+    // Basic email format validation
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// taken from signupValidation.js
 async function checkUsernameIsTaken(username) {
     try {
         const response = await fetch(`/check-username?username=${encodeURIComponent(username)}`);

@@ -2,7 +2,10 @@ package group.project.bookarchive.models;
 
 import java.util.Set;
 
+import jakarta.validation.constraints.Pattern;
+
 public class UserUpdateRequest {
+    @Pattern(regexp = "^\\w+$", message = "Username must have only letters, numbers, and underscores")
     private String username;
     private String password;
     private String bio;

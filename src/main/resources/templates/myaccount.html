@@ -63,7 +63,7 @@
 
                 <label for="newUsername">New Username:</label><br>
                 <input type="text" id="newUsername" name="newUsername" maxlength="255" required>
-                <span id="usernameError" style="color: red; display: none;"></span><br><br>
+                <span id="usernameError" class="error-message"></span><br><br>
 
                 <button type="button" class="changes-btn" onclick="cancelEdit('editUsernameSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
@@ -77,7 +77,7 @@
 
                 <label for="newEmail">New Email:</label><br>
                 <input type="email" id="newEmail" name="newEmail" required>
-                <span id="emailError" style="color: red; display: none;"></span><br><br>
+                <span id="emailError" class="error-message"></span><br><br>
 
                 <button type="button" class="changes-btn" onclick="cancelEdit('editEmailSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
