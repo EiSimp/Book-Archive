@@ -28,23 +28,27 @@
                     <a href="/signup" class="signup">Sign Up</a>
                 </header>
                 <div class="form-wrapper">
-                    <form id="login-form" th:action="@{/login}" method="post" class="login-form">
+                    <form id="login-form" th:action="@{/login}" method="post" class="login-form" novalidate>
                         <div class="input-username">
-                            <label for="username">ID</label>
-                            <input type="text" id="username" name="username" placeholder="ID" required>
+                            <label for="username" class="form-label">ID</label>
+                            <input type="text" id="username" name="username" placeholder="ID" th:value="${param.username}" required>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="input-password">
-                            <label for="password">Password</label>
+                            <label for="password" class="form-label">Password</label>
                             <input type="password" id="password" name="password" placeholder="Password" required>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <!--if successfully login, direct to homepage-->
                         <button type="submit" class="login-btn">Login</button>
                         <a href="/forgot" id="forgot-password">Forgot Password?</a>
                     </form>
                 </div>
+                <!-- <div th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].authentication.principal}"></div> -->
             </div>
         </div>
     </div>
+    <script th:src="@{/javascript/loginValidation.js}"></script>
 </body>
 
 </html>
