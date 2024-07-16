@@ -53,11 +53,11 @@ public class SecurityConfig {
                                                 .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)
                                                 .permitAll()
                                                 .requestMatchers("/login", "/signup", "/forgot", "/myaccount",
-                                                                "/stylesheet/**",
-                                                                "/javascript/**", "/images/**", "/check-username",
-                                                                "/check-email")
+                                                                "/stylesheet/**", "/javascript/**", "/images/**",
+                                                                "/check-username", "/check-email")
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                                                .requestMatchers("/bookshelf-items/**").authenticated()
                                                 .anyRequest().hasAnyRole("USER", "ADMIN"))
                                 .formLogin(form -> form
                                                 .loginPage("/login")
