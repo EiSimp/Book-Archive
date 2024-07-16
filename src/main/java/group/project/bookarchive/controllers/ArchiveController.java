@@ -1,5 +1,12 @@
 package group.project.bookarchive.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +39,9 @@ import group.project.bookarchive.services.MailService;
 import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 @Controller
 public class ArchiveController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -231,32 +231,31 @@ public class ArchiveController {
 
     @GetMapping("/myaccount")
     public String showMyAccount(Model model, @AuthenticationPrincipal SecurityUser user) {
-        // if (user == null) {
-        // return "redirect:/login"; // Redirect to login page if user is not
-        // authenticated.
-        // } else {
-        // Fetch updated user data from the database based on ID
-        Optional<User> userOptional = userRepository.findById(user.getId());
+        if (user == null) {
+            return "redirect:/login"; // Redirect to login page if user is not authenticated.
+        } else {
+            // Fetch updated user data from the database based on ID
+            Optional<User> userOptional = userRepository.findById(user.getId());
 
-        if (!userOptional.isPresent()) {
-            // Handle case where user with given ID does not exist
-            return "login"; // redirect to login
+            if (!userOptional.isPresent()) {
+                // Handle case where user with given ID does not exist
+                return "login"; // redirect to login
+            }
+
+            // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
+            User updatedUser = userOptional.get();
+            SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+
+            // Update user information in the session
+            ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                    .setDetails(updatedSecurityUser);
+
+            // Add updated user information to the model
+            model.addAttribute("user", updatedSecurityUser);
+
+            return "myaccount";
         }
-
-        // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
-        User updatedUser = userOptional.get();
-        SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
-
-        // Update user information in the session
-        ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
-                .setDetails(updatedSecurityUser);
-
-        // Add updated user information to the model
-        model.addAttribute("user", updatedSecurityUser);
-
-        return "myaccount";
     }
-    // }
 
     public static String fetchJsonFromUrl(String urlString) throws IOException {
         URL url = new URL(urlString);

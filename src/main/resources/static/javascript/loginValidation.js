@@ -73,9 +73,10 @@ loginForm.addEventListener("submit", async (event) => {
   console.log("Form submission started");
   try {
     if ((await checkUsername()) && checkPassword()) {
-      passwordInput.value = "";
       console.log("Form is valid. Submitting...");
+
       loginForm.submit();
+      passwordInput.value = "";
     } else {
       console.log("Form is not valid. not submitting.");
     }
