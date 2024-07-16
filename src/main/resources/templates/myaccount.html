@@ -62,7 +62,8 @@
                 <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
 
                 <label for="newUsername">New Username:</label><br>
-                <input type="text" id="newUsername" name="newUsername" maxlength="255" required><br><br>
+                <input type="text" id="newUsername" name="newUsername" maxlength="255" required>
+                <span id="usernameError" class="error-message"></span><br><br>
 
                 <button type="button" class="changes-btn" onclick="cancelEdit('editUsernameSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>
@@ -75,7 +76,8 @@
                 <meta name="_csrf_parameter" th:content="${_csrf.parameterName}" />
 
                 <label for="newEmail">New Email:</label><br>
-                <input type="email" id="newEmail" name="newEmail" required><br><br>
+                <input type="email" id="newEmail" name="newEmail" required>
+                <span id="emailError" class="error-message"></span><br><br>
 
                 <button type="button" class="changes-btn" onclick="cancelEdit('editEmailSection')">Cancel</button>
                 <button type="submit" class="changes-btn">Save Changes</button>

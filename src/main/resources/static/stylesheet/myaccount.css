@@ -90,7 +90,8 @@ a {
     text-align: left;
 }
 
-#newBio, #newUsername, #newPassword {
+/* for spacing in between the labels and input boxes */
+#newBio, #newUsername, #newEmail{
     margin-top: 2%;
 }
 
@@ -111,7 +112,7 @@ a {
     height: 40vh;
 }
 
-#newUsername{
+#newUsername, #newEmail{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -207,6 +208,7 @@ a {
 
 .pencil-icon{
     color:#5e96ff;
+    margin-left: 5px;
 }
 
 #formcontainer {
@@ -216,4 +218,12 @@ a {
     justify-content: center;
     gap: 50px;
     padding: 3%;
+}
+
+.error-message {
+    position: absolute;
+    display: none; /* Initially set to none */
+    color: red;
+    font-size: 14px;
+    margin-top: 4px; /* Adjust margin as needed */
 }

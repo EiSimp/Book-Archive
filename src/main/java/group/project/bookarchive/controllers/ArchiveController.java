@@ -5,15 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,8 +22,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -41,6 +36,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class ArchiveController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -49,9 +45,6 @@ public class ArchiveController {
 
     @Autowired
     private MailService mailService;
-
-    @Value("${google.api.key}")
-    private String apiKey;
 
     @GetMapping("/")
     public RedirectView process() {
@@ -68,21 +61,6 @@ public class ArchiveController {
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String getSearchResult(@RequestParam("q") Optional<String> q, Model model) {
-        try {
-            String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
-            String url = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&key=" + apiKey;
-            String res = fetchJsonFromUrl(url);
-            model.addAttribute("results", res);
-            model.addAttribute("query", q.orElse(""));
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("results", "error");
-        }
-        return "searchresult";
     }
 
     @GetMapping("/signup")
@@ -148,11 +126,6 @@ public class ArchiveController {
     @GetMapping("/header")
     public String getHeader() {
         return "fragments/header.html";
-    }
-
-    @GetMapping("/bookdetail")
-    public String getBookDetail() {
-        return "bookdetail";
     }
 
     @PostMapping("/forgot")
@@ -261,23 +234,23 @@ public class ArchiveController {
             // Fetch updated user data from the database based on ID
             Optional<User> userOptional = userRepository.findById(user.getId());
 
-        if (!userOptional.isPresent()) {
-            // Handle case where user with given ID does not exist
-            return "login"; // redirect to login
-        }
+            if (!userOptional.isPresent()) {
+                // Handle case where user with given ID does not exist
+                return "login"; // redirect to login
+            }
 
-        // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
-        User updatedUser = userOptional.get();
-        SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+            // Convert User to SecurityUser (SecurityUser extends UserDetails so it's ok?)
+            User updatedUser = userOptional.get();
+            SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
 
-        // Update user information in the session
-        ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
-                .setDetails(updatedSecurityUser);
+            // Update user information in the session
+            ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
+                    .setDetails(updatedSecurityUser);
 
             // Add updated user information to the model
             model.addAttribute("user", updatedSecurityUser);
             // Clear authentication context to force reload of user details
-        SecurityContextHolder.clearContext();
+            SecurityContextHolder.clearContext();
 
             return "myaccount";
         }

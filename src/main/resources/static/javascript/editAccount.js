@@ -70,48 +70,118 @@ function deleteUser() {
         });
 }
 
-function saveChanges(sectionID) {
+async function saveChanges(sectionID) {
     var userId = document.getElementById('userId').value;
+    var formData = extractFormData(sectionID);
 
-    var username;
-    var password;
-    var email;
-    var bio;
-
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-
-    switch (sectionID) {
-        case 'editUsernameSection':
-            username = document.getElementById('newUsername').value;
-            password = document.getElementById('origPassword').value;
-            email = document.getElementById('origEmail').value;
-            bio = document.getElementById('origBio').value;
-            break;
-        case 'editEmailSection':
-            username = document.getElementById('origUsername').value;
-            password = document.getElementById('origPassword').value;
-            email = document.getElementById('newEmail').value;
-            bio = document.getElementById('origBio').value;
-            break;
-        case 'editBioSection':
-            username = document.getElementById('origUsername').value;
-            password = document.getElementById('origPassword').value;
-            email = document.getElementById('origEmail').value;
-            bio = document.getElementById('newBio').value;
-            break;
-        default:
-            console.error('Invalid sectionID');
-            return;
+    if (!validateFormData(formData)) {
+        return; // Stop further processing if validation fails
     }
 
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const endpoint = `/user/${userId}`;
+
+    try {
+        if (sectionID === 'editUsernameSection') {
+            const usernameNotAvailable = await checkUsernameIsTaken(formData.username);
+
+            if (usernameNotAvailable) {
+                displayError('usernameError', 'Error: Username is already taken');
+                return;
+            } else {
+                hideError('usernameError');
+            }
+        }
+
+        if (sectionID === 'editEmailSection') {
+            const emailNotAvailable = await checkEmailIsTaken(formData.email);
+
+            if (emailNotAvailable) {
+                displayError('emailError', 'Error: Email is already taken');
+                return;
+            } else {
+                hideError('emailError');
+            }
+        }
+
+        submitFormData(formData, endpoint, csrfToken);
+    } catch (error) {
+        console.error('Error checking username or email availability:', error);
+    }
+}
+
+
+function extractFormData(sectionID) {
+    switch (sectionID) {
+        case 'editUsernameSection':
+            return {
+                username: document.getElementById('newUsername').value,
+                password: document.getElementById('origPassword').value,
+                email: document.getElementById('origEmail').value,
+                bio: document.getElementById('origBio').value
+            };
+        case 'editEmailSection':
+            return {
+                username: document.getElementById('origUsername').value,
+                password: document.getElementById('origPassword').value,
+                email: document.getElementById('newEmail').value,
+                bio: document.getElementById('origBio').value
+            };
+        case 'editBioSection':
+            return {
+                username: document.getElementById('origUsername').value,
+                password: document.getElementById('origPassword').value,
+                email: document.getElementById('origEmail').value,
+                bio: document.getElementById('newBio').value
+            };
+        default:
+            console.error('Invalid sectionID');
+            return null;
+    }
+}
+
+function validateFormData(formData) {
+    let isValid = true;
+
+    // Validate username (only letters, numbers, and underscores)
+    if ('username' in formData && !isValidUsername(formData.username)) {
+        displayError('usernameError', 'Error: Username must have only letters, numbers, and underscores');
+        isValid = false;
+    } else {
+        hideError('usernameError');
+    }
+
+    // Validate email format
+    if ('email' in formData && !isValidEmail(formData.email)) {
+        displayError('emailError', 'Error: Invalid email format');
+        isValid = false;
+    } else {
+        hideError('emailError');
+    }
+
+    return isValid;
+}
+
+function displayError(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.innerText = message;
+    errorElement.style.display = 'block';
+}
+
+function hideError(elementId) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.style.display = 'none';
+}
+
+function submitFormData(formData, endpoint, csrfToken) {
     const data = {
-        username: username,
-        password: password,
-        email: email,
-        bio: bio
+        username: formData.username,
+        password: formData.password,
+        email: formData.email,
+        bio: formData.bio
     };
 
-    fetch(`/user/${userId}`, {
+    fetch(endpoint, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -119,14 +189,54 @@ function saveChanges(sectionID) {
         },
         body: JSON.stringify(data)
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            console.log('User updated successfully');
-            window.location.reload(); // reload the page
-        })
-        .catch(error => {
-            console.error('Error updating user:', error);
-        });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log('User updated successfully');
+        window.location.reload(); // reload the page
+    })
+    .catch(error => {
+        console.error('Error updating user:', error);
+    });
+}
+
+function isValidUsername(username) {
+    // Validate username format: letters, numbers, and underscores only
+    return /^\w+$/.test(username);
+}
+
+// might not be necessary since input is email type
+function isValidEmail(email) {
+    // Basic email format validation
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// taken from signupValidation.js
+async function checkUsernameIsTaken(username) {
+    try {
+        const response = await fetch(`/check-username?username=${encodeURIComponent(username)}`);
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        const data = await response.json();
+        return data.exists;
+    } catch (error) {
+        console.error('Error checking username uniqueness: ', error);
+        return false;
+    }
+}
+
+async function checkEmailIsTaken(email) {
+    try {
+        const response = await fetch(`/check-email?email=${encodeURIComponent(email)}`);
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        const data = await response.json();
+        return data.exists;
+    } catch (error) {
+        console.error('Error checking email uniqueness: ', error);
+        return false;
+    }
 }
