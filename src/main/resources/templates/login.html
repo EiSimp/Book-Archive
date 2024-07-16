@@ -30,11 +30,11 @@
                 <div class="form-wrapper">
                     <form id="login-form" th:action="@{/login}" method="post" class="login-form">
                         <div class="input-username">
-                            <label for="username">ID</label>
+                            <label for="username" class="form-label">ID</label>
                             <input type="text" id="username" name="username" placeholder="ID" required>
                         </div>
                         <div class="input-password">
-                            <label for="password">Password</label>
+                            <label for="password" class="form-label">Password</label>
                             <input type="password" id="password" name="password" placeholder="Password" required>
                         </div>
                         <!--if successfully login, direct to homepage-->
