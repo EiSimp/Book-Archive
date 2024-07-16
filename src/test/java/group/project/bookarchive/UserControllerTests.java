@@ -118,14 +118,6 @@ public class UserControllerTests {
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Perform the PUT request and validate the response
-        // mockMvc.perform(MockMvcRequestBuilders.put("/user/{id}", userId)
-        //         .contentType(MediaType.APPLICATION_JSON)
-        //         .content("{\"username\": \"updateduser\", \"password\": \"updatedpassword\", \"bio\": \"Updated bio\"}")
-        //         .with(csrf())) // Include CSRF token
-        //         .andExpect(status().isOk())
-        //         .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("updateduser"))
-        //         .andExpect(MockMvcResultMatchers.jsonPath("$.bio").value("Updated bio"));
         // Mock repository behavior
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
