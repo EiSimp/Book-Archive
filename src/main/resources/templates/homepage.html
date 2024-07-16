@@ -76,92 +76,92 @@
                     <div th:replace="~{fragments/bookcard.html}">
                     </div>
                 </li>
+            </ul-->
+            </div>
+        </div>
+        <hr class="solid" id="divider-line">
+        <!-- Library Section -->
+        <div id="collections">
+            <ul class="cardlist">
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
             </ul>
         </div>
+        <!--Current design for bookshelf display-->
+        <h2>Library</h2>
+        <div class="collections-header">
+            <button id="sort-books-btn">Sort</button>
+            <button id="create-bookshelf-btn">+</button>
+        </div>
+        <div class="library-container">
+            <div id="library" class="library-grid">
+                <!-- Bookshelves will be dynamically inserted here -->
+            </div>
+        </div>
     </div>
-    <hr class="solid" id="divider-line"-->
-                <!-- Library Section -->
-                <div id="collections">
-                    <ul class="cardlist">
-                        <li class="card-li">
-                            <div th:replace="~{fragments/collectioncard.html}">
-                            </div>
-                        </li>
-                        <li class="card-li">
-                            <div th:replace="~{fragments/collectioncard.html}">
-                            </div>
-                        </li>
-                        <li class="card-li">
-                            <div th:replace="~{fragments/collectioncard.html}">
-                            </div>
-                        </li>
-                        <li class="card-li">
-                            <div th:replace="~{fragments/collectioncard.html}">
-                            </div>
-                        </li>
-                        <li class="card-li">
-                            <div th:replace="~{fragments/collectioncard.html}">
-                            </div>
-                        </li>
-                        <li class="card-li">
-                            <div th:replace="~{fragments/collectioncard.html}">
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <!--Current design for bookshelf display-->
-                <h2>Library</h2>
-                <div class="collections-header">
-                    <button id="sort-books-btn">Sort</button>
-                    <button id="create-bookshelf-btn">+</button>
-                </div>
-                <div class="library-container">
-                    <div id="library" class="library-grid">
-                        <!-- Bookshelves will be dynamically inserted here -->
-                    </div>
-                </div>
+
+    <div>
+        <footer th:replace="~{fragments/footer.html}"></footer>
+    </div>
+
+    <!-- Create Bookshelf Popup -->
+    <div id="create-bookshelf-popup">
+        <div class="popup-content">
+            <h2>Create Bookshelf</h2>
+            <label for="bookshelf-name">Name</label>
+            <input type="text" id="bookshelf-name" placeholder="Like 'Fantasy' or 'Harry Potter'">
+            <div class="checkbox-container">
+                <input type="checkbox" id="secret-checkbox">
+                <label for="secret-checkbox">Keep this bookshelf secret</label>
             </div>
-
-            <div>
-                <footer th:replace="~{fragments/footer.html}"></footer>
+            <div class="button-container">
+                <button onclick="createBookshelf()">Create</button>
             </div>
-
-            <!-- Create Bookshelf Popup -->
-            <div id="create-bookshelf-popup">
-                <div class="popup-content">
-                    <h2>Create Bookshelf</h2>
-                    <label for="bookshelf-name">Name</label>
-                    <input type="text" id="bookshelf-name" placeholder="Like 'Fantasy' or 'Harry Potter'">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="secret-checkbox">
-                        <label for="secret-checkbox">Keep this bookshelf secret</label>
-                    </div>
-                    <div class="button-container">
-                        <button onclick="createBookshelf()">Create</button>
-                    </div>
-                </div>
+        </div>
+    </div>
+    <!-- Edit Bookshelf Popup -->
+    <div id="edit-bookshelf-popup" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Edit your bookshelf</h2>
+            <label for="edit-bookshelf-name">Name</label>
+            <input type="text" id="edit-bookshelf-name" placeholder="Bookshelf Name">
+            <div class="checkbox-container">
+                <input type="checkbox" id="edit-secret-checkbox">
+                <label for="edit-secret-checkbox">Keep this bookshelf secret</label>
             </div>
-            <!-- Edit Bookshelf Popup -->
-            <div id="edit-bookshelf-popup" class="modal">
-                <div class="modal-content">
-                    <span class="close-btn">&times;</span>
-                    <h2>Edit your bookshelf</h2>
-                    <label for="edit-bookshelf-name">Name</label>
-                    <input type="text" id="edit-bookshelf-name" placeholder="Bookshelf Name">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="edit-secret-checkbox">
-                        <label for="edit-secret-checkbox">Keep this bookshelf secret</label>
-                    </div>
-                    <div class="button-container">
-                        <button id="save-edit-btn">Done</button>
-                    </div>
-                </div>
+            <div class="button-container">
+                <button id="save-edit-btn">Done</button>
             </div>
+        </div>
+    </div>
 
 
 
-            <script src="/javascript/dropDown.js"></script>
-            <script src="/javascript/bookshelf.js"></script>
+    <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/bookshelf.js"></script>
 </body>
 
 </html>
