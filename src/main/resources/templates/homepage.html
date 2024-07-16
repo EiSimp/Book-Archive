@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PagePals</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/card.css" />
     <link rel="stylesheet" href="/stylesheet/homepage.css" />
@@ -15,32 +15,32 @@
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 
     <!-- CSRF Meta Tags -->
-    <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta th:name="_csrf" th:content="${_csrf.token}" />
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body class="main-body">
-<!--header-->
-<div th:replace="~{fragments/header.html}"></div>
+    <!--header-->
+    <div th:replace="~{fragments/header.html}"></div>
 
-<!--content starts here-->
-<div class="content-container">
-    <!--numbers are for display purpose, need to represent actual data later-->
-    <div class="short-record">
-        <div class="short-record-column">
-            <div>
-                <!--Total number of books the user read-->
-                <span class="short-record-number">00</span>
-                <span class="short-record-label">Read</span>
+    <!--content starts here-->
+    <div class="content-container">
+        <!--numbers are for display purpose, need to represent actual data later-->
+        <div class="short-record">
+            <div class="short-record-column">
+                <div>
+                    <!--Total number of books the user read-->
+                    <span class="short-record-number">00</span>
+                    <span class="short-record-label">Read</span>
+                </div>
             </div>
-        </div>
-        <div class="short-record-column">
-            <div>
-                <!--Total number of books the user is currently reading-->
-                <span class="short-record-number">00</span>
-                <span class="short-record-label">Reading</span>
+            <div class="short-record-column">
+                <div>
+                    <!--Total number of books the user is currently reading-->
+                    <span class="short-record-number">00</span>
+                    <span class="short-record-label">Reading</span>
+                </div>
             </div>
-        </div>
             <div class="short-record-column">
                 <div>
                     <!--Number of collections the user made-->
@@ -56,112 +56,112 @@
             <!--5 books are displayed for each line-->
             <div class="bookshelf-rack">
                 <!--ul class="cardlist">
-                    <li class="card-li">
-                        <div th:replace="~{fragments/bookcard.html}">
-                        </div>
-                    </li>
-                    <li class="card-li">
-                        <div th:replace="~{fragments/bookcard.html}">
-                        </div>
-                    </li>
-                    <li class="card-li">
-                        <div th:replace="~{fragments/bookcard.html}">
-                        </div>
-                    </li>
-                    <li class="card-li">
-                        <div th:replace="~{fragments/bookcard.html}">
-                        </div>
-                    </li>
-                    <li class="card-li">
-                        <div th:replace="~{fragments/bookcard.html}">
-                        </div>
-                    </li>
-                </ul-->
+                <li class="card-li">
+                    <div th:replace="~{fragments/bookcard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/bookcard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/bookcard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/bookcard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/bookcard.html}">
+                    </div>
+                </li>
+            </ul-->
             </div>
         </div>
-    <hr class="solid" id="divider-line">
-    <!-- Library Section -->
-    <div id="collections">
-        <ul class="cardlist">
-            <li class="card-li">
-                <div th:replace="~{fragments/collectioncard.html}">
-                </div>
-            </li>
-            <li class="card-li">
-                <div th:replace="~{fragments/collectioncard.html}">
-                </div>
-            </li>
-            <li class="card-li">
-                <div th:replace="~{fragments/collectioncard.html}">
-                </div>
-            </li>
-            <li class="card-li">
-                <div th:replace="~{fragments/collectioncard.html}">
-                </div>
-            </li>
-            <li class="card-li">
-                <div th:replace="~{fragments/collectioncard.html}">
-                </div>
-            </li>
-            <li class="card-li">
-                <div th:replace="~{fragments/collectioncard.html}">
-                </div>
-            </li>
-        </ul>
-    </div>
-    <!--Current design for bookshelf display-->
-    <h2>Library</h2>
-    <div class="collections-header">
-        <button id="sort-books-btn">Sort</button>
-        <button id="create-bookshelf-btn">+</button>
-    </div>
-    <div class="library-container">
-        <div id="library" class="library-grid">
-            <!-- Bookshelves will be dynamically inserted here -->
+        <hr class="solid" id="divider-line">
+        <!-- Library Section -->
+        <div id="collections">
+            <ul class="cardlist">
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+                <li class="card-li">
+                    <div th:replace="~{fragments/collectioncard.html}">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--Current design for bookshelf display-->
+        <h2>Library</h2>
+        <div class="collections-header">
+            <button id="sort-books-btn">Sort</button>
+            <button id="create-bookshelf-btn">+</button>
+        </div>
+        <div class="library-container">
+            <div id="library" class="library-grid">
+                <!-- Bookshelves will be dynamically inserted here -->
+            </div>
         </div>
     </div>
-</div>
 
-<div>
-    <footer th:replace="~{fragments/footer.html}"></footer>
-</div>
+    <div>
+        <footer th:replace="~{fragments/footer.html}"></footer>
+    </div>
 
-<!-- Create Bookshelf Popup -->
-<div id="create-bookshelf-popup">
-    <div class="popup-content">
-        <h2>Create Bookshelf</h2>
-        <label for="bookshelf-name">Name</label>
-        <input type="text" id="bookshelf-name" placeholder="Like 'Fantasy' or 'Harry Potter'">
-        <div class="checkbox-container">
-            <input type="checkbox" id="secret-checkbox">
-            <label for="secret-checkbox">Keep this bookshelf secret</label>
-        </div>
-        <div class="button-container">
-            <button onclick="createBookshelf()">Create</button>
+    <!-- Create Bookshelf Popup -->
+    <div id="create-bookshelf-popup">
+        <div class="popup-content">
+            <h2>Create Bookshelf</h2>
+            <label for="bookshelf-name">Name</label>
+            <input type="text" id="bookshelf-name" placeholder="Like 'Fantasy' or 'Harry Potter'">
+            <div class="checkbox-container">
+                <input type="checkbox" id="secret-checkbox">
+                <label for="secret-checkbox">Keep this bookshelf secret</label>
+            </div>
+            <div class="button-container">
+                <button onclick="createBookshelf()">Create</button>
+            </div>
         </div>
     </div>
-</div>
-<!-- Edit Bookshelf Popup -->
-<div id="edit-bookshelf-popup" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Edit your bookshelf</h2>
-        <label for="edit-bookshelf-name">Name</label>
-        <input type="text" id="edit-bookshelf-name" placeholder="Bookshelf Name">
-        <div class="checkbox-container">
-            <input type="checkbox" id="edit-secret-checkbox">
-            <label for="edit-secret-checkbox">Keep this bookshelf secret</label>
-        </div>
-        <div class="button-container">
-            <button id="save-edit-btn">Done</button>
+    <!-- Edit Bookshelf Popup -->
+    <div id="edit-bookshelf-popup" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Edit your bookshelf</h2>
+            <label for="edit-bookshelf-name">Name</label>
+            <input type="text" id="edit-bookshelf-name" placeholder="Bookshelf Name">
+            <div class="checkbox-container">
+                <input type="checkbox" id="edit-secret-checkbox">
+                <label for="edit-secret-checkbox">Keep this bookshelf secret</label>
+            </div>
+            <div class="button-container">
+                <button id="save-edit-btn">Done</button>
+            </div>
         </div>
     </div>
-</div>
 
 
 
-<script src="/javascript/dropDown.js"></script>
-<script src="/javascript/bookshelf.js"></script>
+    <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/bookshelf.js"></script>
 </body>
 
 </html>
