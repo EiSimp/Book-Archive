@@ -21,11 +21,6 @@ public class GlobalControllerAdvice {
     @ModelAttribute
     public void addUserToModel(Model model, @AuthenticationPrincipal SecurityUser user) {
         if (user != null) {
-            // model.addAttribute("user", user);
-            // model.addAttribute("loggedinUser", user.getUsername());
-            // model.addAttribute("roles", user.getAuthorities());
-            // model.addAttribute("profilePicture", user.getProfilePhoto());
-            
             // get the user by id to grab new changes
             Optional<User> optionalUser = userRepository.findById(user.getId());
 

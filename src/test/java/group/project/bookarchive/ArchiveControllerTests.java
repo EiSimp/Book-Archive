@@ -114,26 +114,6 @@ public class ArchiveControllerTests {
                 .andExpect(MockMvcResultMatchers.view().name("myrecord"));
     }
 
-    // @Test
-    // @WithMockUser(username = "testuser", roles = {"USER"})
-    // void testProfileSetting() throws Exception {
-        
-    //     // Mock user entity
-    //     User mockUser = new User("testuser", "password1", "testemail@gmail.com");
-    //     mockUser.setId(1L);
-    //     when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
-
-    //     SecurityUser securityUser = new SecurityUser(mockUser);
-    //     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(securityUser, null, Collections.emptyList());
-    //     SecurityContextHolder.getContext().setAuthentication(auth);
-    //     // Perform request
-    //     mockMvc.perform(get("/profilesetting"))
-    //            .andExpect(status().isOk())
-    //            .andExpect(model().attributeExists("user"))
-    //            .andExpect(view().name("profilesetting"));
-
-    //     verify(userRepository).findById(anyLong());
-    // }
 
     @Test
     @WithMockUser(username = "testuser", roles = {"USER"})
