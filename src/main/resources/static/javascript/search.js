@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const query = document.getElementById('search-field').value;
         if (query) {
             window.location.href = `/search?q=${encodeURIComponent(query)}&page=1`;
+        } else {
+            alert('Please enter a search keyword.');
         }
     });
 

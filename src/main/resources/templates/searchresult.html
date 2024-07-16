@@ -23,7 +23,11 @@
                 <button class="result-display-header-btn" type="button">Collections</button>
             </div>
             <hr class="solid" id="divider-line">
-            <div class="bookshelf-rack">
+            <span th:text="'(Search Result for: ' + ${query} + ')'"></span>
+            <div th:if="${message != null}">
+                <p th:text="${message}" class="text-warning"></p>
+            </div>
+            <div th:if="${message == null}" class="bookshelf-rack">
                 <ul class="cardlist">
                     <li th:each="book : ${results}" class="card-li">
                         <div th:replace="~{fragments/bookcard.html}"></div>
@@ -31,7 +35,7 @@
                 </ul>
             </div>
         </div>
-        <div class="pagination">
+        <div class="pagination" th:if="${message == null}">
             <span th:if="${currentGroupStart != 1}">
                 <a href="#" class="pagination-link" th:attr="data-page=${currentGroupStart - 10}"> << </a>
             </span>

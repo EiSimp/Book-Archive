@@ -1,6 +1,7 @@
 package group.project.bookarchive.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,14 @@ public class ArchiveController {
             Model model) {
         int currentPage = page.orElse(1);
         int booksPerPage = 18;
+        // Check if the search query is empty
+        if (!q.isPresent() || q.get().trim().isEmpty()) {
+            model.addAttribute("message", "Please enter a valid search keyword.");
+            model.addAttribute("results", Collections.emptyList());
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("totalPages", 0);
+            return "searchresult";
+        }
         try {
             String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
             String url = UriComponentsBuilder.fromHttpUrl("https://www.googleapis.com/books/v1/volumes/")
@@ -125,6 +134,7 @@ public class ArchiveController {
             model.addAttribute("hasMorePages", hasMorePages);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("isNotFirstPage", isNotFirstPage);
+            model.addAttribute("totalItems", totalItems);
 
         } catch (IOException e) {
             e.printStackTrace();
