@@ -19,7 +19,7 @@
     <div th:replace="~{fragments/header.html}"></div>
     <div class="content-container">
         <div id="heading">
-            <h1>Profile Setting</h1>
+            <h1>User Profile</h1>
         </div>
         <form action="/update-profile" method="POST" th:action="@{/update-profile}" th:object="${user}" class = "profile-form">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

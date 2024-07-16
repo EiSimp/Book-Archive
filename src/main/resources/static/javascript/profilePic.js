@@ -14,6 +14,5 @@ function updateProfileImage(selectElement) {
         };
 
         reader.readAsDataURL(file);
-        //document.getElementById('selectedPhoto').value = ''; // Clear hidden field for custom file
     }
 }

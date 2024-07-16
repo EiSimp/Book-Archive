@@ -1,5 +1,12 @@
 package group.project.bookarchive.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,14 +38,6 @@ import group.project.bookarchive.security.SecurityUser;
 import group.project.bookarchive.services.MailService;
 import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @Controller
 public class ArchiveController {
@@ -115,11 +114,6 @@ public class ArchiveController {
     public String myrecord() {
         return "myrecord";
     }
-
-    // @GetMapping("/profilesetting")
-    // public String profileSetting() {
-    //     return "profilesetting";
-    // }
 
     @GetMapping("/profilesetting")
     public String profileSetting(Model model, @AuthenticationPrincipal SecurityUser user) {
