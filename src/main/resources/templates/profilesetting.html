@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/profilesetting.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
+
 </head>
 
 <body class="main-body">
@@ -28,15 +29,19 @@
                 <!-- Default profile image -->
                 <img th:src="${user.getProfilePhoto()}" alt="User Icon" class="profile-user-icon"
                     id="profile-user-icon" />
-                <select id="profilePhoto" name="profilePhoto" class="form-control" required>
+                <select id="profilePhoto" name="profilePhoto" class="form-control" onchange="updateProfileImage(this)">
                     <option value="/images/defaultProfile.png"
                         th:selected="${user.profilePhoto == '/images/defaultProfile.png'}">Default Photo</option>
+                    <option value="/images/sun.jpg" th:selected="${user.profilePhoto == '/images/sun.jpg'}">
+                        Sun</option>
+                    <option value="/images/moon.jpg" th:selected="${user.profilePhoto == '/images/moon.jpg'}">
+                        Moon</option>
                     <option value="/images/flowers.jpg" th:selected="${user.profilePhoto == '/images/flowers.jpg'}">
-                        Photo 1 - Sunflowers</option>
+                        Sunflowers</option>
                     <option value="/images/shapes.jpg" th:selected="${user.profilePhoto == '/images/shapes.jpg'}">
-                        Photo 2 - Shapes</option>
+                        Shapes</option>
                     <option value="/images/globe.jpg" th:selected="${user.profilePhoto == '/images/globe.jpg'}">
-                        Photo 3 - Globe</option>
+                        Globe</option>
                 </select>
             </div>
             <h2>Username: <span id="usernameDisplay"
@@ -56,6 +61,7 @@
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
     <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/profilePic.js"></script>
 </body>
 
 </html>
