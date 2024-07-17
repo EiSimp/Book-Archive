@@ -11,11 +11,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
+import group.project.bookarchive.models.ChangePasswordFormDTO;
 import group.project.bookarchive.models.MailDTO;
 import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
@@ -45,6 +48,9 @@ public class ArchiveController {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public RedirectView process() {
@@ -169,34 +175,31 @@ public class ArchiveController {
 
     // mapping for change password page
     @GetMapping("/passwordchange")
-    public String changePassword() {
+    public String changePassword(Model model) {
+        model.addAttribute("changepasswordform", new ChangePasswordFormDTO());
         return "passwordchange";
     }
 
     // post for change password
     @PostMapping("/change-password")
-    public String changePassword(@AuthenticationPrincipal SecurityUser user,
-            @RequestParam("current-password") String currentPassword,
-            @RequestParam("new-password") String newPassword,
-            @RequestParam("confirm-password") String confirmPassword,
+    public String changePassword(@AuthenticationPrincipal SecurityUser principal,
+            @Valid @ModelAttribute("changepasswordform") ChangePasswordFormDTO form,
+            BindingResult result,
             Model model) {
-        if (!newPassword.equals(confirmPassword)) {
-            model.addAttribute("error", "New password and confirmation do not match");
+        User user = principal.getUser();
+        if (!passwordEncoder.matches(form.getCurrentPassword(), user.getPassword())) {
+            result.rejectValue("currentPassword", "",
+                            "Current password is incorrect");
+        }
+        if(result.hasErrors()) {
             return "passwordchange";
         }
+        
+        user.setPassword(passwordEncoder.encode(form.getNewPassword()));
+        user.setTempPwd(false);
+        userRepository.save(user);
 
-        User currentUser = userRepository.findByUsername(user.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        if (!passwordEncoder.matches(currentPassword, currentUser.getPassword())) {
-            model.addAttribute("error", "Current password is incorrect");
-            return "passwordchange";
-        }
-
-        currentUser.setPassword(passwordEncoder.encode(newPassword));
-        currentUser.setTempPwd(false);
-        userRepository.save(currentUser);
+        SecurityContextHolder.clearContext();
 
         return "redirect:/homepage?passwordchangesuccess";
     }

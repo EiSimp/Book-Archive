@@ -44,6 +44,10 @@ public class SecurityUser implements UserDetails {
         return decorated.getTempPwd();
     }
 
+    public User getUser() {
+        return decorated;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<UserRole> roles = decorated.getRoles();
