@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const modal = document.getElementById("edit-bookshelf-popup");
     const closeModalBtn = document.querySelector(".close-btn");
     const saveEditBtn = document.getElementById("save-edit-btn");
+    const deleteBookshelfBtn = document.getElementById("delete-bookshelf-btn");
+
 
     let currentBookshelfName = '';
 
@@ -23,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.style.display = "flex";
         }
     });
+
 
     // Close the modal when the user clicks on the close button
     closeModalBtn.addEventListener('click', () => {
@@ -82,6 +85,37 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("Error renaming bookshelf. Please try again.");
         });
     });
+
+    // Handle the delete button click
+    deleteBookshelfBtn.addEventListener('click', () => {
+        const confirmDelete = confirm("Are you sure you want to delete this bookshelf?");
+        if (confirmDelete) {
+            const csrf = getCsrfToken();
+            fetch('/bookshelves/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrf.header]: csrf.token
+                },
+                body: JSON.stringify({ name: currentBookshelfName })
+            }).then(() => {
+                // Remove the bookshelf element from the DOM
+                const libraryDiv = document.getElementById('library');
+                const bookshelfElements = libraryDiv.getElementsByClassName('bookshelf');
+                for (let i = 0; i < bookshelfElements.length; i++) {
+                    const titleElement = bookshelfElements[i].querySelector('.bookshelf-title');
+                    if (titleElement && titleElement.innerText === currentBookshelfName) {
+                        bookshelfElements[i].remove();
+                        break;
+                    }
+                }
+                modal.style.display = "none";
+            }).catch(error => {
+                console.error("Error deleting bookshelf:", error);
+                alert("Error deleting bookshelf. Please try again.");
+            });
+        }
+    });
 });
 
 
@@ -108,6 +142,11 @@ function getCsrfToken() {
         token: csrfToken,
         header: csrfHeader
     };
+}
+
+// Function to get the current user's ID
+function getUserId() {
+    return document.querySelector('meta[name="user-id"]').getAttribute('content');
 }
 //Creates the bookshelf
 function createBookshelf() {
@@ -158,54 +197,6 @@ function createBookshelf() {
     });
     closePopup();
 }
-// For renaming and deleting bookshelves
-document.addEventListener("click", function(event) {
-    // Renaming
-    if (event.target.classList.contains("rename-btn")) {
-        var oldName = event.target.parentElement.querySelector("div").textContent;
-        var newName = prompt("Enter new bookshelf name:");
-        if (newName === "") {
-            alert("Bookshelf name is required.");
-            return;
-        }
-        const csrf = getCsrfToken();
-        fetch('/bookshelves/rename', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                [csrf.header]: csrf.token
-            },
-            body: JSON.stringify({
-                oldName: oldName,
-                newName: newName
-            })
-        }).then(response => response.json()).then(data => {
-            event.target.parentElement.querySelector("div").textContent = data.name;
-        }).catch(error => {
-            console.error("Error renaming bookshelf:", error);
-        });
-    }
-    // Deleting
-    if (event.target.classList.contains("delete-btn")) {
-        var name = event.target.parentElement.querySelector("div").textContent;
-        var confirmDelete = confirm("Are you sure you want to delete this bookshelf?");
-        if (confirmDelete) {
-            const csrf = getCsrfToken();
-            fetch('/bookshelves/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrf.header]: csrf.token
-                },
-                body: JSON.stringify({ name: name })
-            }).then(() => {
-                event.target.parentElement.remove();
-            }).catch(error => {
-                console.error("Error deleting bookshelf:", error);
-            });
-        }
-    }
-});
 // For sorting Bookshelves
 document.getElementById("sort-books-btn").addEventListener("click", function() {
     var sortBy = prompt("Enter sort option (name):");
@@ -265,3 +256,5 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error fetching bookshelves:', error));
 });
+
+
