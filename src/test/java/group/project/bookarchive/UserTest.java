@@ -18,9 +18,10 @@ public class UserTest {
 
     @Test
     public void testConstructorWithoutBio() {
-        User user = new User("jane_smith", "pass456");
+        User user = new User("jane_smith", "pass456", "fakeemail@gmail.com");
         assertEquals("jane_smith", user.getUsername());
         assertEquals("pass456", user.getPassword());
+        assertEquals("fakeemail@gmail.com", user.getEmail());
         assertEquals(null, user.getBio());
     }
 
@@ -37,6 +38,9 @@ public class UserTest {
         user.setBio("New bio");
         assertEquals("New bio", user.getBio());
 
+        user.setEmail("fakeemail1@gmail.com");
+        assertEquals("fakeemail1@gmail.com", user.getEmail());
+
 
         user.setUsername("old_user");
         assertEquals("old_user", user.getUsername());
@@ -46,6 +50,10 @@ public class UserTest {
         
         user.setBio("Old bio");
         assertEquals("Old bio", user.getBio());
+
+        user.setEmail("fakeemail2@gmail.com");
+        assertEquals("fakeemail2@gmail.com", user.getEmail());
+
     }
 
 

@@ -67,7 +67,6 @@ p {
     /* Adjust line height for readability */
     box-sizing: border-box;
     height: auto;
-    /* Allow height to adjust based on content */
 }
 
 #manageAccountDisplay {
@@ -209,6 +208,7 @@ a {
 
 .pencil-icon{
     color:#5e96ff;
+    margin-left: 5px;
 }
 
 #formcontainer {

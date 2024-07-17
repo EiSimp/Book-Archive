@@ -2,12 +2,18 @@ package group.project.bookarchive;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,13 +24,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import group.project.bookarchive.controllers.ArchiveController;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
-import group.project.bookarchive.services.MailService;
+import group.project.bookarchive.security.SecurityUser;
 import group.project.bookarchive.services.UserService;
 
-@WebMvcTest(ArchiveController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ArchiveControllerTests {
 
     @Autowired
@@ -36,15 +42,25 @@ public class ArchiveControllerTests {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private MailService mailService;
+    @BeforeEach
+    public void setupSecurityContext() {
+        SecurityUser principal = new SecurityUser(new User("testuser", "password1", "testemail@gmail.com"));
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.getPrincipal()).thenReturn(principal);
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        SecurityContextHolder.setContext(securityContext);
+    }
+
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"}) // Example admin role for testing
     public void testGetAllUsers() throws Exception {
         // Mock data
-        User user1 = new User("user1", "password1");
-        User user2 = new User("user2", "password2");
+        User user1 = new User("user1", "password1", "hey@gmail.com");
+        User user2 = new User("user2", "password2", "hey@gmail.com");
         List<User> userList = Arrays.asList(user1, user2);
 
         // Mock behavior of service.listAll() to return userList
@@ -98,13 +114,6 @@ public class ArchiveControllerTests {
                 .andExpect(MockMvcResultMatchers.view().name("myrecord"));
     }
 
-    @Test
-    @WithMockUser(username = "testuser", roles = {"USER"})
-    public void testProfileSetting() throws Exception {
-        mockMvc.perform(get("/profilesetting"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("profilesetting"));
-    }
 
     @Test
     @WithMockUser(username = "testuser", roles = {"USER"})

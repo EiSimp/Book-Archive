@@ -94,8 +94,33 @@ public class ArchiveController {
     }
 
     @GetMapping("/profilesetting")
-    public String profileSetting() {
-        return "profilesetting";
+    public String profileSetting(Model model, @AuthenticationPrincipal SecurityUser user) {
+        // Fetch updated user data from the database based on ID
+        Optional<User> userOptional = userRepository.findById(user.getId());
+
+        if (userOptional.isPresent()) {
+            // Convert User to SecurityUser
+            User updatedUser = userOptional.get();
+            SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
+    
+            // Update user information in the session
+            UsernamePasswordAuthenticationToken authentication = 
+                    (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            authentication.setDetails(updatedSecurityUser);
+    
+            // Add updated user information to the model
+            model.addAttribute("user", updatedSecurityUser);
+
+            // Clear authentication context to force reload of user details
+        SecurityContextHolder.clearContext();
+
+    
+            return "profilesetting"; // Return the correct template name
+        } 
+        else
+        {
+            return "login";
+        }
     }
 
     @GetMapping("/header")
@@ -224,10 +249,32 @@ public class ArchiveController {
 
             // Add updated user information to the model
             model.addAttribute("user", updatedSecurityUser);
+            // Clear authentication context to force reload of user details
+            SecurityContextHolder.clearContext();
 
             return "myaccount";
         }
     }
+
+    @PostMapping("/update-profile")
+    public String updateProfile(@RequestParam Long id,
+                                @RequestParam String profilePhoto,
+                                @RequestParam String bio) {
+        // Fetch user by id
+        User user = userRepository.findById(id)
+                                  .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Update user's profile fields
+        user.setProfilePhoto(profilePhoto);
+        user.setBio(bio);
+
+        // Save updated user
+        userRepository.save(user);
+
+        // Redirect to a success page or return a success message
+        return "redirect:/profilesetting?success";  // Redirect to profile page after update
+    }
+        
 
     public static String fetchJsonFromUrl(String urlString) throws IOException {
         URL url = new URL(urlString);

@@ -52,7 +52,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests((authz) -> authz
                                                 .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)
                                                 .permitAll()
-                                                .requestMatchers("/login", "/signup", "/forgot", "/myaccount",
+                                                .requestMatchers("/login", "/signup", "/forgot", "/myaccount", "/profilesetting",
                                                                 "/stylesheet/**", "/javascript/**", "/images/**",
                                                                 "/check-username", "/check-email")
                                                 .permitAll()
@@ -79,6 +79,7 @@ public class SecurityConfig {
                                                 .changePasswordPage("/change-password"));
                 return http.build();
         }
+        
 
         @Bean
         public PasswordEncoder passwordEncoder() {
