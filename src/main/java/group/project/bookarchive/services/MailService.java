@@ -38,25 +38,17 @@ public class MailService {
 
     public void sendPwdMail(MailDTO dto) {
 
-        char[] charSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-        StringBuilder tmpPwd = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            int index = (int) (charSet.length * Math.random());
-            tmpPwd.append(charSet[index]);
-        }
-
+        String tmpPwd = generateTemporaryPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedTempPwd = passwordEncoder.encode(tmpPwd.toString());
 
         User user = userRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        user.setPassword(encodedTempPwd);
+        user.setPassword(passwordEncoder.encode(tmpPwd));
         user.setTempPwd(true);
         userRepository.save(user);
 
         Context context = new Context();
-        context.setVariable("temporaryPwd", tmpPwd.toString());
+        context.setVariable("temporaryPwd", tmpPwd);
 
         String body = templateEngine.process("emails/temporaryPasswordEmail", context);
 
@@ -76,5 +68,17 @@ public class MailService {
         } catch (MailException e) {
             logger.error("Failed to send email to {}: {}", dto.getEmail(), e.getMessage(), e);
         }
+    }
+
+    private String generateTemporaryPassword() {
+        char[] charSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        StringBuilder tmpPwd = new StringBuilder();
+
+        for (int i = 0; i < 10; i++) {
+            int index = (int) (charSet.length * Math.random());
+            tmpPwd.append(charSet[index]);
+        }
+
+        return tmpPwd.toString();
     }
 }
