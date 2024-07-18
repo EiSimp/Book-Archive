@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentBookshelfName = '';
 
     // Event delegation for edit buttons
-    document.getElementById('library').addEventListener('click', function(event) {
+    document.getElementById('collection-cardlist').addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-btn')) {
             // Populate the modal with the current bookshelf data
             const bookshelfElement = event.target.parentElement;
-            const titleElement = bookshelfElement.querySelector('.bookshelf-title');
-            const isSecret = bookshelfElement.querySelector('.bookshelf-lock') !== null;
+            const titleElement = bookshelfElement.querySelector('.collection-title');
+            const isSecret = bookshelfElement.querySelector('.card-lock') !== null;
 
             currentBookshelfName = titleElement.innerText;
 
@@ -60,18 +60,18 @@ document.addEventListener("DOMContentLoaded", function() {
             })
         }).then(response => response.json()).then(data => {
             // Update the bookshelf element with the new details
-            const libraryDiv = document.getElementById('library');
-            const bookshelfElements = libraryDiv.getElementsByClassName('bookshelf');
+            const bookshelfUL = document.getElementById('collection-cardlist');
+            const bookshelfElements = bookshelfUL.getElementsByClassName('collection-li');
             for (let i = 0; i < bookshelfElements.length; i++) {
-                const titleElement = bookshelfElements[i].querySelector('.bookshelf-title');
+                const titleElement = bookshelfElements[i].querySelector('.collection-title');
                 if (titleElement && titleElement.innerText === currentBookshelfName) {
                     titleElement.innerText = editedName;
                     if (isSecret) {
-                        if (!bookshelfElements[i].querySelector('.bookshelf-lock')) {
-                            bookshelfElements[i].insertAdjacentHTML('beforeend', '<div class="bookshelf-lock">🔒</div>');
+                        if (!bookshelfElements[i].querySelector('.card-lock')) {
+                            bookshelfElements[i].querySelector('.card-description-li').insertAdjacentHTML("beforeend", '<span class="card-lock">🔒</span>');
                         }
                     } else {
-                        const lockElement = bookshelfElements[i].querySelector('.bookshelf-lock');
+                        const lockElement = bookshelfElements[i].querySelector('.card-lock');
                         if (lockElement) {
                             lockElement.remove();
                         }
@@ -100,10 +100,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: JSON.stringify({ name: currentBookshelfName })
             }).then(() => {
                 // Remove the bookshelf element from the DOM
-                const libraryDiv = document.getElementById('library');
-                const bookshelfElements = libraryDiv.getElementsByClassName('bookshelf');
+                const bookshelfUL = document.getElementById('collection-cardlist');
+                const bookshelfElements = bookshelfUL.getElementsByClassName('collection-li');
                 for (let i = 0; i < bookshelfElements.length; i++) {
-                    const titleElement = bookshelfElements[i].querySelector('.bookshelf-title');
+                    const titleElement = bookshelfElements[i].querySelector('.collection-title');
                     if (titleElement && titleElement.innerText === currentBookshelfName) {
                         bookshelfElements[i].remove();
                         break;
@@ -180,17 +180,41 @@ function createBookshelf() {
             throw new Error("Error creating bookshelf. Please try again.");
         }
 
-        var newBookshelf = document.createElement("div");
-        newBookshelf.className = "bookshelf";
+        var newBookshelf = document.createElement("li");
+        newBookshelf.className = "collection-li";
         newBookshelf.innerHTML = `
-            <img src="path/to/placeholder/image.png" alt="Bookshelf Image">
-            <div class="bookshelf-details">
-                <div class="bookshelf-title">${data.name}</div>
-                ${data.secret ? '<div class="bookshelf-lock">🔒</div>' : ''}
-                <button class="edit-btn">Edit</button>
-            </div>
+            <a class="collection-detail-link">
+                <div class="collection-card">
+                    <div class="collection-thumbnail-holder">
+                        <div class="thumbnail-s ts0">
+                            <div class="thumbnail-image-s">img</div>
+                        </div>
+                        <div class="thumbnail-s ts1">
+                            <div class="thumbnail-image-s">img</div>
+                        </div>
+                        <div class="thumbnail-s ts2">
+                            <div class="thumbnail-image-s">img</div>
+                        </div>
+                        <div class="thumbnail-s ts3">
+                            <div class="thumbnail-image-s">img</div>
+                        </div>
+                        <div class="thumbnail-s ts4">
+                            <div class="thumbnail-image-s">img</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-description">
+                    <ul class="card-description-li">
+                        <li class="collection-title">${data.name}</li>
+                        <li class="card-numOfBooks">${data.books} Books</li>
+                        ${data.secret ? '<span class="card-lock">🔒</span>' : ""}
+                    </ul>
+                    
+                    <button class="edit-btn">Edit</button>
+                </div>
+             </a>
         `;
-        document.getElementById("collections").appendChild(newBookshelf);
+        document.getElementById("collection-cardlist").appendChild(newBookshelf);
         closePopup();
     }).catch(error => {
         alert(error.message);
@@ -203,16 +227,42 @@ document.getElementById("sort-books-btn").addEventListener("click", function() {
     fetch(`/bookshelves/sort?sortBy=${sortBy}`)
         .then(response => response.json())
         .then(data => {
-            var container = document.getElementById("collections");
+            var container = document.getElementById("collection-cardlist");
             container.innerHTML = "";
             data.forEach(function(bookshelf) {
-                var bookshelfDiv = document.createElement("div");
-                bookshelfDiv.className = "bookshelf";
-                bookshelfDiv.innerHTML = `<div>${bookshelf.name}</div>`;
-                if (bookshelf.secret) {
-                    bookshelfDiv.innerHTML += `<span>🔒</span>`;
-                }
-                container.appendChild(bookshelfDiv);
+                var bookshelfLi = document.createElement("li");
+                bookshelfLi.className = "collection-li";
+                bookshelfLi.innerHTML = 
+                ` <a class="collection-detail-link">
+                    <div class="collection-card">
+                        <div class="collection-thumbnail-holder">
+                            <div class="thumbnail-s ts1">
+                                <div class="thumbnail-image-s">img</div>
+                            </div>
+                            <div class="thumbnail-s ts2">
+                                <div class="thumbnail-image-s">img</div>
+                            </div>
+                            <div class="thumbnail-s ts3">
+                                <div class="thumbnail-image-s">img</div>
+                            </div>
+                            <div class="thumbnail-s ts4">
+                                <div class="thumbnail-image-s">img</div>
+                            </div>
+                            <div class="thumbnail-s ts5">
+                                <div class="thumbnail-image-s">img</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <ul class="card-description-li">
+                            <li class="collection-title">${bookshelf.name}</li>
+                            <li class="card-numOfBooks">${bookshelf.books} Books</li>
+                            ${bookshelf.secret ? '<span class="card-lock">🔒</span>' : ""}
+                        </ul>
+                        <button class="edit-btn">Edit</button>
+                    </div>
+                </a>`;
+                container.appendChild(bookshelfLi);
             });
         }).catch(error => {
         console.error("Error sorting bookshelves:", error);
@@ -223,35 +273,94 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch("/bookshelves/all") // Fetch all bookshelves from the backend
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
-            const libraryDiv = document.getElementById('library');
-            libraryDiv.innerHTML = ''; // Clear the library div
+            const bookshelfUL = document.getElementById('collection-cardlist');
+            bookshelfUL.innerHTML = ''; // Clear the library div
             data.forEach(bookshelf => {
                 // Create a div element for each bookshelf
-                const bookshelfElement = document.createElement('div');
-                bookshelfElement.className = 'bookshelf';
+                const bookshelfElement = document.createElement('li');
+                bookshelfElement.className = 'collection-li';
 
-                // Create a div element for the bookshelf title
-                const titleElement = document.createElement('div');
-                titleElement.className = 'bookshelf-title';
-                titleElement.innerText = bookshelf.name;
+                // Create an anchor element for the bookshelf
+                const anchorElement = document.createElement('a');
+                anchorElement.className = 'collection-detail-link';
 
-                // Create a div element for the bookshelf details
-                const detailsElement = document.createElement('div');
-                detailsElement.className = 'bookshelf-details';
-                detailsElement.innerText = `${bookshelf.books} Books ${bookshelf.time} ago`;
+                // Create a div element for the thumbnails holder
+                const collectionCard = document.createElement("div");
+                collectionCard.className = "collection-card";
 
+                // Create a div element for the card thumbnail holder
+                const cardThumbnailHolder = document.createElement("div");
+                cardThumbnailHolder.className = "collection-thumbnail-holder";
+                collectionCard.appendChild(cardThumbnailHolder);
+
+                // Create and append thumbnail images
+                for (let i = 0; i < 5; i++) {
+                    const thumbnailS = document.createElement("div");
+                    thumbnailS.classList.add("thumbnail-s", "ts"+i);
+                    const thumbnailImageS = document.createElement("div");
+                    thumbnailImageS.className = "thumbnail-image-s";
+  
+                    // Use the actual book thumbnails if available
+                    /*if (bookshelf.books[i] && bookshelf.books[i].thumbnailUrl) {
+                          !! thumbnails will be displayed as 'background-image', not <img> tag
+                      } else {*/
+                        thumbnailImageS.innerText = "img"; // Placeholder if no thumbnail
+                    //}
+                    thumbnailS.appendChild(thumbnailImageS);
+                    cardThumbnailHolder.appendChild(thumbnailS);
+                }
+
+                // Create a div element for the card description
+                const cardDescription = document.createElement("div");
+                cardDescription.className = "card-description";
+
+                // Create an unordered list for the card description list items
+                const cardDescriptionList = document.createElement("ul");
+                cardDescriptionList.className = "card-description-li";
+
+                // Create and append the title list item
+                const titleListItem = document.createElement("li");
+                titleListItem.className = "collection-title";
+                titleListItem.innerText = bookshelf.name;
+
+                // Create and append the number of books list item
+                const numOfBooksListItem = document.createElement("li");
+                numOfBooksListItem.className = "card-numOfBooks";
+                numOfBooksListItem.innerText = `${bookshelf.books} Books`;
+
+                // Create lock element if the bookshelf is locked
+                if (data.secret) {
+                    const lockElement = document.createElement("span");
+                    lockElement.className="card-lock";
+                    lockElement.innerText = "🔒";
+                    cardDescriptionList.appendChild(lockElement);
+                }
+                
                 // Create the edit button
                 const editButton = document.createElement('button');
                 editButton.className = 'edit-btn';
                 editButton.innerText = 'Edit';
 
-                // Append the title, details, and edit button to the bookshelf element
-                bookshelfElement.appendChild(titleElement);
-                bookshelfElement.appendChild(detailsElement);
-                bookshelfElement.appendChild(editButton);
+                // Append list items to the card description list
+                cardDescriptionList.appendChild(titleListItem);
+                cardDescriptionList.appendChild(numOfBooksListItem);
 
-                // Append the bookshelf element to the library div
-                libraryDiv.appendChild(bookshelfElement);
+                // Append the card description list to the card description div
+                cardDescription.appendChild(cardDescriptionList);
+
+                // Append the collection card to the anchor element
+                anchorElement.appendChild(collectionCard);
+
+                // Append the card description to the anchorElement
+                anchorElement.appendChild(cardDescription);
+
+                cardDescription.appendChild(editButton);
+
+                // Append the anchor element to the list item
+                bookshelfElement.appendChild(anchorElement);
+
+                // Append the bookshelf element to the bookshelf ul
+                bookshelfUL.appendChild(bookshelfElement);
             });
         })
         .catch(error => console.error('Error fetching bookshelves:', error));

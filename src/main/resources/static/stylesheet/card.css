@@ -5,13 +5,24 @@ ul.cardlist {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 15px;
+    gap: 2%;
+    padding:0 3px;
+}
+#collection-cardlist {
+    gap:0;
+    padding:0;
+    row-gap: 10px;
 }
 
-li.card-li {
-    display: inline-block;
+li.card-li, .collection-li {
+    display: flex;
     width: 15%;
     align-items: center;
+}
+.collection-li {
+    min-width: 200px;
+    width:25%;
+    padding: 0 5px;
 }
 
 .collection-card, .book-card {
@@ -24,21 +35,81 @@ li.card-li {
     overflow: hidden;
 }
 
+.collection-card {
+    padding-bottom: calc(100%*(3 / 6));
+    display: flex;
+}
+
+.collections-header {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
 .card-thumbnail-holder {
     position: absolute;
     top: 0;
     left: 0;
-    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
     padding: 5px;
 }
+
+.collection-thumbnail-holder {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    isolation: isolate;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    justify-content:space-between;
+    background-color: transparent;
+
+}
+.collection-thumbnail-holder::after {
+    clear: left;    
+    display: table;
+    order: 0;
+}
 /* for thumbnails in collection cards*/
 .thumbnail-s {
-    width: 50%;
-    padding: 2px;
+    display: flex;
+    width: 30%;
+    height: 100%;
+    box-shadow: 4px 0px 3px rgba(0, 0, 0, 0.25);
+    float: left;
+    margin-right: -20%;
+    position: relative;
+    border-radius: 4px;
+}
+.ts0 {
+    order:0;
+    z-index:4;
+}
+.ts1 {
+    order:1;
+    z-index:3;
+    left:-5%;
+}
+.ts2 {
+    order:2;
+    z-index:2;
+    left:-10%;
+}
+.ts3 {
+    order:3;
+    z-index:1;
+    left:-15%;
+}
+.ts4 {
+    order:4;
+    z-index:0;
+    left:-20%;
 }
 
 /* for thumbnails in book cards*/
@@ -73,6 +144,9 @@ img.thumbnail-image-m {
 }
 .card-description {
     padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 ul.card-description-li {
@@ -83,13 +157,13 @@ ul.card-description-li {
     padding: 0;
 }
 
-.card-title {
+.card-title, .collection-title {
     font-weight: 500;
     font-size: 16px;
     color: #414141;
 }
 
-.card-numOfBooks {
+.card-numOfBooks, .card-secret {
     color: #8c8c8c;
 }
 .card-rate {
@@ -129,10 +203,13 @@ p {
     gap: 10px;
 }
 
-.bookshelf-rack {
+.collection-detail-link {
+    text-decoration: none;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
 }
