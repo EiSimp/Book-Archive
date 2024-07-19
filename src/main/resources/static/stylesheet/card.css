@@ -1,4 +1,6 @@
-/* Style for collection/book cards*/
+/* Style for collection, book, comment cards*/
+
+/* Common ul style that applied to all the cards*/
 ul.cardlist {
     list-style-type: none;
     width: 100%;
@@ -8,6 +10,8 @@ ul.cardlist {
     gap: 2%;
     padding:0 3px;
 }
+
+/* Style only for collection card list*/
 #collection-cardlist {
     gap:0;
     padding:0;
@@ -87,6 +91,7 @@ li.card-li, .collection-li {
     position: relative;
     border-radius: 4px;
 }
+/* for thumbnails overlap display*/
 .ts0 {
     order:0;
     z-index:4;
@@ -142,6 +147,7 @@ img.thumbnail-image-m {
     height: 100%;
     object-fit: cover;
 }
+/* text area */
 .card-description {
     padding-left: 0;
     display: flex;
@@ -157,20 +163,54 @@ ul.card-description-li {
     padding: 0;
 }
 
+/*book title, collection title*/
 .card-title, .collection-title {
     font-weight: 500;
     font-size: 16px;
     color: #414141;
 }
 
-.card-numOfBooks, .card-secret {
+.card-numOfBooks, .card-lock {
     color: #8c8c8c;
 }
+
 .card-rate {
     color: rgb(174, 121, 41);
     font-weight: 300;
 }
 
+.collection-detail-link {
+    text-decoration: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.collection-li:hover {
+    transform: scale(1.05);
+}
+
+/* Edit button */
+.edit-btn {
+    margin: 15px 5px;
+    padding:3px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+
+.collection-li:hover .edit-btn {
+    display: block;
+}
+
+/* comment card */
 .comment-card {
     display: grid;
     grid-template-rows: 3fr 1fr;
@@ -182,10 +222,11 @@ ul.card-description-li {
     gap: 10px;
 }
 
+/* user profile img in the comment card*/
 .comment-profile-img {
     height: 40px;
-  width: 40px;
-  border-radius: 50%;
+    width: 40px;
+    border-radius: 50%;
 }
 
 p {
@@ -209,7 +250,7 @@ p {
     display: flex;
     flex-direction: column;
     flex: none;
-order: 0;
-align-self: stretch;
-flex-grow: 0;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
 }
