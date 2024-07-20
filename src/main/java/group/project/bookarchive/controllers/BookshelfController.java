@@ -47,7 +47,7 @@ public class BookshelfController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Bookshelf>> getAllBookshelves() {
-        List<Bookshelf> bookshelves = bookshelfService.getAllBookshelves();
+        List<Bookshelf> bookshelves = bookshelfService.getAllBookshelvesByUser();
         return ResponseEntity.ok(bookshelves);
     }
 

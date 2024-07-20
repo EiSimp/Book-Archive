@@ -24,7 +24,8 @@ public class BookDetailController {
         try {
             Book book = bookService.fetchBookDetails(bookID);
             model.addAttribute("book", book);
-            model.addAttribute("bookshelves", bookshelfService.getAllBookshelves());
+            //Changed getAllBookshelves to getAllBookshelvesByUser
+            model.addAttribute("bookshelves", bookshelfService.getAllBookshelvesByUser());
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("error", "Unable to fetch book details.");
