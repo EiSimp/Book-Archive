@@ -1,5 +1,5 @@
 // For edit popup
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("edit-bookshelf-popup");
     const closeModalBtn = document.querySelector(".close-btn");
     const saveEditBtn = document.getElementById("save-edit-btn");
@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentBookshelfName = '';
 
     // Event delegation for edit buttons
-    document.getElementById('collection-cardlist').addEventListener('click', function(event) {
+    document.getElementById('collection-cardlist').addEventListener('click', function (event) {
         if (event.target.classList.contains('edit-btn')) {
             // Populate the modal with the current bookshelf data
             const bookshelfElement = event.target.parentElement;
@@ -86,6 +86,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    const userId = document.getElementById('userId').value;
+
     // Handle the delete button click
     deleteBookshelfBtn.addEventListener('click', () => {
         const confirmDelete = confirm("Are you sure you want to delete this bookshelf?");
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'Content-Type': 'application/json',
                     [csrf.header]: csrf.token
                 },
-                body: JSON.stringify({ name: currentBookshelfName })
+                body: JSON.stringify({ name: currentBookshelfName, userId: userId })
             }).then(() => {
                 // Remove the bookshelf element from the DOM
                 const bookshelfUL = document.getElementById('collection-cardlist');
@@ -120,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // Open/Create Display Popup
-document.getElementById("create-bookshelf-btn").onclick = function() {
+document.getElementById("create-bookshelf-btn").onclick = function () {
     document.getElementById("create-bookshelf-popup").style.display = "flex";
 };
 // Close Display Popup
@@ -128,7 +130,7 @@ function closePopup() {
     document.getElementById("create-bookshelf-popup").style.display = "none";
 }
 // Close the popup when clicking outside of the popup content
-window.onclick = function(event) {
+window.onclick = function (event) {
     var popup = document.getElementById("create-bookshelf-popup");
     if (event.target == popup) {
         closePopup();
@@ -222,18 +224,18 @@ function createBookshelf() {
     closePopup();
 }
 // For sorting Bookshelves
-document.getElementById("sort-books-btn").addEventListener("click", function() {
+document.getElementById("sort-books-btn").addEventListener("click", function () {
     var sortBy = prompt("Enter sort option (name):");
     fetch(`/bookshelves/sort?sortBy=${sortBy}`)
         .then(response => response.json())
         .then(data => {
             var container = document.getElementById("collection-cardlist");
             container.innerHTML = "";
-            data.forEach(function(bookshelf) {
+            data.forEach(function (bookshelf) {
                 var bookshelfLi = document.createElement("li");
                 bookshelfLi.className = "collection-li";
-                bookshelfLi.innerHTML = 
-                ` <a class="collection-detail-link">
+                bookshelfLi.innerHTML =
+                    ` <a class="collection-detail-link">
                     <div class="collection-card">
                         <div class="collection-thumbnail-holder">
                             <div class="thumbnail-s ts1">
@@ -265,11 +267,11 @@ document.getElementById("sort-books-btn").addEventListener("click", function() {
                 container.appendChild(bookshelfLi);
             });
         }).catch(error => {
-        console.error("Error sorting bookshelves:", error);
-    });
+            console.error("Error sorting bookshelves:", error);
+        });
 });
 // For Displaying Bookshelves
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     fetch("/bookshelves/all") // Fetch all bookshelves from the backend
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
@@ -296,15 +298,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Create and append thumbnail images
                 for (let i = 0; i < 5; i++) {
                     const thumbnailS = document.createElement("div");
-                    thumbnailS.classList.add("thumbnail-s", "ts"+i);
+                    thumbnailS.classList.add("thumbnail-s", "ts" + i);
                     const thumbnailImageS = document.createElement("div");
                     thumbnailImageS.className = "thumbnail-image-s";
-  
+
                     // Use the actual book thumbnails if available
                     /*if (bookshelf.books[i] && bookshelf.books[i].thumbnailUrl) {
                           !! thumbnails will be displayed as 'background-image', not <img> tag
                       } else {*/
-                        thumbnailImageS.innerText = "img"; // Placeholder if no thumbnail
+                    thumbnailImageS.innerText = "img"; // Placeholder if no thumbnail
                     //}
                     thumbnailS.appendChild(thumbnailImageS);
                     cardThumbnailHolder.appendChild(thumbnailS);
@@ -331,11 +333,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Create lock element if the bookshelf is locked
                 if (data.secret) {
                     const lockElement = document.createElement("span");
-                    lockElement.className="card-lock";
+                    lockElement.className = "card-lock";
                     lockElement.innerText = "🔒";
                     cardDescriptionList.appendChild(lockElement);
                 }
-                
+
                 // Create the edit button
                 const editButton = document.createElement('button');
                 editButton.className = 'edit-btn';
