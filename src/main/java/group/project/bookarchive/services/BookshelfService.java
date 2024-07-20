@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
-//Newly added imports
+// Newly added imports
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import group.project.bookarchive.models.User;
@@ -16,6 +18,9 @@ import group.project.bookarchive.repositories.UserRepository;
 public class BookshelfService {
     @Autowired
     private BookshelfRepository bookshelfRepository;
+
+    @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -38,9 +43,14 @@ public class BookshelfService {
         return bookshelf;
     }
 
-    public void deleteBookshelf(String name) {
-        Bookshelf bookshelf = bookshelfRepository.findByName(name);
+    public void deleteBookshelf(String name, Long userId) {
+        Bookshelf bookshelf = bookshelfRepository.findByNameAndUserId(name, userId);
         if (bookshelf != null) {
+            // Remove all bookshelf items associated with this bookshelf
+            List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookshelf.getId());
+            bookshelfItemRepository.deleteAll(items);
+
+            // Now delete the bookshelf
             bookshelfRepository.delete(bookshelf);
         }
     }
