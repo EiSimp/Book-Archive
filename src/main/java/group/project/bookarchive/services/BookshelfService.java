@@ -2,6 +2,8 @@ package group.project.bookarchive.services;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import group.project.bookarchive.models.Bookshelf;
@@ -43,10 +45,9 @@ public class BookshelfService {
         return bookshelf;
     }
 
-    public void deleteBookshelf(String name, Long userId) {
-        Bookshelf bookshelf = bookshelfRepository.findByNameAndUserId(name, userId);
+    public void deleteBookshelf(Long id) {
+        Optional<Bookshelf> bookshelf = bookshelfRepository.findById(id);
         if (bookshelf != null) {
-            // Remove all bookshelf items associated with this bookshelf
             List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookshelf.getId());
             bookshelfItemRepository.deleteAll(items);
 

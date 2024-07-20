@@ -8,9 +8,10 @@ public class Bookshelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private boolean isSecret;
 
+    private String name;
+
+    private boolean isSecret;
 
     @Column(name = "user_id")
     private Long userId;

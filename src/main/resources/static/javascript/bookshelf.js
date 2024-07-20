@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     let currentBookshelfName = '';
+    let currentBookshelfId = '';
 
     // Event delegation for edit buttons
     document.getElementById('collection-cardlist').addEventListener('click', function (event) {
@@ -14,12 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
             // Populate the modal with the current bookshelf data
             const bookshelfElement = event.target.parentElement;
             const titleElement = bookshelfElement.querySelector('.collection-title');
+            const idElement = bookshelfElement.querySelector('.bookshelfId');
             const isSecret = bookshelfElement.querySelector('.card-lock') !== null;
 
             currentBookshelfName = titleElement.innerText;
+            currentBookshelfId = idElement.innerText;
 
             document.getElementById("edit-bookshelf-name").value = titleElement.innerText;
             document.getElementById("edit-secret-checkbox").checked = isSecret;
+            document.getElementById("edit-bookshelf-id").value = idElement.innerText;
 
             // Show the modal
             modal.style.display = "flex";
@@ -68,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     titleElement.innerText = editedName;
                     if (isSecret) {
                         if (!bookshelfElements[i].querySelector('.card-lock')) {
-                            bookshelfElements[i].querySelector('.card-description-li').insertAdjacentHTML("beforeend", '<span class="card-lock">🔒</span>');
+                            bookshelfElements[i].querySelector('.card-description-li').insertAdjacentHTML("beforeend", '<li class="card-lock">🔒</li>');
                         }
                     } else {
                         const lockElement = bookshelfElements[i].querySelector('.card-lock');
@@ -99,14 +103,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     'Content-Type': 'application/json',
                     [csrf.header]: csrf.token
                 },
-                body: JSON.stringify({ name: currentBookshelfName, userId: userId })
+                body: JSON.stringify({ 
+                    id: currentBookshelfId
+                 })
+
             }).then(() => {
                 // Remove the bookshelf element from the DOM
                 const bookshelfUL = document.getElementById('collection-cardlist');
                 const bookshelfElements = bookshelfUL.getElementsByClassName('collection-li');
                 for (let i = 0; i < bookshelfElements.length; i++) {
-                    const titleElement = bookshelfElements[i].querySelector('.collection-title');
-                    if (titleElement && titleElement.innerText === currentBookshelfName) {
+                    const idElement = bookshelfElements[i].querySelector('.bookshelfId');
+                    if (idElement && idElement.innerText === currentBookshelfId) {
                         bookshelfElements[i].remove();
                         break;
                     }
@@ -209,7 +216,8 @@ function createBookshelf() {
                     <ul class="card-description-li">
                         <li class="collection-title">${data.name}</li>
                         <li class="card-numOfBooks">${data.books} Books</li>
-                        ${data.secret ? '<span class="card-lock">🔒</span>' : ""}
+                        ${data.secret ? '<li class="card-lock">🔒</li>' : ""}
+                        <li class="booshelfId" style="display:none;">${data.id}</li>
                     </ul>
                     
                     <button class="edit-btn">Edit</button>
@@ -259,7 +267,8 @@ document.getElementById("sort-books-btn").addEventListener("click", function () 
                         <ul class="card-description-li">
                             <li class="collection-title">${bookshelf.name}</li>
                             <li class="card-numOfBooks">${bookshelf.books} Books</li>
-                            ${bookshelf.secret ? '<span class="card-lock">🔒</span>' : ""}
+                            ${bookshelf.secret ? '<li class="card-lock">🔒</li>' : ""}
+                            <li class="booshelfId" style="display:none;">${bookshelf.id}</li>
                         </ul>
                         <button class="edit-btn">Edit</button>
                     </div>
@@ -330,10 +339,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 numOfBooksListItem.className = "card-numOfBooks";
                 numOfBooksListItem.innerText = `${bookshelf.books} Books`;
 
+                // Append list items to the card description list
+                cardDescriptionList.appendChild(titleListItem);
+                cardDescriptionList.appendChild(numOfBooksListItem);
+
                 // Create lock element if the bookshelf is locked
                 if (data.secret) {
-                    const lockElement = document.createElement("span");
-                    lockElement.className = "card-lock";
+                    const lockElement = document.createElement("li");
+                    lockElement.className="card-lock";
                     lockElement.innerText = "🔒";
                     cardDescriptionList.appendChild(lockElement);
                 }
@@ -343,9 +356,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 editButton.className = 'edit-btn';
                 editButton.innerText = 'Edit';
 
-                // Append list items to the card description list
-                cardDescriptionList.appendChild(titleListItem);
-                cardDescriptionList.appendChild(numOfBooksListItem);
+                // Create id holder
+                const idHolder = document.createElement('li');
+                idHolder.style.setProperty('display','none');
+                idHolder.className = 'bookshelfId';
+                idHolder.innerText = bookshelf.id;
+
+                cardDescriptionList.appendChild(idHolder);
 
                 // Append the card description list to the card description div
                 cardDescription.appendChild(cardDescriptionList);
