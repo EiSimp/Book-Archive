@@ -9,6 +9,7 @@ import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.repositories.BookRepository;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
+import group.project.exceptions.BookAlreadyExistsException;
 
 @Service
 public class BookshelfItemService {
@@ -28,6 +29,11 @@ public class BookshelfItemService {
         Book existingBook = bookRepository.findByGoogleBookId(book.getGoogleBookId());
         if (existingBook == null) {
             existingBook = bookRepository.save(book);
+        }
+
+        // Check if the book is already in the bookshelf
+        if (bookshelfItemRepository.existsByBookshelfAndBook(bookshelf, existingBook)) {
+            throw new BookAlreadyExistsException("Book already exists in the bookshelf");
         }
 
         BookshelfItem bookshelfItem = new BookshelfItem();
