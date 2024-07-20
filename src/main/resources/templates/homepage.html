@@ -23,6 +23,9 @@
     <!--header-->
     <div th:replace="~{fragments/header.html}"></div>
 
+    <!-- Hidden input field to store the user ID -->
+    <input type="hidden" id="userId" th:value="${user.id}">
+
     <!--content starts here-->
     <div class="content-container">
         <!--numbers are for display purpose, need to represent actual data later-->
