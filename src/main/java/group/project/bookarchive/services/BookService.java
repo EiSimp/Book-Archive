@@ -51,8 +51,8 @@ public class BookService {
         book.setPublishedDate(volumeInfo.path("publishedDate").asText(""));
         book.setDescription(volumeInfo.path("description").asText(""));
         book.setCategory(getFirstCategory(volumeInfo.path("categories")));
-        book.setThumbnailUrl(volumeInfo.path("imageLinks").path("thumbnail").asText(""));
-        book.setBiggerThumbnailUrl(volumeInfo.path("imageLinks").path("large").asText(""));
+        book.setThumbnailUrl(volumeInfo.path("imageLinks").path("smallThumbnail").asText(""));
+        book.setBiggerThumbnailUrl(volumeInfo.path("imageLinks").path("thumbnail").asText(""));
         book.setAverageRating(volumeInfo.path("averageRating").asDouble(0.0));
         book.setIsbn(getFirstIsbn(volumeInfo.path("industryIdentifiers")));
         book.setAuthorDescription(""); // Adjust as needed

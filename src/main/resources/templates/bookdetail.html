@@ -23,7 +23,7 @@
             <div class="detail-leftside">
                 <div>
                     <div class="cover-holder">
-                        <img id="book-thumbnail" th:src="${book.thumbnailUrl}" alt="Book Thumbnail">
+                        <img id="book-thumbnail" th:src="${book.biggerThumbnailUrl}" alt="Book Thumbnail">
                     </div>
                 </div>
                 <div class="bookinfo">
@@ -107,7 +107,7 @@
                 <hr class="solid" id="divider-line">
                 <div>
                     <h4>Book Description</h4>
-                    <p id="book-description" th:text="${book.description}">Lorem ipsum dolor sit amet, consectetur
+                    <p id="book-description" th:utext="${book.description}">Lorem ipsum dolor sit amet, consectetur
                         adipiscing elit.</p>
                 </div>
                 <hr class="solid" id="divider-line">

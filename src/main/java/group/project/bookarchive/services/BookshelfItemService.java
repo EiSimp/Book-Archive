@@ -3,6 +3,7 @@ package group.project.bookarchive.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import group.project.bookarchive.exceptions.BookAlreadyExistsException;
 import group.project.bookarchive.models.Book;
 import group.project.bookarchive.models.Bookshelf;
 import group.project.bookarchive.models.BookshelfItem;
@@ -28,6 +29,11 @@ public class BookshelfItemService {
         Book existingBook = bookRepository.findByGoogleBookId(book.getGoogleBookId());
         if (existingBook == null) {
             existingBook = bookRepository.save(book);
+        }
+
+        // Check if the book is already in the bookshelf
+        if (bookshelfItemRepository.existsByBookshelfAndBook(bookshelf, existingBook)) {
+            throw new BookAlreadyExistsException("Book already exists in the bookshelf");
         }
 
         BookshelfItem bookshelfItem = new BookshelfItem();

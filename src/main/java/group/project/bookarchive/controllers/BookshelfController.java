@@ -36,6 +36,7 @@ public class BookshelfController {
     public ResponseEntity<Void> deleteBookshelf(@RequestBody Map<String, String> request) {
         Long id = Long.parseLong(request.get("id"));
         bookshelfService.deleteBookshelf(id);
+
         return ResponseEntity.ok().build();
     }
 

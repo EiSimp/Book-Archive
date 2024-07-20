@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
-//Newly added imports
+// Newly added imports
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import group.project.bookarchive.models.User;
@@ -18,6 +20,9 @@ import group.project.bookarchive.repositories.UserRepository;
 public class BookshelfService {
     @Autowired
     private BookshelfRepository bookshelfRepository;
+
+    @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -43,7 +48,11 @@ public class BookshelfService {
     public void deleteBookshelf(Long id) {
         Optional<Bookshelf> bookshelf = bookshelfRepository.findById(id);
         if (bookshelf != null) {
-            bookshelfRepository.delete(bookshelf.get());
+            List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookshelf.getId());
+            bookshelfItemRepository.deleteAll(items);
+
+            // Now delete the bookshelf
+            bookshelfRepository.delete(bookshelf);
         }
     }
 
