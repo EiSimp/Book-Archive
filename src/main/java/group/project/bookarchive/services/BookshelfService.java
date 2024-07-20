@@ -46,8 +46,9 @@ public class BookshelfService {
     }
 
     public void deleteBookshelf(Long id) {
-        Optional<Bookshelf> bookshelf = bookshelfRepository.findById(id);
-        if (bookshelf != null) {
+        Optional<Bookshelf> bookshelfOptional = bookshelfRepository.findById(id);
+        if (bookshelfOptional.isPresent()) {
+            Bookshelf bookshelf = bookshelfOptional.get();
             List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookshelf.getId());
             bookshelfItemRepository.deleteAll(items);
 
