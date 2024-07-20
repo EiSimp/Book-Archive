@@ -26,98 +26,105 @@
     <!--content starts here-->
     <div class="content-container">
         <!--numbers are for display purpose, need to represent actual data later-->
+        <!--"div.short-record" is a navigation tab for the default bookshelves-->
         <div class="short-record">
             <div class="short-record-column">
-                <div>
+                <div><!-- link to 'books Read' bookshelf-->
                     <!--Total number of books the user read-->
                     <span class="short-record-number">00</span>
                     <span class="short-record-label">Read</span>
                 </div>
             </div>
             <div class="short-record-column">
-                <div>
+                <div><!-- link to 'books Reading' bookshelf-->
                     <!--Total number of books the user is currently reading-->
                     <span class="short-record-number">00</span>
                     <span class="short-record-label">Reading</span>
                 </div>
             </div>
             <div class="short-record-column">
-                <div>
+                <div><!-- link to 'books to read' bookshelf-->
                     <!--Number of collections the user made-->
                     <span class="short-record-number">00</span>
                     <span class="short-record-label">To read</span>
                 </div>
             </div>
         </div>
-        <hr class="solid" id="divider-line">
-        <!--personalized bookshelf-->
+        <!-- divider-->
+        <hr class="solid divider-line">
+        <!--personalized bookshelf, shows 'books read' bookshelf by default-->
         <h3> Books Display</h3>
-        <div class="bookshelf">
-            <!--5 books are displayed for each line-->
+        <div class="bookshelf-container">
+            <!--6 books are displayed for each line-->
             <div class="bookshelf-rack">
-                <!--ul class="cardlist">
-                <li class="card-li">
-                    <div th:replace="~{fragments/bookcard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/bookcard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/bookcard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/bookcard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/bookcard.html}">
-                    </div>
-                </li>
-            </ul-->
+                <ul class="cardlist">
+                    <li class="card-li">
+                        <!-- display purpose-->
+                        <a class="detail-link">
+                            <div class="book-card">
+                                <div class="card-thumbnail-holder">
+                                    <div class="thumbnail-m">
+                                        <div class="thumbnail-image-m"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-description">
+                                <ul class="card-description-li">
+                                    <li class="card-title">Book Title</li>
+                                    <li class="card-rate">Rated ★ 0.0</li>
+                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'. 
+                                 others displays 'Avg ★ 0.0' -->
+                                </ul>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <hr class="solid" id="divider-line">
-        <!-- Library Section -->
-        <div id="collections">
-            <ul class="cardlist">
-                <li class="card-li">
-                    <div th:replace="~{fragments/collectioncard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/collectioncard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/collectioncard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/collectioncard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/collectioncard.html}">
-                    </div>
-                </li>
-                <li class="card-li">
-                    <div th:replace="~{fragments/collectioncard.html}">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <!--Current design for bookshelf display-->
-        <h2>Library</h2>
-        <div class="collections-header">
-            <button id="sort-books-btn">Sort</button>
-            <button id="create-bookshelf-btn">+</button>
-        </div>
-        <div class="library-container">
-            <div id="library" class="library-grid">
-                <!-- Bookshelves will be dynamically inserted here -->
+        <!--divider-->
+        <hr class="solid divider-line">
+        <h3>Collections</h3>
+        <div class="collection-container">
+            <div class="collection-header">
+                <button id="sort-books-btn">Sort</button>
+                <button id="create-bookshelf-btn">+</button>
+            </div>
+            <!-- Collections (= user created bookshelves)-->
+            <div id="collection-rack">
+                <ul class="cardlist" id="collection-cardlist">
+                    <!-- Bookshelves will be dynamically inserted here.
+                    Below is for display -->
+
+                    <li class="collection-li">
+                        <a class="collection-detail-link">
+                            <div class="collection-card">
+                                <div class="collection-thumbnail-holder">
+                                    <div class="thumbnail-s ts0">
+                                        <div class="thumbnail-image-s">img</div>
+                                    </div>
+                                    <div class="thumbnail-s ts1">
+                                        <div class="thumbnail-image-s">img</div>
+                                    </div>
+                                    <div class="thumbnail-s ts2">
+                                        <div class="thumbnail-image-s">img</div>
+                                    </div>
+                                    <div class="thumbnail-s ts3">
+                                        <div class="thumbnail-image-s">img</div>
+                                    </div>
+                                    <div class="thumbnail-s ts4">
+                                        <div class="thumbnail-image-s">img</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-description">
+                                <ul class="card-description-li">
+                                    <li class="collection-title">Collection Title<span>🔒</span></li>
+                                    <li class="card-numOfBooks">00 books</li>
+                                </ul>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -161,7 +168,6 @@
             </div>
         </div>
     </div>
-
 
 
     <script src="/javascript/dropDown.js"></script>

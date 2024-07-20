@@ -34,11 +34,11 @@
     text-align: center;
 }
 
-#divider-line {
+.divider-line {
     border: 1px solid #00000055;
     width: 100%;
 }
-.bookshelf {
+.bookshelf-container, .collection-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -47,7 +47,7 @@
     
 }
 
-.bookshelf-rack {
+.bookshelf-rack, #collection-rack {
     display: flex;
     flex-direction: row;
     gap: 16px;
@@ -58,4 +58,10 @@
 h3 {
     text-align: left;
     width: 90%;
+}
+
+.collection-header {
+    display: flex;
+    justify-content: end;
+    padding: 10px;
 }
