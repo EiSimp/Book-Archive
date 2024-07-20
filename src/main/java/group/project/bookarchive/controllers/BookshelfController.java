@@ -34,8 +34,8 @@ public class BookshelfController {
 
     @PostMapping("/delete")
     public ResponseEntity<Void> deleteBookshelf(@RequestBody Map<String, String> request) {
-        String name = request.get("name");
-        bookshelfService.deleteBookshelf(name);
+        Long id = Long.parseLong(request.get("id"));
+        bookshelfService.deleteBookshelf(id);
         return ResponseEntity.ok().build();
     }
 
