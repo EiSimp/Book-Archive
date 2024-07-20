@@ -3,13 +3,13 @@ package group.project.bookarchive.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import group.project.bookarchive.exceptions.BookAlreadyExistsException;
 import group.project.bookarchive.models.Book;
 import group.project.bookarchive.models.Bookshelf;
 import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.repositories.BookRepository;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
-import group.project.exceptions.BookAlreadyExistsException;
 
 @Service
 public class BookshelfItemService {

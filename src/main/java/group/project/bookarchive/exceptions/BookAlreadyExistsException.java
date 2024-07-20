@@ -1,4 +1,4 @@
-package group.project.exceptions;
+package group.project.bookarchive.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
