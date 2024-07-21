@@ -29,6 +29,7 @@ function fetchBookDetails(bookID) {
         document.getElementById("book-thumbnail").style.backgroundImage = `url(${book.biggerThumbnailUrl})`;
         document.getElementById("add-to-collection-btn").setAttribute('data-bookid', book.googleBookId);
         document.getElementById("book-authorDescription").innerText = book.authorDescription || 'No description available';
+        fetchAuthorBio(book.author);
 
         //Update the title
         document.title = `PagePals: ${book.title}`;
@@ -38,6 +39,42 @@ function fetchBookDetails(bookID) {
             alert('Failed to fetch book details.');
         });
 }
+
+function fetchAuthorBio(authorName) {
+    const searchUrl = `https://openlibrary.org/search/authors.json?q=${encodeURIComponent(authorName)}`;
+    fetch(searchUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.docs && data.docs.length > 0) {
+                const authorId = data.docs[0].key;
+                const authorUrl = `https://openlibrary.org/authors/${authorId}.json`;
+                fetch(authorUrl)
+                    .then(response => response.json())
+                    .then(authorData => {
+                        let bio = 'Bio not available';
+                        if (authorData.bio) {
+                            if (typeof authorData.bio === 'string') {
+                                bio = authorData.bio;
+                            } else if (authorData.bio.value) {
+                                bio = authorData.bio.value;
+                            }
+                        }
+                        document.getElementById("book-authorDescription").innerText = bio;
+                    })
+                    .catch(error => {
+                        console.error("Error fetching author bio: ", error);
+                        document.getElementById("book-authorDescription").innerText = '';
+                    });
+            } else {
+                document.getElementById("book-authorDescription").innerText = '';
+            }
+        })
+        .catch(error => {
+            console.error("Error searching for author: ", error);
+            document.getElementById("book-authorDescription").innerText = '';
+        });
+}
+
 
 
 function addBookToBookshelf() {
