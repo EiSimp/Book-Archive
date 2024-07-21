@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const bookAnchor = document.createElement("a");
                 bookAnchor.classList.add("detail-link");
+                bookAnchor.href = `/bookdetail?id=${book.googleBookId}`;
 
                 const bookCard = document.createElement("div");
                 bookCard.classList.add("book-card");
