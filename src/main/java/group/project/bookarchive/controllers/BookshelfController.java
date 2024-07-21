@@ -2,12 +2,15 @@ package group.project.bookarchive.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
+import group.project.bookarchive.models.BookshelfItemDTO;
 import group.project.bookarchive.services.BookshelfService;
 
 @RestController
@@ -50,6 +53,17 @@ public class BookshelfController {
     public ResponseEntity<List<Bookshelf>> getAllBookshelves() {
         List<Bookshelf> bookshelves = bookshelfService.getAllBookshelvesByUser();
         return ResponseEntity.ok(bookshelves);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookshelfItemDTO> getBookshelfDetails(@PathVariable Long id) {
+        Optional<Bookshelf> bookshelfOptional = bookshelfService.getBookshelfById(id);
+        if (bookshelfOptional.isPresent()) {
+            Bookshelf bookshelf = bookshelfOptional.get();
+            List<BookshelfItem> items = bookshelfService.getBookshelfItems(id);
+            return ResponseEntity.ok(new BookshelfItemDTO(bookshelf, items));
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

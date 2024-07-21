@@ -70,6 +70,14 @@ public class BookshelfService {
         return bookshelfRepository.findByUserId(user.getId());
     }
 
+    public Optional<Bookshelf> getBookshelfById(Long id) {
+        return bookshelfRepository.findById(id);
+    }
+
+    public List<BookshelfItem> getBookshelfItems(Long bookshelfId) {
+        return bookshelfItemRepository.findByBookshelfId(bookshelfId);
+    }
+
     private User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
