@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
@@ -63,6 +64,12 @@ public class ArchiveController {
         return "homepage";
     }
 
+    @GetMapping("/bookshelf/details/{id}")
+    public String getBookshelfDetailsPage(@PathVariable Long id, Model model) {
+        model.addAttribute("bookshelfId", id);
+        return "bookshelfdetail";
+    }
+
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("signupform", new SignupFormDTO());
@@ -102,23 +109,20 @@ public class ArchiveController {
             // Convert User to SecurityUser
             User updatedUser = userOptional.get();
             SecurityUser updatedSecurityUser = new SecurityUser(updatedUser); // Create SecurityUser from User
-    
+
             // Update user information in the session
-            UsernamePasswordAuthenticationToken authentication = 
-                    (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder
+                    .getContext().getAuthentication();
             authentication.setDetails(updatedSecurityUser);
-    
+
             // Add updated user information to the model
             model.addAttribute("user", updatedSecurityUser);
 
             // Clear authentication context to force reload of user details
-        SecurityContextHolder.clearContext();
+            SecurityContextHolder.clearContext();
 
-    
             return "profilesetting"; // Return the correct template name
-        } 
-        else
-        {
+        } else {
             return "login";
         }
     }
@@ -258,11 +262,11 @@ public class ArchiveController {
 
     @PostMapping("/update-profile")
     public String updateProfile(@RequestParam Long id,
-                                @RequestParam String profilePhoto,
-                                @RequestParam String bio) {
+            @RequestParam String profilePhoto,
+            @RequestParam String bio) {
         // Fetch user by id
         User user = userRepository.findById(id)
-                                  .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // Update user's profile fields
         user.setProfilePhoto(profilePhoto);
@@ -272,9 +276,8 @@ public class ArchiveController {
         userRepository.save(user);
 
         // Redirect to a success page or return a success message
-        return "redirect:/profilesetting?success";  // Redirect to profile page after update
+        return "redirect:/profilesetting?success"; // Redirect to profile page after update
     }
-        
 
     public static String fetchJsonFromUrl(String urlString) throws IOException {
         URL url = new URL(urlString);
