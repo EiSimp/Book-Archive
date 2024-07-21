@@ -23,16 +23,16 @@
             <div class="detail-leftside">
                 <div>
                     <div class="cover-holder">
-                        <img id="book-thumbnail" th:src="${book.biggerThumbnailUrl}" alt="Book Thumbnail">
+                        <div id="book-thumbnail" alt="Book Thumbnail"></div>
                     </div>
                 </div>
                 <div class="bookinfo">
-                    <div id="book-title" th:text="${book.title}">Title</div>
-                    <div id="book-author" th:text="${book.author}">Author</div>
-                    <div id="book-publishedDate" th:text="${book.publishedDate}">Date Published</div>
-                    <div id="book-publisher" th:text="${book.publisher}">Publisher</div>
-                    <div id="book-isbn" th:text="${book.isbn}">ISBN</div>
-                    <div id="book-category" th:text="${book.category}">Tags</div>
+                    <div id="book-title">Title</div>
+                    <div id="book-author">Author</div>
+                    <div id="book-publishedDate">Date Published</div>
+                    <div id="book-publisher">Publisher</div>
+                    <div id="book-isbn">ISBN</div>
+                    <div id="book-category">🏷️</div>
                 </div>
             </div>
             <div>
@@ -107,15 +107,15 @@
                 <hr class="solid" id="divider-line">
                 <div>
                     <h4>Book Description</h4>
-                    <p id="book-description" th:utext="${book.description}">Lorem ipsum dolor sit amet, consectetur
+                    <p id="book-description">Lorem ipsum dolor sit amet, consectetur
                         adipiscing elit.</p>
                 </div>
                 <hr class="solid" id="divider-line">
                 <div>
                     <h4>Author Description</h4>
-                    <p th:text="${book.authorDescription}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p id="book-authorDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
-                <hr class="solid" id="divider-line">
+                <hr class="solid divider-line">
                 <div>
                     <h4>Comments</h4>
                     <div>

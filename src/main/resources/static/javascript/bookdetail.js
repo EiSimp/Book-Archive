@@ -1,6 +1,47 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams =new URLSearchParams(window.location.search);
+    const bookID = urlParams.get('id');
+
+    if (!bookID) {
+        console.error("No book ID provided in the URL");
+        return;
+    }
+
+    fetchBookDetails(bookID);
+
+    document.getElementById("add-to-collection-btn").addEventListener("click", function() {
+        addBookToBookshelf(bookID);
+    });
+    
+});
+
+function fetchBookDetails(bookID) {
+    fetch(`/api/bookdetails/${bookID}`)
+    .then(response => response.json())
+    .then(book => {
+        document.getElementById("book-title").innerText = book.title;
+        document.getElementById("book-author").innerText = book.author;
+        document.getElementById("book-publishedDate"),innerText = book.publishedDate;
+        document.getElementById("book-publisher").innerText = book.publisher;
+        document.getElementById("book-isbn").innerText = book.isbn;
+        document.getElementById("book-category").innerText = book.category;
+        document.getElementById("book-description").innerHTML = book.description;
+        document.getElementById("book-thumbnail").style.backgroundImage = `url(${book.biggerThumbnailUrl})`;
+        document.getElementById("add-to-collection-btn").setAttribute('data-bookid', book.googleBookId);
+        document.getElementById("book-authorDescription").innerText = book.authorDescription || 'No description available';
+
+        //Update the title
+        document.title = `PagePals: ${book.title}`;
+        })
+        .catch(error => {
+            console.error("Error fetching book details: ", error);
+            alert('Failed to fetch book details.');
+        });
+}
+
+
 function addBookToBookshelf() {
     const bookshelfId = document.getElementById('bookshelfSelect').value;
-    const bookID = document.getElementById('add-to-collection-btn').getAttribute('data-bookid');
     console.log("Book ID:", bookID); // Add this line for debugging
 
     if (!bookshelfId) {
