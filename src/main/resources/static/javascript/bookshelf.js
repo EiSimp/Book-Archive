@@ -294,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Create an anchor element for the bookshelf
                 const anchorElement = document.createElement('a');
                 anchorElement.className = 'collection-detail-link';
+                anchorElement.href = `/bookshelf/details/${bookshelf.id}`;
 
                 // Create a div element for the thumbnails holder
                 const collectionCard = document.createElement("div");
@@ -311,11 +312,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     const thumbnailImageS = document.createElement("div");
                     thumbnailImageS.className = "thumbnail-image-s";
 
-                    // Use the actual book thumbnails if available
-                    /*if (bookshelf.books[i] && bookshelf.books[i].thumbnailUrl) {
-                          !! thumbnails will be displayed as 'background-image', not <img> tag
-                      } else {*/
-                    thumbnailImageS.innerText = "img"; // Placeholder if no thumbnail
+                    /*/ Use the actual book thumbnails if available
+                    if (bookshelf.books[i] && bookshelf.books[i].thumbnailUrl) {
+                        thumbnailImageS.style.backgroundImage = `url(${bookshelf.books[i].thumbnailUrl})`;
+                    } else {*/
+                        thumbnailImageS.innerText = "img"; // Placeholder if no thumbnail
                     //}
                     thumbnailS.appendChild(thumbnailImageS);
                     cardThumbnailHolder.appendChild(thumbnailS);
