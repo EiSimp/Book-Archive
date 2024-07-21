@@ -5,8 +5,7 @@
     <div class="book-card">
         <div class="card-thumbnail-holder">
             <div class="thumbnail-m">
-                <div class="thumbnail-image-m">
-                    <img class="thumbnail-image-m" th:src="${book.thumbnail}" alt="Book Thumbnail" />
+                <div class="thumbnail-image-m" th:style="'background-image: url(' + ${book.thumbnail} + ');'">
                 </div>
             </div>
         </div>
