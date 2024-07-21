@@ -8,7 +8,9 @@ public class BookshelfItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int userRating;
+
     private String userComment;
 
     @ManyToOne
