@@ -51,8 +51,9 @@ public class BookService {
         book.setPublishedDate(volumeInfo.path("publishedDate").asText(""));
         book.setDescription(volumeInfo.path("description").asText(""));
         book.setCategory(getFirstCategory(volumeInfo.path("categories")));
-        book.setThumbnailUrl(volumeInfo.path("imageLinks").path("smallThumbnail").asText(""));
-        book.setBiggerThumbnailUrl(volumeInfo.path("imageLinks").path("thumbnail").asText(""));
+        book.setThumbnailUrl(volumeInfo.path("imageLinks").path("thumbnail").asText(""));
+        // book.setBiggerThumbnailUrl(getLargerImageUrl(volumeInfo.path("imageLinks")));
+        book.setBiggerThumbnailUrl(getLargerImgUrl(googleBookId));
         book.setAverageRating(volumeInfo.path("averageRating").asDouble(0.0));
         book.setIsbn(getFirstIsbn(volumeInfo.path("industryIdentifiers")));
         book.setAuthorDescription(""); // Adjust as needed
@@ -80,5 +81,24 @@ public class BookService {
             return industryIdentifiersNode.get(0).path("identifier").asText("");
         }
         return "";
+    }
+
+    private String getLargerImageUrl(JsonNode imageLinksNode) {
+        if (imageLinksNode != null) {
+            if (imageLinksNode.has("extraLarge")) {
+                return imageLinksNode.path("extraLarge").asText("");
+            } else if (imageLinksNode.has("large")) {
+                return imageLinksNode.path("large").asText("");
+            } else if (imageLinksNode.has("medium")) {
+                return imageLinksNode.path("medium").asText("");
+            }
+        }
+        return imageLinksNode.path("thumbnail").asText(""); // Fallback to thumbnail if no larger image is available
+    }
+
+    private String getLargerImgUrl(String id) {
+        String url = "https://books.google.com/books/content?id=" + id
+                + "&printsec=frontcover&img=1&zoom=0&source=gbs_api";
+        return url;
     }
 }
