@@ -1,6 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const urlParams =new URLSearchParams(window.location.search);
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
     const bookID = urlParams.get('id');
+    console.log(bookID);
 
     if (!bookID) {
         console.error("No book ID provided in the URL");
@@ -9,30 +10,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
     fetchBookDetails(bookID);
 
-    document.getElementById("add-to-collection-btn").addEventListener("click", function() {
-        addBookToBookshelf(bookID);
+    document.getElementById("add-to-collection-btn").addEventListener("click", function () {
+        document.getElementById("bookshelfModal").style.display = "flex";
     });
-    
+
+
 });
 
 function fetchBookDetails(bookID) {
     fetch(`/api/bookdetails/${bookID}`)
-    .then(response => response.json())
-    .then(book => {
-        document.getElementById("book-title").innerText = book.title;
-        document.getElementById("book-author").innerText = book.author;
-        document.getElementById("book-publishedDate"),innerText = book.publishedDate;
-        document.getElementById("book-publisher").innerText = book.publisher;
-        document.getElementById("book-isbn").innerText = book.isbn;
-        document.getElementById("book-category").innerText = book.category;
-        document.getElementById("book-description").innerHTML = book.description;
-        document.getElementById("book-thumbnail").style.backgroundImage = `url(${book.biggerThumbnailUrl})`;
-        document.getElementById("add-to-collection-btn").setAttribute('data-bookid', book.googleBookId);
-        document.getElementById("book-authorDescription").innerText = book.authorDescription || 'No description available';
-        fetchAuthorBio(book.author);
+        .then(response => response.json())
+        .then(book => {
+            document.getElementById("book-title").innerText = book.title;
+            document.getElementById("book-author").innerText = book.author;
+            document.getElementById("book-publishedDate").innerText = book.publishedDate;
+            document.getElementById("book-publisher").innerText = book.publisher;
+            document.getElementById("book-isbn").innerText = book.isbn;
+            document.getElementById("book-category").innerText = book.category;
+            document.getElementById("book-description").innerHTML = book.description;
+            document.getElementById("book-thumbnail").style.backgroundImage = `url(${book.biggerThumbnailUrl})`;
+            document.getElementById("add-to-collection-btn").setAttribute('data-bookid', book.googleBookId);
+            document.getElementById("book-authorDescription").innerText = book.authorDescription || 'No description available';
+            fetchAuthorBio(book.author);
+            document.getElementById("book-avgRate").innerText = book.averageRating;
 
-        //Update the title
-        document.title = `PagePals: ${book.title}`;
+            //Update the title
+            document.title = `PagePals: ${book.title}`;
         })
         .catch(error => {
             console.error("Error fetching book details: ", error);
@@ -41,6 +44,7 @@ function fetchBookDetails(bookID) {
 }
 
 function fetchAuthorBio(authorName) {
+    console.log(authorName);
     const searchUrl = `https://openlibrary.org/search/authors.json?q=${encodeURIComponent(authorName)}`;
     fetch(searchUrl)
         .then(response => response.json())
@@ -51,7 +55,7 @@ function fetchAuthorBio(authorName) {
                 fetch(authorUrl)
                     .then(response => response.json())
                     .then(authorData => {
-                        let bio = 'Bio not available';
+                        let bio = '';
                         if (authorData.bio) {
                             if (typeof authorData.bio === 'string') {
                                 bio = authorData.bio;
@@ -79,12 +83,27 @@ function fetchAuthorBio(authorName) {
 
 function addBookToBookshelf() {
     const bookshelfId = document.getElementById('bookshelfSelect').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookID = urlParams.get('id');
     console.log("Book ID:", bookID); // Add this line for debugging
-
     if (!bookshelfId) {
         alert('Please select a bookshelf.');
         return;
     }
+    const book = {
+        googleBookId: bookID,
+        title: document.getElementById('book-title').innerText,
+        author: document.getElementById('book-author').innerText,
+        publisher: document.getElementById('book-publisher').innerText,
+        thumbnailUrl: document.getElementById('book-thumbnail').src,
+        biggerThumbnailUrl: document.getElementById('book-thumbnail').src,
+        averageRating: document.getElementById('book-avgRate').innerText,
+        publishedDate: document.getElementById('book-publishedDate').innerText,
+        isbn: document.getElementById('book-isbn').innerText,
+        category: document.getElementById('book-category').innerText,
+        description: document.getElementById('book-description').innerText,
+        authorDescription: document.getElementById('book-authorDescription').innerText
+    };
 
     const csrf = getCsrfToken();
 

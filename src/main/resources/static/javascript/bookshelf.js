@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event delegation for edit buttons
     document.getElementById('collection-cardlist').addEventListener('click', function (event) {
         if (event.target.classList.contains('edit-btn')) {
+            event.preventDefault();
             // Populate the modal with the current bookshelf data
             const bookshelfElement = event.target.parentElement;
             const titleElement = bookshelfElement.querySelector('.collection-title');
@@ -243,36 +244,36 @@ document.getElementById("sort-books-btn").addEventListener("click", function () 
                 var bookshelfLi = document.createElement("li");
                 bookshelfLi.className = "collection-li";
                 bookshelfLi.innerHTML =
-                    ` <a class="collection-detail-link">
-                    <div class="collection-card">
-                        <div class="collection-thumbnail-holder">
-                            <div class="thumbnail-s ts1">
-                                <div class="thumbnail-image-s">img</div>
-                            </div>
-                            <div class="thumbnail-s ts2">
-                                <div class="thumbnail-image-s">img</div>
-                            </div>
-                            <div class="thumbnail-s ts3">
-                                <div class="thumbnail-image-s">img</div>
-                            </div>
-                            <div class="thumbnail-s ts4">
-                                <div class="thumbnail-image-s">img</div>
-                            </div>
-                            <div class="thumbnail-s ts5">
-                                <div class="thumbnail-image-s">img</div>
+                    `<a class="collection-detail-link">
+                        <div class="collection-card">
+                            <div class="collection-thumbnail-holder">
+                                <div class="thumbnail-s ts1">
+                                    <div class="thumbnail-image-s">img</div>
+                                </div>
+                                <div class="thumbnail-s ts2">
+                                    <div class="thumbnail-image-s">img</div>
+                                </div>
+                                <div class="thumbnail-s ts3">
+                                    <div class="thumbnail-image-s">img</div>
+                                </div>
+                                <div class="thumbnail-s ts4">
+                                    <div class="thumbnail-image-s">img</div>
+                                </div>
+                                <div class="thumbnail-s ts5">
+                                    <div class="thumbnail-image-s">img</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-description">
-                        <ul class="card-description-li">
-                            <li class="collection-title">${bookshelf.name}</li>
-                            <li class="card-numOfBooks">${bookshelf.books} Books</li>
-                            ${bookshelf.secret ? '<li class="card-lock">🔒</li>' : ""}
-                            <li class="booshelfId" style="display:none;">${bookshelf.id}</li>
-                        </ul>
-                        <button class="edit-btn">Edit</button>
-                    </div>
-                </a>`;
+                        <div class="card-description">
+                            <ul class="card-description-li">
+                                <li class="collection-title">${bookshelf.name}</li>
+                                <li class="card-numOfBooks">${bookshelf.books} Books</li>
+                                ${bookshelf.secret ? '<li class="card-lock">🔒</li>' : ""}
+                                <li class="booshelfId" style="display:none;">${bookshelf.id}</li>
+                            </ul>
+                            <button class="edit-btn">Edit</button>
+                        </div>
+                    </a>`;
                 container.appendChild(bookshelfLi);
             });
         }).catch(error => {
