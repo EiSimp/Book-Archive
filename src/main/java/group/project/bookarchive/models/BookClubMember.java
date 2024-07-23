@@ -13,10 +13,10 @@ public class BookClubMember {
     @Column(name = "join_date")
     private LocalDateTime joinDate;
 
-    @Column(name = "book_club_id")
+    @Column(name = "book_club_id", insertable = false, updatable = false)
     private Long bookClubId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
 
     @ManyToOne
