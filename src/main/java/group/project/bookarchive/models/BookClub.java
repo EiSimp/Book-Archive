@@ -17,10 +17,10 @@ public class BookClub {
     @Column(name = "date_created")
     private LocalDateTime dateCreated;
 
-    @Column(name = "manager_user_id")
+    @Column(name = "manager_user_id", insertable = false, updatable = false)
     private Long managerUserId;
 
-    @Column(name = "bookshelf_id")
+    @Column(name = "bookshelf_id", insertable = false, updatable = false)
     private Long bookshelfId;
 
     @ManyToOne
