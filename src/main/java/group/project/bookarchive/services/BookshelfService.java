@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import group.project.bookarchive.models.Bookshelf;
-import group.project.bookarchive.models.BookshelfItem;
-import group.project.bookarchive.repositories.BookshelfItemRepository;
-import group.project.bookarchive.repositories.BookshelfRepository;
-// Newly added imports
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.User;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
+import group.project.bookarchive.repositories.BookshelfRepository;
 import group.project.bookarchive.repositories.UserRepository;
 
 @Service
@@ -87,5 +87,20 @@ public class BookshelfService {
             username = principal.toString();
         }
         return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public void createDefaultBookshelvesForUser(User user) {
+        // Set to private by default
+        createDefaultBookshelf(user, "Books-Read", true);
+        createDefaultBookshelf(user, "Books-Reading", true);
+        createDefaultBookshelf(user, "Books-to-Read", true);
+    }
+
+    public Bookshelf createDefaultBookshelf(User user, String name, boolean isSecret) {
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setName(name);
+        bookshelf.setSecret(isSecret);
+        bookshelf.setUserId(user.getId());
+        return bookshelfRepository.save(bookshelf);
     }
 }

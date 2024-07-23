@@ -14,6 +14,23 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
 
+    /////
+     // Handle click events for icons/buttons
+     document.getElementById("add-to-books-read").addEventListener("click", function () {
+        document.getElementById("bookshelfSelect").value = "Books-Read";
+        addBookToBookshelf('Books-Read');
+    });
+
+    document.getElementById("add-to-books-reading").addEventListener("click", function () {
+        document.getElementById("bookshelfSelect").value = "Books-Reading";
+        console.log(document.getElementById("bookshelfSelect").value);
+        addBookToBookshelf('Books-Reading');
+    });
+
+    // document.getElementById("add-to-books-to-read").addEventListener("click", function () {
+    //     document.getElementById("bookshelfSelect").value = "Books-to-Read";
+    //     addBookToBookshelf('Books-to-Read');
+    // });
 
 });
 
