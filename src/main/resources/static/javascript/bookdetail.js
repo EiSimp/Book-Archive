@@ -14,26 +14,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
 
-    /////
-     // Handle click events for icons/buttons
     document.getElementById("add-to-books-read").addEventListener("click", function () {
-        document.getElementById("bookshelfSelect").value = "Books-Read";
-
         addBookToDefaultBookshelf("Books-Read");
     });
 
     document.getElementById("add-to-books-reading").addEventListener("click", function () {
-        document.getElementById("bookshelfSelect").value = "Books-Reading";
-        console.log("bo");
-        console.log(document.getElementById("bookshelfSelect").value);
-
         addBookToDefaultBookshelf("Books-Reading");
     });
 
-    // document.getElementById("add-to-books-to-read").addEventListener("click", function () {
-    //     document.getElementById("bookshelfSelect").value = "Books-to-Read";
-    //     addBookToBookshelf('Books-to-Read');
-    // });
+    document.getElementById("add-to-books-to-read").addEventListener("click", function () {
+        addBookToDefaultBookshelf('Books-to-Read');
+    });
 
 });
 
@@ -177,6 +168,8 @@ function addBookToDefaultBookshelf(name) {
         bookshelfId = document.getElementById('readSelect').value;
     } else if (name === "Books-Reading") {
         bookshelfId = document.getElementById('readingSelect').value;
+    } else if (name === "Books-to-Read") {
+        bookshelfId = document.getElementById('toReadSelect').value;
     } else {
         console.error("Unknown bookshelf name:", name);
         return; // Return early if the name doesn't match expected values

@@ -104,6 +104,18 @@
                         </button>
                     </div>
                     <div class="detail-icons">
+                        <!-- grab the users bookshelves only -->
+                        <option id="toReadSelect" style="display: none;" th:each="bookshelf : ${bookshelves}"
+                            th:if="${bookshelf.name == 'Books-to-Read'}"
+                            th:value="${bookshelf.id}">
+                        </option>
+                        <button class="detail-icons-btn" type="button"
+                            th:data-bookid="${book.googleBookId}">
+                            <img src="/images/addtoread.png" class="detail-header-icon" id="add-to-books-to-read">
+                            <span>To&nbsp;Read</span>
+                        </button>
+                    </div>
+                    <div class="detail-icons">
                         <button class="detail-icons-btn" type="button">
                             <img src="/images/writecomment.png" class="detail-header-icon">
                             Comment
