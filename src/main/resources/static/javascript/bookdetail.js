@@ -14,18 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
 
-    document.getElementById("add-to-books-read").addEventListener("click", function () {
-        addBookToDefaultBookshelf("Books-Read");
-    });
-
-    document.getElementById("add-to-books-reading").addEventListener("click", function () {
-        addBookToDefaultBookshelf("Books-Reading");
-    });
-
-    document.getElementById("add-to-books-to-read").addEventListener("click", function () {
-        addBookToDefaultBookshelf('Books-to-Read');
-    });
-
 });
 
 function fetchBookDetails(bookID) {
