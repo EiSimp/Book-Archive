@@ -12,7 +12,9 @@ html {
 body {
     display: block;
     height: 90%;
-    background: radial-gradient(circle, rgba(219, 230, 230, 0.661) 61%, #c5796d46 92%);}
+    background: url('/images/icon.png'), radial-gradient(circle, rgba(219, 230, 230, 0.661) 61%, #c5796d46 92%);
+    background-size: cover;
+}
 body.main-body {
     padding:0 10% 0 10%;
 }
