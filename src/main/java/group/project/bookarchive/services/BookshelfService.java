@@ -33,6 +33,7 @@ public class BookshelfService {
         bookshelf.setName(name);
         bookshelf.setSecret(isSecret);
         bookshelf.setUserId(user.getId());
+        bookshelf.setDefault(false);
         return bookshelfRepository.save(bookshelf);
     }
 
@@ -101,6 +102,7 @@ public class BookshelfService {
         bookshelf.setName(name);
         bookshelf.setSecret(isSecret);
         bookshelf.setUserId(user.getId());
+        bookshelf.setDefault(true);
         return bookshelfRepository.save(bookshelf);
     }
 }
