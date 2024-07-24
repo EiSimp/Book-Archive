@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group.project.bookarchive.models.BookDTO;
+import group.project.bookarchive.utils.PaginationUtils;
+import group.project.bookarchive.utils.PaginationUtils.PaginationInfo;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -34,6 +37,7 @@ public class SearchController {
             Model model) {
         int currentPage = page.orElse(1);
         int booksPerPage = 18;
+        int pageGroupSize = 10;
         // Check if the search query is empty
         if (!q.isPresent() || q.get().trim().isEmpty()) {
             model.addAttribute("message", "Please enter a valid search keyword.");
@@ -42,6 +46,7 @@ public class SearchController {
             model.addAttribute("totalPages", 0);
             return "searchresult";
         }
+
         try {
             String query = URLEncoder.encode(q.orElse(""), StandardCharsets.UTF_8.toString());
             String url = UriComponentsBuilder.fromHttpUrl("https://www.googleapis.com/books/v1/volumes/")
@@ -68,23 +73,18 @@ public class SearchController {
             }
 
             int totalItems = root.path("totalItems").asInt();
-            int totalPages = (int) Math.ceil((double) totalItems / booksPerPage);
-            boolean hasMorePages = currentPage < totalPages;
-            boolean isNotFirstPage = (currentPage != 1);
-
-            int pageGroupSize = 10;
-            int currentGroupStart = ((currentPage - 1) / pageGroupSize) * pageGroupSize + 1;
-            int currentGroupEnd = Math.min(currentGroupStart + pageGroupSize - 1, totalPages);
+            PaginationInfo paginationInfo = PaginationUtils.calculatePagination(currentPage, totalItems, booksPerPage,
+                    pageGroupSize);
 
             model.addAttribute("results", books);
             model.addAttribute("query", q.orElse(""));
-            model.addAttribute("currentPage", currentPage);
-            model.addAttribute("currentGroupEnd", currentGroupEnd);
-            model.addAttribute("currentGroupStart", currentGroupStart);
-            model.addAttribute("hasMorePages", hasMorePages);
-            model.addAttribute("totalPages", totalPages);
-            model.addAttribute("isNotFirstPage", isNotFirstPage);
-            model.addAttribute("totalItems", totalItems);
+            model.addAttribute("currentPage", paginationInfo.getCurrentPage());
+            model.addAttribute("currentGroupEnd", paginationInfo.getCurrentGroupEnd());
+            model.addAttribute("currentGroupStart", paginationInfo.getCurrentGroupStart());
+            model.addAttribute("hasMorePages", paginationInfo.isHasMorePages());
+            model.addAttribute("totalPages", paginationInfo.getTotalPages());
+            model.addAttribute("isNotFirstPage", paginationInfo.isNotFirstPage());
+            model.addAttribute("totalItems", paginationInfo.getTotalItems());
 
         } catch (IOException e) {
             e.printStackTrace();
