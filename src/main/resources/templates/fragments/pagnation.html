@@ -1,0 +1,21 @@
+<!-- This is pagination nav structure.
+ The Thymeleaf attributes are set for the searchresult, modification needed to use on other pages. 
+ use this file as a reference.-->
+
+<div class="pagination" th:if="${message == null}">
+    <span th:if="${currentGroupStart != 1}">
+        <a href="#" class="pagination-link" th:attr="data-page=${currentGroupStart - 10}"> << </a>
+    </span>
+    <span th:if="${isNotFirstPage}">
+        <a href="#" class="pagination-link" th:attr="data-page=${currentPage - 1}"> < </a>
+    </span>
+    <span th:each="page : ${#numbers.sequence(currentGroupStart, currentGroupEnd)}">
+        <a href="#" class="pagination-link" th:attr="data-page=${page}" th:text="${page}" th:classappend="${page == currentPage} ? ' active' : ''"></a>
+    </span>
+    <span th:if="${hasMorePages}">
+        <a href="#" class="pagination-link" th:attr="data-page=${currentPage + 1}"> > </a>
+    </span>
+    <span th:if="${hasMorePages}">
+        <a href="#" class="pagination-link" th:attr="data-page=${currentGroupStart + 10}"> >> </a>
+    </span>
+</div>
