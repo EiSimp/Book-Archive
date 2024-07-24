@@ -92,9 +92,9 @@ public class BookshelfService {
 
     public void createDefaultBookshelvesForUser(User user) {
         // Set to private by default
-        createDefaultBookshelf(user, "Books-Read", true);
-        createDefaultBookshelf(user, "Books-Reading", true);
-        createDefaultBookshelf(user, "Books-to-Read", true);
+        createDefaultBookshelf(user, "Read", true);
+        createDefaultBookshelf(user, "Reading", true);
+        createDefaultBookshelf(user, "To Read", true);
     }
 
     public Bookshelf createDefaultBookshelf(User user, String name, boolean isSecret) {

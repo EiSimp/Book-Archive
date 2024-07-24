@@ -14,6 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
 
+    const labels = document.querySelectorAll('.label_star');
+    
+    labels.forEach(label => {
+        label.addEventListener('click', function() {
+            addBookToDefaultBookshelf('Rating');
+        });
+    });
+
 });
 
 function fetchBookDetails(bookID) {
@@ -152,12 +160,15 @@ function addBookToDefaultBookshelf(name) {
     let bookshelfId;
 
     // Determine bookshelfId based on the name
-    if (name === "Books-Read") {
+    if (name === "Read") {
         bookshelfId = document.getElementById('readSelect').value;
-    } else if (name === "Books-Reading") {
+    } else if (name === "Reading") {
         bookshelfId = document.getElementById('readingSelect').value;
-    } else if (name === "Books-to-Read") {
+    } else if (name === "To Read") {
         bookshelfId = document.getElementById('toReadSelect').value;
+    } else if (name === "Rating") {
+        // rating a book adds it to Read
+        bookshelfId = document.getElementById('readSelect').value;
     } else {
         console.error("Unknown bookshelf name:", name);
         return; // Return early if the name doesn't match expected values
@@ -195,12 +206,28 @@ function addBookToDefaultBookshelf(name) {
                 },
                 data: JSON.stringify(book),
                 success: function (response) {
-                    alert('Book added to collection successfully!');
+                    let successMessage;
+                    if (name === "Books-Read") {
+                        successMessage = 'Book added to Read bookshelf!';
+                    } else if (name === "Books-Reading") {
+                        successMessage = 'Book added to Reading bookshelf!';
+                    } else if (name === "Books-to-Read") {
+                        successMessage = 'Book added to To Read bookshelf!';
+                    } else if (name === "Rating") {
+                        successMessage = 'Book rated and added to Read bookshelf!';
+                    } else {
+                        successMessage = 'Book added to collection successfully!';
+                    }
+                    alert(successMessage);
                     $('#bookshelfModal').modal('hide');
                 },
                 error: function (xhr) {
                     if (xhr.status === 409) {
-                        alert('Book already exists in the bookshelf.');
+                        if (name === "Rating") {
+                            alert('Book rating updated successfully!\nBook already exists in the Read bookshelf.');
+                        } else {
+                            alert('Book already exists in the ' + name + ' bookshelf.\n');
+                        }
                     } else {
                         console.error("Error adding book to collection: ", xhr);
                         console.log(xhr.status);
