@@ -16,15 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /////
      // Handle click events for icons/buttons
-     document.getElementById("add-to-books-read").addEventListener("click", function () {
+    document.getElementById("add-to-books-read").addEventListener("click", function () {
         document.getElementById("bookshelfSelect").value = "Books-Read";
-        addBookToBookshelf('Books-Read');
+
+        addBookToDefaultBookshelf("Books-Read");
     });
 
     document.getElementById("add-to-books-reading").addEventListener("click", function () {
         document.getElementById("bookshelfSelect").value = "Books-Reading";
+        console.log("bo");
         console.log(document.getElementById("bookshelfSelect").value);
-        addBookToBookshelf('Books-Reading');
+
+        addBookToDefaultBookshelf("Books-Reading");
     });
 
     // document.getElementById("add-to-books-to-read").addEventListener("click", function () {
@@ -145,6 +148,7 @@ function addBookToBookshelf() {
                         alert('Book already exists in the bookshelf.');
                     } else {
                         console.error("Error adding book to collection: ", xhr);
+                        console.log(xhr.status);
                         alert('Failed to add book to collection.');
                     }
                 }
@@ -163,4 +167,69 @@ function getCsrfToken() {
         token: csrfToken,
         header: csrfHeader
     };
+}
+
+function addBookToDefaultBookshelf(name) {
+    let bookshelfId;
+
+    // Determine bookshelfId based on the name
+    if (name === "Books-Read") {
+        bookshelfId = document.getElementById('readSelect').value;
+    } else if (name === "Books-Reading") {
+        bookshelfId = document.getElementById('readingSelect').value;
+    } else {
+        console.error("Unknown bookshelf name:", name);
+        return; // Return early if the name doesn't match expected values
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookID = urlParams.get('id');
+    console.log("Book ID:", bookID); // Add this line for debugging
+    const book = {
+        googleBookId: bookID,
+        title: document.getElementById('book-title').innerText,
+        author: document.getElementById('book-author').innerText,
+        publisher: document.getElementById('book-publisher').innerText,
+        thumbnailUrl: document.getElementById('book-thumbnail').src,
+        biggerThumbnailUrl: document.getElementById('book-thumbnail').src,
+        averageRating: document.getElementById('book-avgRate').innerText,
+        publishedDate: document.getElementById('book-publishedDate').innerText,
+        isbn: document.getElementById('book-isbn').innerText,
+        category: document.getElementById('book-category').innerText,
+        description: document.getElementById('book-description').innerText,
+        authorDescription: document.getElementById('book-authorDescription').innerText
+    };
+
+    const csrf = getCsrfToken();
+
+    // Fetch the full book details
+    fetch(`/api/bookdetails/${bookID}`)
+        .then(response => response.json())
+        .then(book => {
+            $.ajax({
+                type: 'POST',
+                url: `/bookshelf-items/add?bookshelfId=${bookshelfId}`,
+                contentType: 'application/json',
+                headers: {
+                    [csrf.header]: csrf.token
+                },
+                data: JSON.stringify(book),
+                success: function (response) {
+                    alert('Book added to collection successfully!');
+                    $('#bookshelfModal').modal('hide');
+                },
+                error: function (xhr) {
+                    if (xhr.status === 409) {
+                        alert('Book already exists in the bookshelf.');
+                    } else {
+                        console.error("Error adding book to collection: ", xhr);
+                        console.log(xhr.status);
+                        alert('Failed to add book to collection.');
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching book details: ", error);
+            alert('Failed to fetch book details.');
+        });
 }

@@ -78,16 +78,28 @@
                         </div>
                     </div>
                     <div class="detail-icons first">
+                        <!-- grab the users bookshelves only -->
+                        <option id="readSelect" style="display: none;" th:each="bookshelf : ${bookshelves}"
+                            th:if="${bookshelf.name == 'Books-Read'}"
+                            th:value="${bookshelf.id}">
+                        </option>
                         <div class="detail-icons addbooksread">
-                            <button class="detail-icons-btn" type="button">
-                                <img src="/images/addbooksread.png" class="detail-header-icon">
+                            <button class="detail-icons-btn" type="button"
+                            th:data-bookid="${book.googleBookId}">
+                                <img src="/images/addbooksread.png" class="detail-header-icon" id="add-to-books-read">
                                 Read
                             </button>
                         </div>
                     </div>
                     <div class="detail-icons">
-                        <button class="detail-icons-btn" type="button">
-                            <img src="/images/addreading.png" class="detail-header-icon">
+                        <!-- grab the users bookshelves only -->
+                        <option id="readingSelect" style="display: none;" th:each="bookshelf : ${bookshelves}"
+                            th:if="${bookshelf.name == 'Books-Reading'}"
+                            th:value="${bookshelf.id}">
+                        </option>
+                        <button class="detail-icons-btn" type="button"
+                            th:data-bookid="${book.googleBookId}">
+                            <img src="/images/addreading.png" class="detail-header-icon" id="add-to-books-reading">
                             Reading
                         </button>
                     </div>
