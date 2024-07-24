@@ -12,8 +12,6 @@ html {
 body {
     display: block;
     height: 90%;
-    /*background: linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), linear-gradient(90.22deg, #DBE6F6 0.19%, #C5796D 99.81%);*/
-    background: rgb(219,230,230);
     background: radial-gradient(circle, rgba(219, 230, 230, 0.661) 61%, #c5796d46 92%);}
 body.main-body {
     padding:0 10% 0 10%;
