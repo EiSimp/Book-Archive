@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchBookDetails(bookID);
 
+    document.getElementById("add-comment-btn").addEventListener("click", function () {
+        document.getElementById("commentModal").style.display = "flex";
+    })
+
     document.getElementById("add-to-collection-btn").addEventListener("click", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
