@@ -23,9 +23,17 @@ h2 {
 }
 .analysis-text {
     width: fit-content;
+    text-align: center;
+    gap:3px;
+}
+.analysis-text p {
+    margin: 5px;
+}
+.analysis-text span {
+    color: #787878;
 }
 
-.analysis-userinfo {
+span.analysis-userinfo {
     font-size: 30px;
     font-weight: 500;
     color: #fd6058;
@@ -71,7 +79,7 @@ h2 {
     list-style-type: none;
     padding: 0;
     padding-inline-start: 0;
-    width: 50%;
+    width: 100%;
     white-space: nowrap;
 }
 .record-rating-numbers-li {
