@@ -52,7 +52,15 @@ public class BookClubService {
         bookClub.setManagerUserId(manager.getId());
         bookClub.setBookshelfId(bookshelf.getId());
 
-        return bookClubRepository.save(bookClub);
+        BookClub savedBookClub = bookClubRepository.save(bookClub);
+
+        BookClubMember managerMember = new BookClubMember();
+        managerMember.setBookClubId(savedBookClub.getId());
+        managerMember.setUserId(manager.getId());
+        managerMember.setJoinDate(LocalDateTime.now());
+        bookClubMemberRepository.save(managerMember);
+
+        return savedBookClub;
     }
 
     public BookClub renameBookClub(Long id, String newName, Long userId) {
