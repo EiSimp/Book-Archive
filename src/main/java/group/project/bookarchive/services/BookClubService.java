@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import group.project.bookarchive.models.BookClub;
+import group.project.bookarchive.models.BookClubMember;
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.User;
+import group.project.bookarchive.repositories.BookClubMemberRepository;
 import group.project.bookarchive.repositories.BookClubRepository;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
 import group.project.bookarchive.repositories.UserRepository;
 
@@ -24,6 +28,12 @@ public class BookClubService {
 
     @Autowired
     private BookshelfRepository bookshelfRepository;
+
+    @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
+
+    @Autowired
+    private BookClubMemberRepository bookClubMemberRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -53,6 +63,10 @@ public class BookClubService {
 
     public void deleteBookClub(Long id, Long userId) {
         BookClub bookClub = getBookClubByIdAndManager(id, userId);
+        List<BookClubMember> members = bookClubMemberRepository.findByBookClubId(bookClub.getId());
+        bookClubMemberRepository.deleteAll(members);
+        List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookClub.getBookshelfId());
+        bookshelfItemRepository.deleteAll(items);
         bookshelfRepository.deleteById(bookClub.getBookshelfId());
         bookClubRepository.delete(bookClub);
     }
