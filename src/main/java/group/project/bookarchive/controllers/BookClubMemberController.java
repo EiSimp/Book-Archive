@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import group.project.bookarchive.models.BookClub;
 import group.project.bookarchive.models.BookClubMember;
 import group.project.bookarchive.services.BookClubMemberService;
 
@@ -25,20 +26,12 @@ public class BookClubMemberController {
         return ResponseEntity.ok(member);
     }
 
-    @PostMapping("/remove")
-    public ResponseEntity<Void> removeMember(@RequestBody Map<String, String> request) {
+    @PostMapping("/removeOrLeave")
+    public ResponseEntity<Void> removeOrLeaveBookClub(@RequestBody Map<String, String> request) {
         Long bookClubId = Long.parseLong(request.get("bookClubId"));
         Long userId = Long.parseLong(request.get("userId"));
         Long managerUserId = Long.parseLong(request.get("managerUserId"));
-        bookClubMemberService.removeMember(bookClubId, userId, managerUserId);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/leave")
-    public ResponseEntity<Void> leaveBookClub(@RequestBody Map<String, String> request) {
-        Long bookClubId = Long.parseLong(request.get("bookClubId"));
-        Long userId = Long.parseLong(request.get("userId"));
-        bookClubMemberService.leaveBookClub(bookClubId, userId);
+        bookClubMemberService.removeOrLeaveBookClub(bookClubId, userId, managerUserId);
         return ResponseEntity.ok().build();
     }
 
@@ -48,9 +41,9 @@ public class BookClubMemberController {
         return ResponseEntity.ok(members);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<BookClubMember>> getUserBookClubs(@PathVariable Long userId) {
-        List<BookClubMember> bookClubs = bookClubMemberService.getUserBookClubs(userId);
+    @GetMapping("/user/{userId}/bookclubs")
+    public ResponseEntity<List<BookClub>> getUserBookClubs(@PathVariable Long userId) {
+        List<BookClub> bookClubs = bookClubMemberService.getUserBookClubs(userId);
         return ResponseEntity.ok(bookClubs);
     }
 
