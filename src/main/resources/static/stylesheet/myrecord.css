@@ -1,4 +1,4 @@
-div {
+.content-container div {
     width: 100%;
 }
 h2 {
@@ -103,7 +103,6 @@ h2 {
 }
 .record-favorite-author, .record-favorite-category {
     width: 50%;
-    margin: 20px;
 }
 .record-favorite-author-rank-scroll {
     overflow-x: auto;
@@ -136,7 +135,7 @@ h2 {
     height: 80px;
     padding: 15px 0;
 }
-.record-favorite-author-rank-num, .record-favorite-category-rank-num {
+div.record-favorite-author-rank-num {
     position: relative;
     border-radius: 50%;
     border: 5px solid rgb(232, 232, 232);
@@ -146,7 +145,7 @@ h2 {
     background-color: rgb(253, 249, 247);
     margin: 0 15px 0 0;
 }
-.ranknum {
+div.ranknum {
     width: 100%;
     height: 100%;
     text-align: center;
@@ -186,7 +185,7 @@ h2 {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 90%;
     height: 400px;
     position: relative;
 
