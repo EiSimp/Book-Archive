@@ -9,6 +9,8 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/bookclubdetail.css" />
+    <link rel="stylesheet" href="/stylesheet/card.css" />
+    <link rel="stylesheet" href="/stylesheet/homepage.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
 
@@ -17,21 +19,82 @@
     <div th:replace="~{fragments/header.html}"></div>
     <!--bookclub landing page starts here-->
     <div class="content-container">
-        <div>
-            <div>
+        <!--section 1: calendar, members, chatroom-->
+        <hr class="solid divider-line">
+        <div class="bookclubdetail-section1">
+            <!--left side of section 1-->
+            <div class="section1-left">
+                <!--Event calendar-->
+                <div class="calendar-wrap">
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button id="prev-btn">Prev</button>
+                            <div id="month-year"></div>
+                            <button id="next-btn">Next</button>
+                        </div>
+                        <div class="calendar-body">
+                            <div class="calendar-days">
+                                <div>S</div>
+                                <div>M</div>
+                                <div>T</div>
+                                <div>W</div>
+                                <div>T</div>
+                                <div>F</div>
+                                <div>S</div>
+                            </div>
+                            <div class="calendar-dates" id="calendar-dates">
+                                <!-- Dates will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--memebers-->
+                <div>
+                    <h4>members</h4>
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
             </div>
+            <!--chatroom-->
             <div>
+
             </div>
         </div>
-        <div>
-
+        <hr class="solid divider-line">
+        <!--section 2-->
+        <div class="bookshelf-container">
+            <div class="bookshelf-rack">
+                <ul class="cardlist">
+                    <li class="card-li">
+                        <!-- display purpose-->
+                        <a class="detail-link">
+                            <div class="book-card">
+                                <div class="card-thumbnail-holder">
+                                    <div class="thumbnail-m">
+                                        <div class="thumbnail-image-m"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-description">
+                                <ul class="card-description-li">
+                                    <li class="card-title">Book Title</li>
+                                    <li class="card-rate">Rated ★ 0.0</li>
+                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'. 
+                                 others displays 'Avg ★ 0.0' -->
+                                </ul>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <h1>bookclub detail page</h1>
-
     </div>
     <div>
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
     <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/calendar.js"></script>
 </body>
+
 </html>
