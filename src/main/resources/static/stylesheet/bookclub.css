@@ -1,0 +1,119 @@
+.message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    padding: 100px 0 10px 0;
+}
+.bookclub-message-img {
+    width:600px;
+    height: 300px;
+    background-image: url('/images/bookclub.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+
+}
+
+/* Join/Create button style */
+
+.bookclub-buttons-section {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width:100%;
+    gap: 50px;
+    padding-bottom: 30px;
+}
+button {
+    border-style: none;
+    border-radius: 10px;
+    padding-inline: 10px;
+}
+
+.bookclub-buttons-section button {
+    display: inline-block;
+    font-size: 30px;
+    padding: 10px 0;
+    width: 150px;
+    color: #c8c8c8;
+    margin: 20px 10px 10px;
+    border-radius: 40px;
+    text-align: center;
+    border: 5px solid;
+    letter-spacing: 2px;
+    font-weight: 600;
+    transition: border-color 0.2s;
+    background-color: transparent;
+}
+
+
+#bookclub-join:hover {
+    border-color: #5bdeb0;
+    color: #5bdeb0;
+}
+
+#bookclub-create:hover {
+    border-color: #5b6ede;
+    color: #5b6ede;
+}
+
+/* Club list style*/
+.bookclub-table-section {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.table-wrap {
+    max-height: 300px;
+    width: 60%;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+table {
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+}
+thead {
+    font-weight: 300;
+    font-size: 20px;
+    text-transform: uppercase;
+    top: 0; 
+    background-color: #e8ecec;
+    position: sticky;
+}
+th, th tr {
+    padding: 10px 15px;
+    position: sticky;
+}
+
+tbody {
+    border: 1px solid rgba(255,255,255,0.3);
+    vertical-align:middle;
+    font-size: 14px;
+}
+tbody tr:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+tbody td {
+    border-top: 1px solid rgb(176, 176, 176);
+    padding: 5px 10px;
+}
+.table-name {
+    width: 70%;
+    text-align: start;
+}
+.table-count {
+    width: 15%;
+}
+.table-buttor {
+    width: 15%;
+}
+#bookclub-leave:hover {
+    background-color: black;
+    color: #fff;
+}

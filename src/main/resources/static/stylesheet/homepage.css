@@ -22,10 +22,6 @@
     text-align: center;
 }
 
-.divider-line {
-    border: 1px solid #00000055;
-    width: 100%;
-}
 .bookshelf-container, .collection-container {
     display: flex;
     flex-direction: column;
