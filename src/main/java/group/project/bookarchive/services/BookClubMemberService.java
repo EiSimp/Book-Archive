@@ -2,6 +2,7 @@ package group.project.bookarchive.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,16 +34,18 @@ public class BookClubMemberService {
         return bookClubMemberRepository.save(member);
     }
 
-    public void removeMember(Long bookClubId, Long userId, Long managerUserId) {
+    public void removeOrLeaveBookClub(Long bookClubId, Long userId, Long managerUserId) {
         BookClub bookClub = bookClubRepository.findById(bookClubId)
                 .orElseThrow(() -> new RuntimeException("Book Club not found"));
-        if (!bookClub.getManagerUserId().equals(managerUserId)) {
-            throw new RuntimeException("Only the manager can remove members");
-        }
-        bookClubMemberRepository.deleteByBookClubIdAndUserId(bookClubId, userId);
-    }
 
-    public void leaveBookClub(Long bookClubId, Long userId) {
+        if (bookClub.getManagerUserId().equals(userId)) {
+            throw new RuntimeException(
+                    "Manager cannot remove themselves or leave the book club. Transfer manager role before removing.");
+        }
+        if (!bookClub.getManagerUserId().equals(managerUserId) && !userId.equals(managerUserId)) {
+            throw new RuntimeException("Only the manager can remove members or a user can leave the club themselves");
+        }
+
         bookClubMemberRepository.deleteByBookClubIdAndUserId(bookClubId, userId);
     }
 
@@ -50,8 +53,12 @@ public class BookClubMemberService {
         return bookClubMemberRepository.findByBookClubId(bookClubId);
     }
 
-    public List<BookClubMember> getUserBookClubs(Long userId) {
-        return bookClubMemberRepository.findByUserId(userId);
+    public List<BookClub> getUserBookClubs(Long userId) {
+        List<BookClubMember> bookClubMembers = bookClubMemberRepository.findByUserId(userId);
+        List<Long> bookClubIds = bookClubMembers.stream()
+                .map(BookClubMember::getBookClubId)
+                .collect(Collectors.toList());
+        return bookClubRepository.findAllById(bookClubIds);
     }
 
     public boolean isUserInBookClub(Long bookClubId, Long userId) {
