@@ -19,6 +19,11 @@
     <div th:replace="~{fragments/header.html}"></div>
     <!--bookclub landing page starts here-->
     <div class="content-container">
+        <div class="bookclub-header">
+            <h3>Book Club Name</h3>
+            <div class="setting">
+            </div>
+        </div>
         <!--section 1: calendar, members, chatroom-->
         <hr class="solid divider-line">
         <div class="bookclubdetail-section1">
@@ -34,13 +39,13 @@
                         </div>
                         <div class="calendar-body">
                             <div class="calendar-days">
-                                <div>S</div>
+                                <div class="weekends">S</div>
                                 <div>M</div>
                                 <div>T</div>
                                 <div>W</div>
                                 <div>T</div>
                                 <div>F</div>
-                                <div>S</div>
+                                <div class="weekends">S</div>
                             </div>
                             <div class="calendar-dates" id="calendar-dates">
                                 <!-- Dates will be generated here -->
@@ -49,16 +54,152 @@
                     </div>
                 </div>
                 <!--memebers-->
-                <div>
-                    <h4>members</h4>
-                    <ul>
-                        <li></li>
+                <div class="club-member-wrap">
+                    <h4>Members</h4>
+                    <ul class="club-member-ul">
+                        <li>
+                            <div class="manager-member">
+                                <span>😎</span>
+                                <span>
+                                    manager username
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <span>🐛</span>
+                                <span>
+                                    member username
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="myself-member">
+                                <span>😮</span>
+                                <span>
+                                    member username(me)
+                                </span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
             <!--chatroom-->
-            <div>
+            <div class="chatroom-wrap">
+                <div class="chat-container">
+                    <div class="search-container">
+                        <button id="search-icon" class="search-icon">&#128269;</button>
+                        <input type="text" id="search-input" placeholder="Search messages..." />
+                    </div>
+                    <!--The messages will be displayed in this chat-box-->
+                    <!--these messages are samples-->
+                    <div class="chat-box" id="chat-box">
+                        <!-- Message 1 -->
+                        <div class="message">
+                            <div class="header">
+                                <img src="/images/sun.jpg" alt="user1's profile picture">
+                                <div class="details">
+                                    <span class="username">user1</span>
+                                    <span class="timestamp">Yesterday, 10:00 PM</span>
+                                </div>
+                            </div>
+                            <p class="text">hello</p>
+                            <div class="reactions">
+                                <span class="reaction">👍</span>
+                                <span class="reaction">❤️</span>
+                                <span class="reaction">😂</span>
+                                <span class="reaction">😮</span>
+                                <span class="reaction">😢</span>
+                                <span class="reaction">😡</span>
+                            </div>
+                        </div>
 
+                        <!-- Message 2 -->
+                        <div class="message mine">
+                            <div class="header">
+                                <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
+                                <div class="details">
+                                    <span class="timestamp">Yesterday, 10:44 PM</span>
+                                    <span class="username">Me</span>
+                                </div>
+                            </div>
+                            <p class="text">hello</p>
+                            <div class="reactions">
+                                <span class="reaction">👍</span>
+                                <span class="reaction">❤️</span>
+                                <span class="reaction">😂</span>
+                                <span class="reaction">😮</span>
+                                <span class="reaction">😢</span>
+                                <span class="reaction">😡</span>
+                            </div>
+                        </div>
+
+                        <!-- Message 3 -->
+                        <div class="message">
+                            <div class="header">
+                                <img src="/images/blue_Thumb.jpg" alt="user2's profile picture">
+                                <div class="details">
+                                    <span class="username">user2</span>
+                                    <span class="timestamp">Yesterday, 11:49 PM</span>
+                                </div>
+                            </div>
+                            <p class="text">hello!!!!wowowowowowoowowow</p>
+                            <div class="reactions">
+                                <span class="reaction">👍</span>
+                                <span class="reaction">❤️</span>
+                                <span class="reaction">😂</span>
+                                <span class="reaction">😮</span>
+                                <span class="reaction">😢</span>
+                                <span class="reaction">😡</span>
+                            </div>
+                        </div>
+                        <div class="date-divider">July 25, 2024</div>
+
+                        <!-- Message 4 -->
+                        <div class="message">
+                            <div class="header">
+                                <img src="/images/moon.jpg" alt="Me's profile picture">
+                                <div class="details">
+                                    <span class="username">Me</span>
+                                    <span class="timestamp">Today, 7:00 AM</span>
+                                </div>
+                            </div>
+                            <p class="text">llonglonglonglong</p>
+                            <div class="reactions">
+                                <span class="reaction">👍</span>
+                                <span class="reaction">❤️</span>
+                                <span class="reaction">😂</span>
+                                <span class="reaction">😮</span>
+                                <span class="reaction">😢</span>
+                                <span class="reaction">😡</span>
+                            </div>
+                        </div>
+
+                        <!-- Message 5 -->
+                        <div class="message">
+                            <div class="header">
+                                <img src="/images/orange_Thumb.png" alt="user3's profile picture">
+                                <div class="details">
+                                    <span class="username">user3</span>
+                                    <span class="timestamp">Today, 3:00 PM</span>
+                                </div>
+                            </div>
+                            <p class="text">hehe</p>
+                            <div class="reactions">
+                                <span class="reaction">👍</span>
+                                <span class="reaction">❤️</span>
+                                <span class="reaction">😂</span>
+                                <span class="reaction">😮</span>
+                                <span class="reaction">😢</span>
+                                <span class="reaction">😡</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input type="text" id="chat-input" placeholder="Type a message..." />
+                        <button id="send-btn">Send</button>
+                    </div>
+                </div>
             </div>
         </div>
         <hr class="solid divider-line">
