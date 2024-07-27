@@ -239,3 +239,11 @@
 .popup-content button:hover {
     background-color: #0056b3;
 }
+
+.modal-content button.create-btn {
+    background-color: #506aff;
+}
+
+.modal-content button.create-btn:hover {
+    background-color: #0056b3;
+}

@@ -1,45 +1,87 @@
-.chat-container {
+.bookclubdetail-section1 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height:100%;
+    padding-inline: 5%;
+}
+
+.section1-left {
     display: flex;
     flex-direction: column;
-    width: 400px;
+}
+
+
+.calendar-container {
+    width: 350px;
+    background-color: white;
     border: 1px solid #ccc;
     border-radius: 8px;
-    background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.chat-box {
-    flex: 1;
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
-    overflow-y: auto;
     border-bottom: 1px solid #ccc;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 8px 8px 0 0;
 }
 
-.chat-box p {
-    margin: 5px 0;
-    padding: 8px;
-    background-color: #e1f5fe;
+.calendar-header button {
+    background-color: #1976D2;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
     border-radius: 4px;
 }
 
-#chat-input {
-    border: none;
-    padding: 10px;
-    border-radius: 0 0 0 8px;
-    outline: none;
-    flex: 1;
+.calendar-header button:hover {
+    background-color: #1565C0;
 }
 
-#send-btn {
+.calendar-body {
     padding: 10px;
-    border: none;
-    border-radius: 0 0 8px 0;
-    background-color: #2196F3;
-    color: white;
+}
+
+.calendar-days {
+    display: flex;
+    justify-content: space-between;
+}
+
+.calendar-days div {
+    width: 14.28%;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.calendar-dates {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.calendar-dates div {
+    width: 14.28%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    outline: none;
+    border: 1px solid transparent;
+    margin-bottom: 5px;
 }
 
-#send-btn:hover {
+.calendar-dates div:hover {
+    background-color: #e1f5fe;
+}
+
+.calendar-dates .today {
     background-color: #1976D2;
+    color: white;
+    border-radius: 4px;
 }
