@@ -59,6 +59,7 @@ li.card-li, .collection-li {
     width: 100%;
     height: 100%;
     padding: 5px;
+    overflow: hidden;
 }
 
 .collection-thumbnail-holder {
@@ -70,7 +71,7 @@ li.card-li, .collection-li {
     isolation: isolate;
     height: 100%;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
     justify-content:space-between;
     background-color: transparent;
 
@@ -85,7 +86,6 @@ li.card-li, .collection-li {
     display: flex;
     width: 30%;
     height: 100%;
-    box-shadow: 4px 0px 3px rgba(0, 0, 0, 0.25);
     float: left;
     margin-right: -20%;
     position: relative;
@@ -131,6 +131,7 @@ li.card-li, .collection-li {
     height: 100%;
     background-color: #d2d2d2;
     border-radius: 4px;
+    box-shadow: inset 0 5px 5em 5px rgba(0, 0, 0, 0.66);
 }
 
 /* for thumbnails in book cards*/
