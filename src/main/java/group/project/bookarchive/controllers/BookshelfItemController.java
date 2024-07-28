@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +41,7 @@ public class BookshelfItemController {
         return ResponseEntity.ok(bookshelfItem);
     }
 
-     @GetMapping("/status")
+    @GetMapping("/status")
     public ResponseEntity<Boolean> isBookInBookshelf(
             @RequestParam Long bookshelfId,
             @RequestParam String googleBookId) {
@@ -61,4 +62,49 @@ public class BookshelfItemController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<BookshelfItem> updateBookRating(
+            @RequestParam Long bookshelfId,
+            @RequestParam String googleBookId,
+            @RequestParam double rating) {
+
+        try {
+            Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
+            
+            BookshelfItem updatedItem = bookshelfItemService.updateBookRating(bookshelfId, existingBook, rating);
+            return ResponseEntity.ok(updatedItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/rating")
+    public ResponseEntity<Double> getBookRating(
+        @RequestParam Long bookshelfId,
+        @RequestParam String googleBookId) {
+
+    try {
+        Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
+        if (existingBook == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+                .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+
+        BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository.findByBookshelfAndBook(bookshelf, existingBook);
+        if (bookshelfItem == null) {
+            return ResponseEntity.ok(0.0); // Return 0.0 if no rating is found
+           
+        }
+
+        double rating = bookshelfItem.getUserRating();
+        return ResponseEntity.ok(rating);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
 }

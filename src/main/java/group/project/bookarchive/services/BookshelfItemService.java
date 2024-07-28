@@ -43,14 +43,23 @@ public class BookshelfItemService {
         return bookshelfItemRepository.save(bookshelfItem);
     }
 
-    // public boolean isBookInBookshelf(Long bookshelfId, Book book2) {
-    //     Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
-    //             .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+    public BookshelfItem updateBookRating(Long bookshelfId, Book book, double rating) {
+        Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+                .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
 
-    //     return bookshelfItemRepository.existsByBookshelfAndBook(bookshelf, book2);
-    // }
+        Book existingBook = bookRepository.findByGoogleBookId(book.getGoogleBookId());
+        if (existingBook == null) {
+            existingBook = bookRepository.save(book);
+        }
 
+        BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository.findByBookshelfAndBook(bookshelf, existingBook);
 
+        bookshelfItem.setUserRating(rating);
+
+        return bookshelfItemRepository.save(bookshelfItem);
+    }
+
+    
 
 
 }

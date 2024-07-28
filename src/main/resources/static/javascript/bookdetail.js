@@ -22,11 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
     
     labels.forEach(label => {
         label.addEventListener('click', function() {
-            rateBook();
+            rateBook(this);
         });
     });
 
     updateBookStatusByDefaultBookshelves(bookID);
+    loadCurrentRating();
 
 
 });
@@ -163,6 +164,123 @@ function getCsrfToken() {
     };
 }
 
+function addRead() {
+    addBookToDefaultBookshelf("Read");
+
+    document.getElementById("add-read-img").src = "/images/checked.png";
+}
+function addReading() {
+    addBookToDefaultBookshelf("Reading");
+    document.getElementById("add-reading-img").src = "/images/checked.png";
+}
+function addComment() {
+    //TODO:
+}
+function addToRead() {
+    addBookToDefaultBookshelf("To Read");
+    document.getElementById("add-toRead-img").src = "/images/checked.png";
+}
+function addWishlist() {
+    addBookToDefaultBookshelf("Wishlist");
+    document.getElementById("add-wishlist-img").src = "/images/checked.png";
+}
+function  rateBook(selectedLabel) {
+    //TODO:
+    addBookToDefaultBookshelf("Rating");
+    const urlParams = new URLSearchParams(window.location.search);
+    const csrf = getCsrfToken();
+
+    const ratingValue = selectedLabel.getAttribute('title');
+    // rated books should be added by default to read bookshelf
+    const bookshelfId = document.getElementById('readSelect').value;
+    const googleBookId =  urlParams.get('id');
+    
+    fetch(`/bookshelf-items/update?bookshelfId=${bookshelfId}&googleBookId=${googleBookId}&rating=${ratingValue}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrf.header]: csrf.token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(updatedItem => {
+        console.log('Rating updated successfully:', updatedItem);
+        // Optionally update the UI to reflect the changes
+        
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function updateBookStatusByDefaultBookshelves(bookID) {
+    // Define an array of option IDs and their corresponding image IDs
+    const bookshelves = [
+        { optionId: 'readSelect', imgId: 'add-read-img', uncheckedImage: '/images/addbooksread.png' },
+        { optionId: 'readingSelect', imgId: 'add-reading-img', uncheckedImage: '/images/addreading.png' },
+        { optionId: 'toReadSelect', imgId: 'add-toRead-img', uncheckedImage: '/images/addtoread.png' },
+        { optionId: 'wishlistSelect', imgId: 'add-wishlist-img', uncheckedImage: '/images/wish.png' }
+    ];
+
+    // Define the checked image URL
+    const checkedImage = '/images/checked.png';
+
+    // Loop through each bookshelf configuration
+    bookshelves.forEach(({ optionId, imgId, uncheckedImage }) => {
+        const bookshelfId = document.getElementById(optionId)?.value;
+        const imgElement = document.getElementById(imgId);
+
+        if (bookshelfId && imgElement) {
+            // Fetch the status of the book in the current bookshelf
+            fetch(`/bookshelf-items/status?bookshelfId=${bookshelfId}&googleBookId=${bookID}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // Parse the JSON response
+                })
+                .then(isInBookshelf => {
+                    // Update the image source based on the book status
+                    imgElement.src = isInBookshelf ? checkedImage : uncheckedImage;
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during fetch
+                    console.error('Error:', error);
+                });
+        }
+    });
+}
+
+function loadCurrentRating() {
+    const bookshelfId = document.getElementById('readSelect').value; // Adjust if necessary
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const googleBookId = urlParams.get('id');
+
+    fetch(`/bookshelf-items/rating?bookshelfId=${bookshelfId}&googleBookId=${googleBookId}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const rating = data;
+        if (rating) {
+            // Check the corresponding star
+            document.getElementById(`starpoint_${rating * 2}`).checked = true;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 function addBookToDefaultBookshelf(name) {
     let bookshelfId;
 
@@ -234,7 +352,7 @@ function addBookToDefaultBookshelf(name) {
                 error: function (xhr) {
                     if (xhr.status === 409) {
                         if (name === "Rating") {
-                            alert('Book rating updated successfully!\nBook already exists in the Read bookshelf.');
+                            alert('Book rating updated successfully!\nBook exists in the Read bookshelf.');
                         } else {
                             alert('Book already exists in the ' + name + ' bookshelf.\n');
                         }
@@ -252,68 +370,3 @@ function addBookToDefaultBookshelf(name) {
         });
 }
 
-
-function addRead() {
-    //TODO: Make it actually add the book
-    addBookToDefaultBookshelf("Read");
-
-    document.getElementById("add-read-img").src = "/images/checked.png";
-}
-function addReading() {
-    //TODO:
-    addBookToDefaultBookshelf("Reading");
-    document.getElementById("add-reading-img").src = "/images/checked.png";
-}
-function addComment() {
-    //TODO:
-}
-function addToRead() {
-    addBookToDefaultBookshelf("To Read");
-    document.getElementById("add-toRead-img").src = "/images/checked.png";
-}
-function addWishlist() {
-    addBookToDefaultBookshelf("Wishlist");
-    document.getElementById("add-wishlist-img").src = "/images/checked.png";
-}
-function rateBook() {
-    //TODO:
-    addBookToDefaultBookshelf("Rating");
-}
-
-function updateBookStatusByDefaultBookshelves(bookID) {
-    // Define an array of option IDs and their corresponding image IDs
-    const bookshelves = [
-        { optionId: 'readSelect', imgId: 'add-read-img', uncheckedImage: '/images/addbooksread.png' },
-        { optionId: 'readingSelect', imgId: 'add-reading-img', uncheckedImage: '/images/addreading.png' },
-        { optionId: 'toReadSelect', imgId: 'add-toRead-img', uncheckedImage: '/images/addtoread.png' },
-        { optionId: 'wishlistSelect', imgId: 'add-wishlist-img', uncheckedImage: '/images/wish.png' }
-    ];
-
-    // Define the checked image URL
-    const checkedImage = '/images/checked.png';
-
-    // Loop through each bookshelf configuration
-    bookshelves.forEach(({ optionId, imgId, uncheckedImage }) => {
-        const bookshelfId = document.getElementById(optionId)?.value;
-        const imgElement = document.getElementById(imgId);
-
-        if (bookshelfId && imgElement) {
-            // Fetch the status of the book in the current bookshelf
-            fetch(`/bookshelf-items/status?bookshelfId=${bookshelfId}&googleBookId=${bookID}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json(); // Parse the JSON response
-                })
-                .then(isInBookshelf => {
-                    // Update the image source based on the book status
-                    imgElement.src = isInBookshelf ? checkedImage : uncheckedImage;
-                })
-                .catch(error => {
-                    // Handle any errors that occurred during fetch
-                    console.error('Error:', error);
-                });
-        }
-    });
-}
