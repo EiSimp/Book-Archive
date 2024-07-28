@@ -63,6 +63,11 @@ public class ArchiveController {
         return "users";
     }
 
+    @GetMapping("/bookclubdetail")
+    public String bookclubDetail() {
+        return "bookclubdetail";
+    }
+
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";

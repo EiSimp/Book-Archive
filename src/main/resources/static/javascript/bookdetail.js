@@ -10,6 +10,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchBookDetails(bookID);
 
+    document.getElementById("add-comment-btn").addEventListener("click", function () {
+        document.getElementById("commentModal").style.display = "flex";
+    });
+
+    document.getElementById("add-read-btn").addEventListener("click", function() {
+        addRead();
+    });
+
+    document.getElementById("add-reading-btn").addEventListener("click", function() {
+        addReading();
+    });
+
+    document.getElementById("add-toRead-btn").addEventListener("click", function() {
+        addToRead();
+    })
+
     document.getElementById("add-to-collection-btn").addEventListener("click", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
@@ -240,4 +256,24 @@ function addBookToDefaultBookshelf(name) {
             console.error("Error fetching book details: ", error);
             alert('Failed to fetch book details.');
         });
+}
+
+
+function addRead() {
+    //TODO: Make it actually add the book
+
+    document.getElementById("add-read-img").src = "/images/checked.png";
+}
+function addReading() {
+    //TODO:
+    document.getElementById("add-reading-img").src = "/images/checked.png";
+}
+function addComment() {
+    //TODO:
+}
+function addToRead() {
+    document.getElementById("add-toRead-img").src = "/images/checked.png";
+}
+function rateBook() {
+    //TODO:
 }

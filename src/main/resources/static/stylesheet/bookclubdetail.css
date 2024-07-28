@@ -1,0 +1,314 @@
+.bookclub-header {
+    display:flex;
+    width: 100%;
+    padding-inline: 3%;
+    padding-top: 20px;
+    justify-content: space-between;
+}
+.setting {
+    width: 40px;
+    height:40px;
+    background-image: url("/images/setting.png");
+    background-size: cover;
+}
+
+
+.bookclubdetail-section1 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height:100%;
+    padding-inline: 5%;
+}
+
+.section1-left {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap:20px;
+}
+
+/* calendar style*/
+.calendar-container {
+    width: 90%;
+    background-color: white;
+    min-width: 400px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f5fbff;
+    color: rgb(41, 41, 41);
+    font-family: 'Koulen';
+}
+
+.calendar-header button {
+    background-color: transparent;
+    color: #88bffb;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    border: none;
+}
+
+.calendar-header button:hover {
+    color:  #298dff;
+    background-color: #edf7fe;
+}
+
+.calendar-body {
+    padding: 15px;
+}
+
+.calendar-days {
+    display: flex;
+    justify-content: space-between;
+}
+.calendar-days .weekends {
+    color:#ff8787
+}
+
+.calendar-days div {
+    width: 14.28%;
+    text-align: center;
+    color: #727272;
+    font-weight: 500;
+    padding: 5px 0;
+}
+
+.calendar-dates {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.calendar-dates div {
+    width: 14.28%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin-bottom: 5px;
+}
+
+.calendar-dates div:hover {
+    background-color: #ecf7ff;
+    color:#727272;
+}
+
+/* today */
+.calendar-dates .today {
+    background-color: #3e9efe;
+    color: white;
+}
+
+/* event date */
+.calendar-dates .event {
+    background-color: #ffdede;
+}
+
+
+/* Style for club member list*/
+.club-member-wrap {
+    width: 90%;
+    height: 100%;
+}
+
+.club-member-ul {
+    list-style: none;
+    background-color: #ffffff;
+}
+
+/* manager user*/
+.manager-member {
+    color: #5672c7;
+}
+
+/* user themselves */
+.myself-member {
+    color:#4c8d70;
+}
+
+/* Style for chatroom*/
+.chatroom-wrap {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+}
+.chat-container {
+    max-width: 550px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+}
+
+.search-container {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+#search-icon {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    outline: none;
+}
+
+#search-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    display: none; /* Hidden by default */
+}
+
+.chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+    max-height: 500px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 4px;
+}
+.message .header {
+    display: flex;
+    align-items: center;
+}
+
+.message img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.message .details {
+    flex: 1;
+}
+
+.message .details .username {
+    font-weight: bold;
+}
+
+.message .details .timestamp {
+    font-size: 0.8em;
+    color: gray;
+    margin-left: 10px;
+}
+
+.message .text {
+    margin-top: 5px;
+    background-color: #e7e7e7;
+    width: fit-content;
+    padding: 5px;
+    margin-left: 30px;
+    border-radius: 5px;
+    margin-bottom: 0;
+}
+
+.message .reactions {
+    display: none;
+    margin-top: 5px;
+    margin-inline: 30px;
+}
+.message.show-reactions .reactions {
+    display: flex; /* Show reactions when the message is clicked */
+}
+
+.message.has-reactions .reactions {
+    display: flex; /* Show reactions if the message already has reactions */
+}
+
+.message .reactions .reaction {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.input-container {
+    display: flex;
+    border-top: 1px solid #ccc;
+}
+
+#chat-input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 0 0 0 8px;
+    outline: none;
+}
+
+#send-btn {
+    padding: 10px;
+    border: none;
+    border-radius: 0 0 8px 0;
+    background-color: #2196F3;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+#send-btn:hover {
+    background-color: #1976D2;
+}
+
+.date-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px 0;
+    color: gray;
+    font-size: 12px;
+}
+.date-divider::before,
+.date-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.date-divider:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.date-divider:not(:empty)::after {
+    margin-left: .25em;
+}
+
+/* my message style*/
+.mine {
+    align-items: end;
+}
+.mine .header {
+    flex-direction: row-reverse;
+}
+.mine .details {
+    text-align: end;
+}
+.mine img {
+    margin-right: 0;
+    margin-left: 10px;
+}
+.mine .text {
+    margin-right: 30px;
+    background-color: #e0fff1;
+}

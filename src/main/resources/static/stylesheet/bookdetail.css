@@ -5,6 +5,12 @@
 	width: 100%;
 }
 
+#create-comment {
+	width: 100%;
+	min-height: 100px;
+	border: none;
+}
+
 .detail-leftside {
 	margin: 20px;
 }

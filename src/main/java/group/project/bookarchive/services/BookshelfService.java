@@ -59,7 +59,7 @@ public class BookshelfService {
     }
 
     public List<Bookshelf> sortBookshelves(String sortBy) {
-        List<Bookshelf> bookshelves = bookshelfRepository.findAll();
+        List<Bookshelf> bookshelves = getAllBookshelvesByUser();
         if ("name".equals(sortBy)) {
             bookshelves.sort(Comparator.comparing(Bookshelf::getName));
         }

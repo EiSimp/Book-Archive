@@ -3,6 +3,7 @@ package group.project.bookarchive.controllers;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,18 @@ public class BookshelfController {
             return ResponseEntity.ok(new BookshelfItemDTO(bookshelf, items));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/thumbnails")
+    public ResponseEntity<List<String>> getBookshelfThumbnails(@PathVariable Long id) {
+        List<BookshelfItem> items = bookshelfService.getBookshelfItems(id)
+                .stream()
+                .limit(5)
+                .collect(Collectors.toList());
+        List<String> thumbnails = items.stream()
+                .map(item -> item.getBook().getThumbnailUrl())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(thumbnails);
     }
 
 }

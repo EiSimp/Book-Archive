@@ -5,20 +5,105 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PagePals</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css" />
+    <link rel="stylesheet" href="/stylesheet/bookclubs.css" />
+    <link rel="stylesheet" href="/stylesheet/bookshelf.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 </head>
 
 <body class="main-body">
-        <!--Header section of the homepage-->
-        <div th:replace="~{fragments/header.html}"></div>
-        <div class="content-container">
-            <h1>This is bookclub page</h1>
+    <!--Header section of the homepage-->
+    <div th:replace="~{fragments/header.html}"></div>
+    <!--bookclub landing page starts here-->
+    <div class="content-container">
+        <!--Greeting message image-->
+        <div class="message">
+            <div class="bookclub-message-img"></div>
         </div>
-        <div>
-            <footer th:replace="~{fragments/footer.html}"></footer>
+        <!--buttons-->
+        <div class="bookclub-buttons-section">
+            <button id="bookclub-join">JOIN</button>
+            <button id="bookclub-create">CREATE</button>
         </div>
-        <script src="/javascript/dropDown.js"></script>
-    </body>
+        <!--List of clubs the user joined/created. Displayed only when the user is in at least one club-->
+        <div class="bookclub-table-section">
+            <h4>My Clubs</h4>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Club Name</th>
+                            <th>members</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-name"><a href="/bookclubdetail">Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                        <tr>
+                            <td class="table-name"><a>Name</a></td>
+                            <td class="table-count">(10/15)</td>
+                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--create book club popup-->
+    <div id="create-bookclub-popup" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Create a Book Club</h2>
+            <label for="create-bookclub-name">Club Name</label>
+            <input type="text" id="create-bookclub-name" placeholder="Club Name">
+            <input type="hidden" id="manger-id" value="managerId">
+            <label for="create-bookclub-description">About the Club</label>
+            <textarea id="create-bookclub-description" class="" maxlength="500" placeholder="Write a brief description about the club." name="create-bookclub-description"></textarea>
+            <div class="button-container">
+                <button id="save-btn" class="done-btn create-btn">Create</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <footer th:replace="~{fragments/footer.html}"></footer>
+    </div>
+    <script src="/javascript/dropDown.js"></script>
+    <script src="/javascript/createBookclub.js"></script>
+</body>
 </html>

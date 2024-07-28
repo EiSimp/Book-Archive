@@ -236,31 +236,37 @@ function createBookshelf() {
 document.getElementById("sort-books-btn").addEventListener("click", function () {
     var sortBy = prompt("Enter sort option (name):");
     fetch(`/bookshelves/sort?sortBy=${sortBy}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok '+ response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log(data);
             var container = document.getElementById("collection-cardlist");
             container.innerHTML = "";
-            data.forEach(function (bookshelf) {
+            data.forEach(bookshelf => {
                 var bookshelfLi = document.createElement("li");
                 bookshelfLi.className = "collection-li";
                 bookshelfLi.innerHTML =
                     `<a class="collection-detail-link">
                         <div class="collection-card">
                             <div class="collection-thumbnail-holder">
+                                <div class="thumbnail-s ts0">
+                                    <div class="thumbnail-image-s" id="thumbnail-0-${bookshelf.id}"></div>
+                                </div>
                                 <div class="thumbnail-s ts1">
-                                    <div class="thumbnail-image-s">img</div>
+                                    <div class="thumbnail-image-s" id="thumbnail-1-${bookshelf.id}"></div>
                                 </div>
                                 <div class="thumbnail-s ts2">
-                                    <div class="thumbnail-image-s">img</div>
+                                    <div class="thumbnail-image-s" id="thumbnail-2-${bookshelf.id}"></div>
                                 </div>
                                 <div class="thumbnail-s ts3">
-                                    <div class="thumbnail-image-s">img</div>
+                                    <div class="thumbnail-image-s" id="thumbnail-3-${bookshelf.id}"></div>
                                 </div>
                                 <div class="thumbnail-s ts4">
-                                    <div class="thumbnail-image-s">img</div>
-                                </div>
-                                <div class="thumbnail-s ts5">
-                                    <div class="thumbnail-image-s">img</div>
+                                    <div class="thumbnail-image-s" id="thumbnail-4-${bookshelf.id}"></div>
                                 </div>
                             </div>
                         </div>
@@ -275,11 +281,29 @@ document.getElementById("sort-books-btn").addEventListener("click", function () 
                         </div>
                     </a>`;
                 container.appendChild(bookshelfLi);
+
+                fetchAndSetThumbnails(bookshelf.id);
             });
         }).catch(error => {
             console.error("Error sorting bookshelves:", error);
         });
 });
+
+// For displaying thumbnails on the collection card
+function fetchAndSetThumbnails(bookshelfId) {
+    fetch(`/bookshelves/${bookshelfId}/thumbnails`)
+        .then(response => response.json())
+        .then(thumbnails => {
+            thumbnails.forEach((thumbnail, index) => {
+                const thumbnailElenemt = document.getElementById(`thumbnail-${index}-${bookshelfId}`);
+                if (thumbnailElenemt) {
+                    thumbnailElenemt.style.backgroundImage =`url(${thumbnail})`;
+                }
+            });
+    })
+    .catch(error => console.error('Error fetching bookshelf thumbnails: ', error));
+}
+
 // For Displaying Bookshelves
 document.addEventListener("DOMContentLoaded", function () {
     fetch("/bookshelves/all") // Fetch all bookshelves from the backend
@@ -312,13 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     thumbnailS.classList.add("thumbnail-s", "ts" + i);
                     const thumbnailImageS = document.createElement("div");
                     thumbnailImageS.className = "thumbnail-image-s";
+                    thumbnailImageS.id = `thumbnail-${i}-${bookshelf.id}`;
 
-                    /*/ Use the actual book thumbnails if available
-                    if (bookshelf.books[i] && bookshelf.books[i].thumbnailUrl) {
-                        thumbnailImageS.style.backgroundImage = `url(${bookshelf.books[i].thumbnailUrl})`;
-                    } else {*/
-                        thumbnailImageS.innerText = "img"; // Placeholder if no thumbnail
-                    //}
                     thumbnailS.appendChild(thumbnailImageS);
                     cardThumbnailHolder.appendChild(thumbnailS);
                 }
@@ -382,6 +401,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Append the bookshelf element to the bookshelf ul
                 bookshelfUL.appendChild(bookshelfElement);
+
+                fetchAndSetThumbnails(bookshelf.id);
             });
         })
         .catch(error => console.error('Error fetching bookshelves:', error));
