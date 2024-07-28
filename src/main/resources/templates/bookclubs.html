@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -11,11 +11,17 @@
     <link rel="stylesheet" href="/stylesheet/bookclubs.css" />
     <link rel="stylesheet" href="/stylesheet/bookshelf.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body class="main-body">
     <!--Header section of the homepage-->
     <div th:replace="~{fragments/header.html}"></div>
+
+    <!-- Hidden input field to store the user ID -->
+    <input type="hidden" id="userId" th:value="${user.id}">
+
     <!--bookclub landing page starts here-->
     <div class="content-container">
         <!--Greeting message image-->
@@ -28,58 +34,37 @@
             <button id="bookclub-create">CREATE</button>
         </div>
         <!--List of clubs the user joined/created. Displayed only when the user is in at least one club-->
-        <div class="bookclub-table-section">
+        <div class="bookclub-table-section" style="display: none;">
             <h4>My Clubs</h4>
             <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
                             <th>Club Name</th>
-                            <th>members</th>
+                            <th>Members</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- The content of the tbody will be dynamically generated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--List of existing clubs to join-->
+        <div id="existing-clubs-section" class="bookclub-table-section" style="display: none;">
+            <h4>Existing Clubs</h4>
+            <div class="table-wrap">
+                <table>
+                    <thead>
                         <tr>
-                            <td class="table-name"><a href="/bookclubdetail">Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
+                            <th>Club Name</th>
+                            <th>Members</th>
+                            <th></th>
                         </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
-                        <tr>
-                            <td class="table-name"><a>Name</a></td>
-                            <td class="table-count">(10/15)</td>
-                            <td class="table-button"><button id="bookclub-leave">leave</button></td>
-                        </tr>
+                    </thead>
+                    <tbody id="existing-clubs-tbody">
+                        <!-- The content of the tbody will be dynamically generated -->
                     </tbody>
                 </table>
             </div>
@@ -92,9 +77,10 @@
             <h2>Create a Book Club</h2>
             <label for="create-bookclub-name">Club Name</label>
             <input type="text" id="create-bookclub-name" placeholder="Club Name">
-            <input type="hidden" id="manger-id" value="managerId">
+            <input type="hidden" id="manager-id" value="managerId">
             <label for="create-bookclub-description">About the Club</label>
-            <textarea id="create-bookclub-description" class="" maxlength="500" placeholder="Write a brief description about the club." name="create-bookclub-description"></textarea>
+            <textarea id="create-bookclub-description" class="" maxlength="500"
+                placeholder="Write a brief description about the club." name="create-bookclub-description"></textarea>
             <div class="button-container">
                 <button id="save-btn" class="done-btn create-btn">Create</button>
             </div>
@@ -104,6 +90,7 @@
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
     <script src="/javascript/dropDown.js"></script>
-    <script src="/javascript/createBookclub.js"></script>
+    <script src="/javascript/bookclub.js"></script>
 </body>
+
 </html>
