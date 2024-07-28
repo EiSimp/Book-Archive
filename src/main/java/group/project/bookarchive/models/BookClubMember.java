@@ -13,18 +13,12 @@ public class BookClubMember {
     @Column(name = "join_date")
     private LocalDateTime joinDate;
 
-    @Column(name = "book_club_id", insertable = false, updatable = false)
-    private Long bookClubId;
-
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
-
     @ManyToOne
-    @JoinColumn(name = "book_club_id")
+    @JoinColumn(name = "book_club_id", nullable = false)
     private BookClub bookClub;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     // Getters and Setters
@@ -42,22 +36,6 @@ public class BookClubMember {
 
     public void setJoinDate(LocalDateTime joinDate) {
         this.joinDate = joinDate;
-    }
-
-    public Long getBookClubId() {
-        return bookClubId;
-    }
-
-    public void setBookClubId(Long bookClubId) {
-        this.bookClubId = bookClubId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public BookClub getBookClub() {
