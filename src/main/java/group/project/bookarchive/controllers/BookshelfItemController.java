@@ -1,11 +1,21 @@
 package group.project.bookarchive.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import group.project.bookarchive.models.Book;
+import group.project.bookarchive.models.Bookshelf;
 import group.project.bookarchive.models.BookshelfItem;
+import group.project.bookarchive.repositories.BookRepository;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
+import group.project.bookarchive.repositories.BookshelfRepository;
 import group.project.bookarchive.services.BookshelfItemService;
 
 @RestController
@@ -14,10 +24,41 @@ public class BookshelfItemController {
     @Autowired
     private BookshelfItemService bookshelfItemService;
 
+    @Autowired
+    private BookshelfRepository bookshelfRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
+
     @PostMapping("/add")
     public ResponseEntity<BookshelfItem> addBookToBookshelf(@RequestParam Long bookshelfId, @RequestBody Book book) {
         System.out.println("Received bookshelfId: " + bookshelfId);
         BookshelfItem bookshelfItem = bookshelfItemService.addBookToBookshelf(bookshelfId, book);
         return ResponseEntity.ok(bookshelfItem);
+    }
+
+     @GetMapping("/status")
+    public ResponseEntity<Boolean> isBookInBookshelf(
+            @RequestParam Long bookshelfId,
+            @RequestParam String googleBookId) {
+
+        try {
+            Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+                    .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+
+            Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
+            if (existingBook == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+            }
+
+            boolean isBookPresent = bookshelfItemRepository.existsByBookshelfAndBook(bookshelf, existingBook);
+            return ResponseEntity.ok(isBookPresent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

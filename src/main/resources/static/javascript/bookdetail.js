@@ -14,18 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("commentModal").style.display = "flex";
     });
 
-    document.getElementById("add-read-btn").addEventListener("click", function() {
-        addRead();
-    });
-
-    document.getElementById("add-reading-btn").addEventListener("click", function() {
-        addReading();
-    });
-
-    document.getElementById("add-toRead-btn").addEventListener("click", function() {
-        addToRead();
-    })
-
     document.getElementById("add-to-collection-btn").addEventListener("click", function () {
         document.getElementById("bookshelfModal").style.display = "flex";
     });
@@ -34,9 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
     
     labels.forEach(label => {
         label.addEventListener('click', function() {
-            addBookToDefaultBookshelf('Rating');
+            rateBook();
         });
     });
+
+    updateBookStatusByDefaultBookshelves(bookID);
+
 
 });
 
@@ -185,6 +176,9 @@ function addBookToDefaultBookshelf(name) {
     } else if (name === "Rating") {
         // rating a book adds it to Read
         bookshelfId = document.getElementById('readSelect').value;
+    } else if (name === "Wishlist") {
+        // rating a book adds it to Read
+        bookshelfId = document.getElementById('wishlistSelect').value;
     } else {
         console.error("Unknown bookshelf name:", name);
         return; // Return early if the name doesn't match expected values
@@ -261,19 +255,65 @@ function addBookToDefaultBookshelf(name) {
 
 function addRead() {
     //TODO: Make it actually add the book
+    addBookToDefaultBookshelf("Read");
 
     document.getElementById("add-read-img").src = "/images/checked.png";
 }
 function addReading() {
     //TODO:
+    addBookToDefaultBookshelf("Reading");
     document.getElementById("add-reading-img").src = "/images/checked.png";
 }
 function addComment() {
     //TODO:
 }
 function addToRead() {
+    addBookToDefaultBookshelf("To Read");
     document.getElementById("add-toRead-img").src = "/images/checked.png";
+}
+function addWishlist() {
+    addBookToDefaultBookshelf("Wishlist");
+    document.getElementById("add-wishlist-img").src = "/images/checked.png";
 }
 function rateBook() {
     //TODO:
+    addBookToDefaultBookshelf("Rating");
+}
+
+function updateBookStatusByDefaultBookshelves(bookID) {
+    // Define an array of option IDs and their corresponding image IDs
+    const bookshelves = [
+        { optionId: 'readSelect', imgId: 'add-read-img', uncheckedImage: '/images/addbooksread.png' },
+        { optionId: 'readingSelect', imgId: 'add-reading-img', uncheckedImage: '/images/addreading.png' },
+        { optionId: 'toReadSelect', imgId: 'add-toRead-img', uncheckedImage: '/images/addtoread.png' },
+        { optionId: 'wishlistSelect', imgId: 'add-wishlist-img', uncheckedImage: '/images/wish.png' }
+    ];
+
+    // Define the checked image URL
+    const checkedImage = '/images/checked.png';
+
+    // Loop through each bookshelf configuration
+    bookshelves.forEach(({ optionId, imgId, uncheckedImage }) => {
+        const bookshelfId = document.getElementById(optionId)?.value;
+        const imgElement = document.getElementById(imgId);
+
+        if (bookshelfId && imgElement) {
+            // Fetch the status of the book in the current bookshelf
+            fetch(`/bookshelf-items/status?bookshelfId=${bookshelfId}&googleBookId=${bookID}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // Parse the JSON response
+                })
+                .then(isInBookshelf => {
+                    // Update the image source based on the book status
+                    imgElement.src = isInBookshelf ? checkedImage : uncheckedImage;
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during fetch
+                    console.error('Error:', error);
+                });
+        }
+    });
 }

@@ -95,6 +95,7 @@ public class BookshelfService {
         createDefaultBookshelf(user, "Read", true);
         createDefaultBookshelf(user, "Reading", true);
         createDefaultBookshelf(user, "To Read", true);
+        createDefaultBookshelf(user, "Wishlist", true);
     }
 
     public Bookshelf createDefaultBookshelf(User user, String name, boolean isSecret) {
@@ -104,5 +105,10 @@ public class BookshelfService {
         bookshelf.setUserId(user.getId());
         bookshelf.setDefault(true);
         return bookshelfRepository.save(bookshelf);
+    }
+
+    public boolean isBookInBookshelf(Long bookshelfId, Long bookId) {
+
+        return bookshelfItemRepository.existsByBookshelfIdAndBookId(bookshelfId, bookId);
     }
 }

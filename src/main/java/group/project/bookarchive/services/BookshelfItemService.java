@@ -42,4 +42,15 @@ public class BookshelfItemService {
 
         return bookshelfItemRepository.save(bookshelfItem);
     }
+
+    // public boolean isBookInBookshelf(Long bookshelfId, Book book2) {
+    //     Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+    //             .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+
+    //     return bookshelfItemRepository.existsByBookshelfAndBook(bookshelf, book2);
+    // }
+
+
+
+
 }
