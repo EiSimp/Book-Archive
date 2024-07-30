@@ -1,13 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
     const bookshelfId = document.getElementById("bookshelf-id").value;
-    fetch(`/bookshelves/${bookshelfId}`)
+    const csrf = getCsrfToken();
+
+    fetch(`/bookshelves/${bookshelfId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrf.header]: csrf.token
+        }
+    })
         .then(response => response.json())
         .then(data => {
             const bookshelf = data.bookshelf;
             const items = data.items;
 
+            if (!bookshelf) {
+                throw new Error("Bookshelf not found");
+            }
+
             // Display bookshelf info
-            document.getElementById("bookshelf-name").innerText = "My Collection:  " + bookshelf.name;
+            document.getElementById("bookshelf-name").innerText = "Collection:  " + bookshelf.name;
             document.getElementById("bookshelf-secret").innerText = bookshelf.secret ? '🔒' : '';
             
             // Update the title
@@ -16,8 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const bookList = document.getElementById("book-list");
             bookList.innerHTML = ''; // Clear existing content
 
-            items.forEach(item => {
-                const book = item.book;
+            items.forEach(book => {
                 const bookLi = document.createElement("li");
                 bookLi.classList.add("card-li");
 
@@ -37,8 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const thumbnailImageM = document.createElement("div");
                 thumbnailImageM.classList.add("thumbnail-image-m");
 
-                if (item.book.thumbnailUrl) {
-                    thumbnailImageM.style.backgroundImage = `url(${book.thumbnailUrl})`;
+                if (book.thumbnail) {
+                    thumbnailImageM.style.backgroundImage = `url(${book.thumbnail})`;
                     
                 }
 
@@ -58,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const cardRate = document.createElement("li");
                 cardRate.classList.add("card-rate");
-                cardRate.innerText = item.userRating ? `Rated ★ ${item.userRating}` : `Avg ★ ${book.averageRating}`;
+                cardRate.innerText = book.userRating ? `Rated ★ ${book.userRating}` : `Avg ★ ${book.averageRating}`;
 
                 cardDescriptionList.appendChild(cardTitle);
                 cardDescriptionList.appendChild(cardRate);
@@ -72,4 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         })
         .catch(error => console.error('Error fetching bookshelf details: ', error));
-})
+});
+
+function getCsrfToken() {
+    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+    return {
+        token: csrfToken,
+        header: csrfHeader
+    };
+}

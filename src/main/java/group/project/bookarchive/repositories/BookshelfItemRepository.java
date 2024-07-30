@@ -11,5 +11,7 @@ import group.project.bookarchive.models.BookshelfItem;
 public interface BookshelfItemRepository extends JpaRepository<BookshelfItem, Long> {
     List<BookshelfItem> findByBookshelfId(Long bookshelfId);
 
+    List<BookshelfItem> findByBook(Book book);
+
     boolean existsByBookshelfAndBook(Bookshelf bookshelf, Book book);
 }
