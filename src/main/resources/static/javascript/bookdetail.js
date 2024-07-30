@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const bookID = urlParams.get('id');
@@ -29,29 +30,33 @@ document.addEventListener("DOMContentLoaded", function () {
     updateBookStatusByDefaultBookshelves(bookID);
     loadCurrentRating();
 
-    var googleBookId = bookID;
+    loadComments();
 
     // load the comments
-    fetch(`/comments/book/${encodeURIComponent(googleBookId)}`)
-    .then(response => response.json())
-    .then(comments => {
-        console.log(comments); // Check the format of the response
-        if (Array.isArray(comments)) {
-            const commentsContainer = document.getElementById('comments-container');
-            commentsContainer.innerHTML = ''; // Clear existing content
+    // fetch(`/comments/book/${encodeURIComponent(googleBookId)}`)
+    // .then(response => response.json())
+    // .then(comments => {
+    //     console.log(comments); // Check the format of the response
+    //     if (Array.isArray(comments)) {
+    //         const commentsContainer = document.getElementById('comments-container');
+    //         commentsContainer.innerHTML = ''; // Clear existing content
 
-            comments.forEach(comment => {
-                const commentCard = createCommentCard(comment);
-                commentsContainer.appendChild(commentCard);
-            });
-        } else {
-            console.error('Expected an array but received:', comments);
-        }
-    })
-    .catch(error => console.error('Error fetching comments:', error));
+    //         comments.forEach(comment => {
+    //             // console.log('Comment Properties:', Object.keys(comment));
+    //             // console.log('Comment:', comment);
+    //             console.log(comment.comment.user);
+    //             const commentCard = createCommentCard(comment);
+    //             commentsContainer.appendChild(commentCard);
+    //         });
+    //     } else {
+    //         console.error('Expected an array but received:', comments);
+    //     }
+    // })
+    // .catch(error => console.error('Error fetching comments:', error));
 
 
 });
+
 
 function fetchBookDetails(bookID) {
     fetch(`/api/bookdetails/${bookID}`)
@@ -217,7 +222,7 @@ function  rateBook(selectedLabel) {
     const bookshelfId = document.getElementById('readSelect').value;
     const googleBookId =  urlParams.get('id');
     
-    fetch(`/bookshelf-items/update?bookshelfId=${bookshelfId}&googleBookId=${googleBookId}&rating=${ratingValue}`, {
+    fetch(`/bookshelf-items/rating?bookshelfId=${bookshelfId}&googleBookId=${googleBookId}&rating=${ratingValue}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -421,7 +426,8 @@ function submitComment() {
             alert('Comment submitted successfully!');
             console.log(queryString);
             $('#commentModal').modal('hide');
-            // Optionally, you can refresh comments or take other actions
+            loadComments();
+            document.getElementById('create-comment').value = '';
         } else {
             return response.text().then(text => {
                 alert(`Failed to submit comment. Status: ${response.status}. Error: ${text}`);
@@ -438,29 +444,26 @@ function loadComments() {
     const urlParams = new URLSearchParams(window.location.search);
     var googleBookId = urlParams.get('id');
 
-    fetch(`/comments/book/${googleBookId}`)
-        .then(response => response.json())
-        .then(data => {
-            var commentsList = document.querySelector('.cardlist');
-            commentsList.innerHTML = ''; // Clear existing comments
+    fetch(`/comments/book/${encodeURIComponent(googleBookId)}`)
+    .then(response => response.json())
+    .then(comments => {
+        console.log(comments); // Check the format of the response
+        if (Array.isArray(comments)) {
+            const commentsContainer = document.getElementById('comments-container');
+            commentsContainer.innerHTML = ''; // Clear existing content
 
-            data.forEach(comment => {
-                var commentCard = `
-                    <li class="comment-card">
-                        <div class="comment-author">${comment.username}</div>
-                        <div class="comment-text">${comment.userComment}</div>
-                        <div class="comment-date">${new Date(comment.createdAt).toLocaleDateString()}</div>
-                        <button onclick="editComment(${comment.id})">Edit</button>
-                        <button onclick="deleteComment(${comment.id})">Delete</button>
-                    </li>
-                `;
-                commentsList.innerHTML += commentCard;
+            comments.forEach(comment => {
+                // console.log('Comment Properties:', Object.keys(comment));
+                // console.log('Comment:', comment);
+                //console.log(comment.comment.user);
+                const commentCard = createCommentCard(comment);
+                commentsContainer.appendChild(commentCard);
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while loading comments.');
-        });
+        } else {
+            console.error('Expected an array but received:', comments);
+        }
+    })
+    .catch(error => console.error('Error fetching comments:', error));
 }
 
 function editComment(commentId) {
@@ -521,21 +524,35 @@ function createCommentCard(comment) {
     // Create the comment card element
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('comment-card');
+    let currentUserId = document.getElementById("userId");
     
     // Set the inner HTML for the card
     cardDiv.innerHTML = `
-        <div class="comment-text-holder">
-            <p>${comment.userComment}</p>
+    <div class="comment-text-holder">
+            <p>${comment.comment.userComment || 'No comment'}</p>
         </div>
         <div class="comment-info-holder">
             <div class="comment-profile-img">
-                <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon comment-profile-img" id="user-icon" />
+                <img src="${comment.comment.user.profilePhoto || '/images/defaultProfile.png'}" alt="User Icon" class="user-icon comment-profile-img" id="user-icon" />
             </div>
             <div class="comment-userinfo">
-                <div>${comment.username}</div>
+                <div>${comment.comment.user.username || 'Unknown user'}</div>
                 <div class="card-rate">★${comment.rating || 'N/A'}</div>
             </div>
+            <div class="comment-timestamp">
+                <div>Posted on: ${new Date(comment.comment.createdDate).toLocaleString()}</div>
+                ${comment.comment.lastEditedDate ? 
+                    `<div>Last edited on: ${new Date(comment.comment.lastEditedDate).toLocaleString()}</div>` : 
+                    ''
+                }
+            </div>
         </div>
+        ${comment.comment.user.id === currentUserId ? `
+            <div class="comment-actions">
+                <button onclick="editComment(${comment.comment.id})">Edit</button>
+                <button onclick="deleteComment(${comment.comment.id})">Delete</button>
+            </div>
+        ` : ''}
     `;
     
     return cardDiv;
