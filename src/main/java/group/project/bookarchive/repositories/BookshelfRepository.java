@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import group.project.bookarchive.models.Bookshelf;
 
 public interface BookshelfRepository extends JpaRepository<Bookshelf, Long> {
@@ -14,5 +15,7 @@ public interface BookshelfRepository extends JpaRepository<Bookshelf, Long> {
     Optional<Bookshelf> findById(Long id);
 
     Bookshelf findByNameAndUserId(String name, Long userId);
+
+    Optional<Bookshelf> findByUserIdAndName(Long userId, String string);
 
 }

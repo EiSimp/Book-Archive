@@ -22,6 +22,7 @@ import group.project.bookarchive.services.BookshelfItemService;
 @RestController
 @RequestMapping("/bookshelf-items")
 public class BookshelfItemController {
+
     @Autowired
     private BookshelfItemService bookshelfItemService;
 
@@ -63,7 +64,7 @@ public class BookshelfItemController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping("/rating")
     public ResponseEntity<BookshelfItem> updateBookRating(
             @RequestParam Long bookshelfId,
             @RequestParam String googleBookId,
@@ -71,7 +72,7 @@ public class BookshelfItemController {
 
         try {
             Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
-            
+
             BookshelfItem updatedItem = bookshelfItemService.updateBookRating(bookshelfId, existingBook, rating);
             return ResponseEntity.ok(updatedItem);
         } catch (Exception e) {
@@ -82,29 +83,43 @@ public class BookshelfItemController {
 
     @GetMapping("/rating")
     public ResponseEntity<Double> getBookRating(
-        @RequestParam Long bookshelfId,
-        @RequestParam String googleBookId) {
+            @RequestParam Long bookshelfId,
+            @RequestParam String googleBookId) {
 
-    try {
-        Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
-        if (existingBook == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        try {
+            Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
+            if (existingBook == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+                    .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+
+            BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository.findByBookshelfAndBook(bookshelf, existingBook);
+            if (bookshelfItem == null) {
+                return ResponseEntity.ok(0.0); // Return 0.0 if no rating is found
+
+            }
+
+            double rating = bookshelfItem.getUserRating();
+            return ResponseEntity.ok(rating);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
-                .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
-
-        BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository.findByBookshelfAndBook(bookshelf, existingBook);
-        if (bookshelfItem == null) {
-            return ResponseEntity.ok(0.0); // Return 0.0 if no rating is found
-           
-        }
-
-        double rating = bookshelfItem.getUserRating();
-        return ResponseEntity.ok(rating);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-}
+
+    @PutMapping("/updateComment")
+    public ResponseEntity<?> updateComment(@RequestParam Long bookshelfItemId, 
+                                            @RequestParam String comment) {
+        // Find the bookshelf item by its ID
+        return bookshelfItemRepository.findById(bookshelfItemId)
+            .map(item -> {
+                // Update the comment
+                item.setUserComment(comment);
+                bookshelfItemRepository.save(item);
+                return ResponseEntity.ok().build();
+            })
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found"));
+    }
 }

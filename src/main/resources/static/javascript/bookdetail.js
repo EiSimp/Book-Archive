@@ -29,6 +29,27 @@ document.addEventListener("DOMContentLoaded", function () {
     updateBookStatusByDefaultBookshelves(bookID);
     loadCurrentRating();
 
+    var googleBookId = bookID;
+
+    // load the comments
+    fetch(`/comments/book/${encodeURIComponent(googleBookId)}`)
+    .then(response => response.json())
+    .then(comments => {
+        console.log(comments); // Check the format of the response
+        if (Array.isArray(comments)) {
+            const commentsContainer = document.getElementById('comments-container');
+            commentsContainer.innerHTML = ''; // Clear existing content
+
+            comments.forEach(comment => {
+                const commentCard = createCommentCard(comment);
+                commentsContainer.appendChild(commentCard);
+            });
+        } else {
+            console.error('Expected an array but received:', comments);
+        }
+    })
+    .catch(error => console.error('Error fetching comments:', error));
+
 
 });
 
@@ -184,6 +205,7 @@ function addWishlist() {
     addBookToDefaultBookshelf("Wishlist");
     document.getElementById("add-wishlist-img").src = "/images/checked.png";
 }
+
 function  rateBook(selectedLabel) {
     //TODO:
     addBookToDefaultBookshelf("Rating");
@@ -369,4 +391,192 @@ function addBookToDefaultBookshelf(name) {
             alert('Failed to fetch book details.');
         });
 }
+
+function submitComment() {
+    const commentText = document.getElementById('create-comment').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id');
+    const csrf = getCsrfToken();
+    
+    // Get the logged-in username from the hidden input field
+    const username = document.getElementById('loggedInUser').value;
+
+    const queryString = new URLSearchParams({
+        username: username,
+        googleBookId: bookId,
+        commentText: commentText
+    }).toString();
+    
+    // Send the request
+    fetch(`/comments/add?${queryString}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrf.header]: csrf.token // CSRF token for security
+        },
+        // Note: No body is needed since parameters are included in the URL
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Comment submitted successfully!');
+            console.log(queryString);
+            $('#commentModal').modal('hide');
+            // Optionally, you can refresh comments or take other actions
+        } else {
+            return response.text().then(text => {
+                alert(`Failed to submit comment. Status: ${response.status}. Error: ${text}`);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert(`An error occurred while submitting the comment. Details: ${error.message}`);
+    });
+}
+
+function loadComments() {
+    const urlParams = new URLSearchParams(window.location.search);
+    var googleBookId = urlParams.get('id');
+
+    fetch(`/comments/book/${googleBookId}`)
+        .then(response => response.json())
+        .then(data => {
+            var commentsList = document.querySelector('.cardlist');
+            commentsList.innerHTML = ''; // Clear existing comments
+
+            data.forEach(comment => {
+                var commentCard = `
+                    <li class="comment-card">
+                        <div class="comment-author">${comment.username}</div>
+                        <div class="comment-text">${comment.userComment}</div>
+                        <div class="comment-date">${new Date(comment.createdAt).toLocaleDateString()}</div>
+                        <button onclick="editComment(${comment.id})">Edit</button>
+                        <button onclick="deleteComment(${comment.id})">Delete</button>
+                    </li>
+                `;
+                commentsList.innerHTML += commentCard;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while loading comments.');
+        });
+}
+
+function editComment(commentId) {
+    var newCommentText = prompt("Enter new comment text:");
+
+    if (newCommentText) {
+        var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch(`/comments/update/${commentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                [csrfHeader]: csrfToken
+            },
+            body: new URLSearchParams({ newCommentText: newCommentText })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Comment updated successfully!');
+                loadComments(); // Refresh the comments section
+            } else {
+                alert('Failed to update comment.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the comment.');
+        });
+    }
+}
+
+function deleteComment(commentId) {
+    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    fetch(`/comments/delete/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            [csrfHeader]: csrfToken
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Comment deleted successfully!');
+            loadComments(); // Refresh the comments section
+        } else {
+            alert('Failed to delete comment.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the comment.');
+    });
+}
+
+function createCommentCard(comment) {
+    // Create the comment card element
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('comment-card');
+    
+    // Set the inner HTML for the card
+    cardDiv.innerHTML = `
+        <div class="comment-text-holder">
+            <p>${comment.userComment}</p>
+        </div>
+        <div class="comment-info-holder">
+            <div class="comment-profile-img">
+                <img src="/images/defaultProfile.png" alt="User Icon" class="user-icon comment-profile-img" id="user-icon" />
+            </div>
+            <div class="comment-userinfo">
+                <div>${comment.username}</div>
+                <div class="card-rate">★${comment.rating || 'N/A'}</div>
+            </div>
+        </div>
+    `;
+    
+    return cardDiv;
+}
+// function submitComment() {
+//     // Get the book ID from the button's data attribute
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const bookId = urlParams.get('id');
+//     // Get the comment text and selected bookshelf
+//     var commentText = document.querySelector('#create-comment').value;
+//     // var bookshelfId = document.querySelector('#defBookshelfSelect').value;
+//     bookshelfId = document.getElementById('readSelect').value;
+//     const csrf = getCsrfToken();
+
+//     // Validate input
+//     if (!commentText.trim()) {
+//         alert('Comment cannot be empty.');
+//         return;
+//     }
+
+//     // Send the comment to the server using AJAX
+//     $.ajax({
+//         url: '//bookshelf-items/updateComment', 
+//         method: 'POST',
+//         headers: {
+//             [csrf.header]: csrf.token
+//         },
+//         data: {
+//             bookId: bookId,
+//             comment: commentText,
+//             bookshelfId: bookshelfId
+//         },
+//         success: function(response) {
+//             alert('Comment added successfully!');
+//             // Optionally, update the UI with the new comment
+//             $('#commentModal').modal('hide');
+//             // You might want to refresh the comments section here
+//         },
+//         error: function(xhr, status, error) {
+//             alert('An error occurred while adding your comment.');
+//         }
+//     });
+// }
 

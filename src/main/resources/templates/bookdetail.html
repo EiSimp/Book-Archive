@@ -157,7 +157,7 @@
                 <hr class="solid divider-line">
                 <div>
                     <h4>Comments</h4>
-                    <div>
+                    <div id="comments-container">
                         <ul class="cardlist">
                             <div th:replace="~{fragments/commentcard.html}"></div>
                         </ul>
@@ -202,6 +202,7 @@
     </div>
 </div>
 <!--Modal for comment-->
+<input type="text" id="loggedInUser" th:value="${loggedinUser}" style="display: none;">
 <div class="modal fade" id="commentModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -212,13 +213,13 @@
             <div class="modal-body">
                 <textarea id="create-comment" maxlength="5000" placeholder="Feel free to comment on this book." name="create-comment"></textarea>
                 <select id="defBookshelfSelect" class="form-select">
-                        <option value="read">Read</option>
+                        <!-- <option value="read">Read</option>
                         <option value="reading">Reading</option>
-                        <option value="toRead">To Read</option>
+                        <option value="toRead">To Read</option> -->
                 </select>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Comment</button>
+                <button type="button" class="btn btn-primary" onclick="submitComment()">Comment</button>
             </div>
         </div>
     </div>
