@@ -3,6 +3,7 @@ package group.project.bookarchive.models;
 
 public class BookDTO {
 
+    private String googleBookId;
     private String title;
     private String bookId;
     private double averageRating;
@@ -11,11 +12,20 @@ public class BookDTO {
     public BookDTO() {
     }
 
-    public BookDTO(String title, String bookId, double averageRating, String thumbnail) {
+    public BookDTO(String title, String bookId, double averageRating, String thumbnail, String googleBookId) {
         this.title = title;
         this.bookId = bookId;
         this.averageRating = averageRating;
         this.thumbnail = thumbnail;
+        this.googleBookId = googleBookId;
+    }
+
+    public BookDTO(Book book) {
+        this.googleBookId = book.getGoogleBookId();
+        this.title = book.getTitle();
+        this.bookId = book.getId().toString();
+        this.averageRating = book.getAverageRating();
+        this.thumbnail = book.getThumbnailUrl();
     }
 
     public String getTitle() {
@@ -48,6 +58,14 @@ public class BookDTO {
 
     public void setBookID(String bookId) {
         this.bookId = bookId;
+    }
+
+    public String getGoogleBookId() {
+        return this.googleBookId;
+    }
+
+    public void setGoogleBookID(String googleBookId) {
+        this.googleBookId = googleBookId;
     }
 
 }

@@ -1,5 +1,7 @@
 package group.project.bookarchive.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,13 @@ public class BookshelfItemService {
         bookshelfItem.setBookshelf(bookshelf);
 
         return bookshelfItemRepository.save(bookshelfItem);
+    }
+
+    public List<BookshelfItem> findItemsByGoogleBookId(String googleBookID) {
+        Book book = bookRepository.findByGoogleBookId(googleBookID);
+        if (book == null) {
+            throw new RuntimeException("Book not found");
+        }
+        return bookshelfItemRepository.findByBook(book);
     }
 }
