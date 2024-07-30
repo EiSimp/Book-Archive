@@ -2,14 +2,20 @@ package group.project.bookarchive.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import group.project.bookarchive.models.BookClub;
+import group.project.bookarchive.models.BookClubDTO;
+import group.project.bookarchive.models.BookClubMember;
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.User;
+import group.project.bookarchive.repositories.BookClubMemberRepository;
 import group.project.bookarchive.repositories.BookClubRepository;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
 import group.project.bookarchive.repositories.UserRepository;
 
@@ -26,6 +32,12 @@ public class BookClubService {
     private BookshelfRepository bookshelfRepository;
 
     @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
+
+    @Autowired
+    private BookClubMemberRepository bookClubMemberRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     public BookClub createBookClub(String name, String description) {
@@ -39,10 +51,18 @@ public class BookClubService {
         bookClub.setName(name);
         bookClub.setDescription(description);
         bookClub.setDateCreated(LocalDateTime.now());
-        bookClub.setManagerUserId(manager.getId());
-        bookClub.setBookshelfId(bookshelf.getId());
+        bookClub.setManager(manager);
+        bookClub.setBookshelf(bookshelf);
 
-        return bookClubRepository.save(bookClub);
+        BookClub savedBookClub = bookClubRepository.save(bookClub);
+
+        BookClubMember managerMember = new BookClubMember();
+        managerMember.setBookClub(savedBookClub);
+        managerMember.setUser(manager);
+        managerMember.setJoinDate(LocalDateTime.now());
+        bookClubMemberRepository.save(managerMember);
+
+        return savedBookClub;
     }
 
     public BookClub renameBookClub(Long id, String newName, Long userId) {
@@ -53,16 +73,34 @@ public class BookClubService {
 
     public void deleteBookClub(Long id, Long userId) {
         BookClub bookClub = getBookClubByIdAndManager(id, userId);
-        bookshelfRepository.deleteById(bookClub.getBookshelfId());
+        List<BookClubMember> members = bookClubMemberRepository.findByBookClubId(bookClub.getId());
+        bookClubMemberRepository.deleteAll(members);
+        List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookClub.getBookshelf().getId());
+        bookshelfItemRepository.deleteAll(items);
+        bookshelfRepository.deleteById(bookClub.getBookshelf().getId());
         bookClubRepository.delete(bookClub);
     }
 
     public void transferManager(Long bookClubId, Long newManagerUserId, Long currentManagerUserId) {
         BookClub bookClub = getBookClubByIdAndManager(bookClubId, currentManagerUserId);
-        bookClub.setManagerUserId(newManagerUserId);
+        User newManager = userRepository.findById(newManagerUserId)
+                .orElseThrow(() -> new RuntimeException("New manager not found"));
+
+        // Check if the new manager is already a member of the book club
+        boolean isMember = bookClubMemberRepository.findByBookClubIdAndUserId(bookClubId, newManagerUserId) != null;
+        if (!isMember) {
+            // If the new manager is not a member, add them to the book club
+            BookClubMember newMember = new BookClubMember();
+            newMember.setBookClub(bookClub);
+            newMember.setUser(newManager);
+            newMember.setJoinDate(LocalDateTime.now());
+            bookClubMemberRepository.save(newMember);
+        }
+
+        bookClub.setManager(newManager);
         bookClubRepository.save(bookClub);
 
-        Bookshelf bookshelf = bookshelfRepository.findById(bookClub.getBookshelfId())
+        Bookshelf bookshelf = bookshelfRepository.findById(bookClub.getBookshelf().getId())
                 .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
         bookshelf.setUserId(newManagerUserId);
         bookshelfRepository.save(bookshelf);
@@ -70,6 +108,22 @@ public class BookClubService {
 
     public List<BookClub> getAllBookClubs() {
         return bookClubRepository.findAll();
+    }
+
+    public BookClubDTO convertToDTO(BookClub bookClub) {
+        BookClubDTO dto = new BookClubDTO();
+        dto.setId(bookClub.getId());
+        dto.setName(bookClub.getName());
+        dto.setDescription(bookClub.getDescription());
+        dto.setManagerId(bookClub.getManager().getId());
+        dto.setManagerName(bookClub.getManager().getUsername()); // Assuming User has a getUsername() method
+        return dto;
+    }
+
+    public List<BookClubDTO> convertToDTOs(List<BookClub> bookClubs) {
+        return bookClubs.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public BookClub getBookClubDetails(Long bookClubId) {
@@ -90,7 +144,7 @@ public class BookClubService {
 
     private BookClub getBookClubByIdAndManager(Long id, Long userId) {
         return bookClubRepository.findById(id)
-                .filter(bookClub -> bookClub.getManagerUserId().equals(userId))
+                .filter(bookClub -> bookClub.getManager().getId().equals(userId))
                 .orElseThrow(() -> new RuntimeException("Book Club not found or user is not the manager"));
     }
 }

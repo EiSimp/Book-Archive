@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import group.project.bookarchive.models.BookClub;
+import group.project.bookarchive.models.BookClubDTO;
 import group.project.bookarchive.services.BookClubService;
 
 @RestController
@@ -52,14 +53,19 @@ public class BookClubController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookClub>> getAllBookClubs() {
+    public ResponseEntity<List<BookClubDTO>> getAllBookClubs() {
         List<BookClub> bookClubs = bookClubService.getAllBookClubs();
-        return ResponseEntity.ok(bookClubs);
+        List<BookClubDTO> bookClubDTOs = bookClubService.convertToDTOs(bookClubs);
+        return ResponseEntity.ok(bookClubDTOs);
     }
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<BookClub> getBookClubDetails(@PathVariable Long id) {
-        BookClub bookClub = bookClubService.getBookClubDetails(id);
-        return ResponseEntity.ok(bookClub);
+    public ResponseEntity<BookClubDTO> getBookClubDetails(@PathVariable Long id) {
+        BookClub bookClub = bookClubService.getAllBookClubs().stream()
+                .filter(bc -> bc.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Book Club not found"));
+        BookClubDTO bookClubDTO = bookClubService.convertToDTO(bookClub);
+        return ResponseEntity.ok(bookClubDTO);
     }
 }

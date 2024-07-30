@@ -17,18 +17,12 @@ public class BookClub {
     @Column(name = "date_created")
     private LocalDateTime dateCreated;
 
-    @Column(name = "manager_user_id", insertable = false, updatable = false)
-    private Long managerUserId;
-
-    @Column(name = "bookshelf_id", insertable = false, updatable = false)
-    private Long bookshelfId;
-
     @ManyToOne
-    @JoinColumn(name = "manager_user_id")
+    @JoinColumn(name = "manager_user_id", nullable = false)
     private User manager;
 
     @OneToOne
-    @JoinColumn(name = "bookshelf_id")
+    @JoinColumn(name = "bookshelf_id", nullable = false)
     private Bookshelf bookshelf;
 
     // Getters and Setters
@@ -62,22 +56,6 @@ public class BookClub {
 
     public void setDateCreated(LocalDateTime dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public Long getManagerUserId() {
-        return managerUserId;
-    }
-
-    public void setManagerUserId(Long managerUserId) {
-        this.managerUserId = managerUserId;
-    }
-
-    public Long getBookshelfId() {
-        return bookshelfId;
-    }
-
-    public void setBookshelfId(Long bookshelfId) {
-        this.bookshelfId = bookshelfId;
     }
 
     public User getManager() {
