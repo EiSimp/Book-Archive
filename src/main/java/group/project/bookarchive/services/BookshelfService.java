@@ -3,6 +3,7 @@ package group.project.bookarchive.services;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfDTO;
 import group.project.bookarchive.models.BookshelfItem;
+import group.project.bookarchive.models.BookshelfItemDTO;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
@@ -26,6 +29,9 @@ public class BookshelfService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BookshelfItemService bookshelfItemService;
 
     public Bookshelf createBookshelf(String name, boolean isSecret) {
         User user = getCurrentUser();
@@ -79,6 +85,17 @@ public class BookshelfService {
         return bookshelfItemRepository.findByBookshelfId(bookshelfId);
     }
 
+    public BookshelfItemDTO getBookshelfDetails(Long bookshelfId) {
+        Optional<Bookshelf> optionalBookshelf = bookshelfRepository.findById(bookshelfId);
+        if (optionalBookshelf.isPresent()) {
+            Bookshelf bookshelf = optionalBookshelf.get();
+            List<BookshelfItem> items = getBookshelfItems(bookshelfId);
+            return new BookshelfItemDTO(bookshelf, items);
+        } else {
+            throw new RuntimeException("Bookshelf not found");
+        }
+    }
+
     private User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -88,6 +105,20 @@ public class BookshelfService {
             username = principal.toString();
         }
         return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public List<BookshelfDTO> findBookshelvesContainingBook(String googleBookId, Long userId) {
+        List<BookshelfItem> items = bookshelfItemService.findItemsByGoogleBookId(googleBookId);
+        return items.stream()
+                .map(BookshelfItem::getBookshelf)
+                .distinct() // Ensure unique bookshelves
+                .filter(bookshelf -> !bookshelf.isSecret() || bookshelf.getUserId().equals(userId))
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private BookshelfDTO convertToDTO(Bookshelf bookshelf) {
+        return new BookshelfDTO(bookshelf);
     }
 
     public void createDefaultBookshelvesForUser(User user) {

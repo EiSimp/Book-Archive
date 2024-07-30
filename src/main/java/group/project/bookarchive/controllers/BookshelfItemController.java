@@ -3,7 +3,9 @@ package group.project.bookarchive.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +42,12 @@ public class BookshelfItemController {
         System.out.println("Received bookshelfId: " + bookshelfId);
         BookshelfItem bookshelfItem = bookshelfItemService.addBookToBookshelf(bookshelfId, book);
         return ResponseEntity.ok(bookshelfItem);
+    }
+
+    @DeleteMapping("/{bookshelfId}/{bookId}")
+    public ResponseEntity<Void> deleteBookFromBookshelf(@PathVariable Long bookshelfId, @PathVariable String bookId) {
+        bookshelfItemService.deleteBookFromBookshelf(bookshelfId, bookId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/status")

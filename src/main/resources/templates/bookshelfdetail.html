@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta name="user-id" th:content="${user.id}" />
     <title>PagePals: My Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -19,36 +22,13 @@
     <!--Header section of the homepage-->
     <div th:replace="~{fragments/header.html}"></div>
     <div class="content-container">
-        <h3 id="bookshelf-name">Bookshelf Name</h3>
-        <!-- edit bookshelf button-->
-        <div id="edit-bookshelf-container">
-            <span id="bookshelf-secret">🔒</span>
-        </div>
+        <h3 id="bookshelf-name">Bookshelf Name</h3><span id="bookshelf-secret">🔒</span>
         <hr class="solid divider-line">
         <div class="bookshelf-container">
             <div class="bookshelf-rack">
                 <ul class="cardlist" id="book-list">
                     <!--books will be dynamically displayed here-->
-                    <li class="card-li">
-                        <!-- display purpose-->
-                        <a class="detail-link">
-                            <div class="book-card">
-                                <div class="card-thumbnail-holder">
-                                    <div class="thumbnail-m">
-                                        <div class="thumbnail-image-m"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-description">
-                                <ul class="card-description-li">
-                                    <li class="card-title">Book Title</li>
-                                    <li class="card-rate">Rated ★ 0.0</li>
-                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'. 
-                         others displays 'Avg ★ 0.0' -->
-                                </ul>
-                            </div>
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </div>

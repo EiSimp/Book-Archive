@@ -58,6 +58,7 @@ public class SecurityConfig {
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .requestMatchers("/bookshelf-items/**").authenticated()
+                                                .requestMatchers("/api/messages/**").authenticated()
                                                 .anyRequest().hasAnyRole("USER", "ADMIN"))
                                 .formLogin(form -> form
                                                 .loginPage("/login")
