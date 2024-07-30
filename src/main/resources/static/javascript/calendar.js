@@ -38,6 +38,38 @@ function renderCalendar() {
 
         calendarDates.appendChild(dateDiv);
     }
+    fetchEventsForMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
+}
+
+function fetchEventsForMonth(year, month) {
+    const bookClubId = document.getElementById('bookClubId').value;
+    fetch(`/api/events/bookclub/${bookClubId}?year=${year}&month=${month}`)
+        .then(response => response.json())
+        .then(events => {
+            events.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime)); // Sort events by date
+            displayEvents(events);
+        })
+        .catch(error => console.error('Error fetching events:', error));
+}
+
+function displayEvents(events) {
+    const eventList = document.getElementById('event-list');
+    eventList.innerHTML = '';
+
+    events.forEach(event => {
+        const eventItem = document.createElement('li');
+        eventItem.textContent = `${event.title} - ${new Date(event.dateTime).toLocaleString()}`;
+        eventList.appendChild(eventItem);
+
+        const eventDate = new Date(event.dateTime).getDate();
+        const dateDivs = document.querySelectorAll('.calendar-dates > div');
+        dateDivs.forEach(div => {
+            if (parseInt(div.textContent) === eventDate) {
+                div.classList.add('event');
+                div.title = event.title;
+            }
+        });
+    });
 }
 
 renderCalendar();

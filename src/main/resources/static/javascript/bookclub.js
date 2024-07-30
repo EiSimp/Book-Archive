@@ -119,7 +119,7 @@ function updateBookClubsUI(bookClubs) {
         bookClubs.forEach(bookClub => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="table-name"><a href="/bookclubdetail">${bookClub.name}</a></td>
+                <td class="table-name"><a href="/bookclubs/details/view/${bookClub.id}">${bookClub.name}</a></td>
                 <td class="table-count"><span id="members-count-${bookClub.id}">Loading...</span></td>
                 <td class="table-button"><button onclick="leaveBookClub(${bookClub.id}, ${bookClub.manager.id})">Leave</button></td>
             `;
@@ -213,7 +213,7 @@ function updateExistingClubsUI(clubs) {
         clubs.forEach(club => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="table-name"><a href="/bookclubdetail">${club.name}</a></td>
+                <td class="table-name"><a href="/bookclubs/details/view/${club.id}">${club.name}</a></td>
                 <td class="table-count"><span id="members-count-${club.id}">Already a member</span></td>
                 <td class="table-button"><button onclick="joinBookClub(${club.id})">Join</button></td>
             `;
