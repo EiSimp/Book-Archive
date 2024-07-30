@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -11,16 +11,22 @@
     <link rel="stylesheet" href="/stylesheet/bookclubdetail.css" />
     <link rel="stylesheet" href="/stylesheet/card.css" />
     <link rel="stylesheet" href="/stylesheet/homepage.css" />
+    <link rel="stylesheet" href="/stylesheet/chat.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body class="main-body">
+    <!--Hidden types-->
+    <input type="hidden" id="userId" th:value="${user.id}">
+    <input type="hidden" id="bookClubId" th:value="${bookClub.id}">
     <!--Header section of the homepage-->
     <div th:replace="~{fragments/header.html}"></div>
     <!--bookclub landing page starts here-->
     <div class="content-container">
         <div class="bookclub-header">
-            <h3>Book Club Name</h3>
+            <h3 th:text="${bookClub.name}">Book Club Name</h3>
             <div class="setting">
             </div>
         </div>
@@ -221,7 +227,7 @@
                                 <ul class="card-description-li">
                                     <li class="card-title">Book Title</li>
                                     <li class="card-rate">Rated ★ 0.0</li>
-                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'. 
+                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'.
                                  others displays 'Avg ★ 0.0' -->
                                 </ul>
                             </div>
@@ -237,6 +243,9 @@
     <script src="/javascript/chatroom.js"></script>
     <script src="/javascript/dropDown.js"></script>
     <script src="/javascript/calendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
 </body>
 
 </html>

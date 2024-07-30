@@ -147,4 +147,8 @@ public class BookClubService {
                 .filter(bookClub -> bookClub.getManager().getId().equals(userId))
                 .orElseThrow(() -> new RuntimeException("Book Club not found or user is not the manager"));
     }
+
+    public BookClub findBookClubById(Long id) {
+        return bookClubRepository.findById(id).orElse(null);
+    }
 }
