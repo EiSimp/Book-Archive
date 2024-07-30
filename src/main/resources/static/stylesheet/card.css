@@ -253,3 +253,18 @@ p {
     align-self: stretch;
     flex-grow: 0;
 }
+
+.book-card {
+    position: relative;
+}
+
+.delete-book-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: none;
+}
+
+.book-card:hover .delete-book-button {
+    display: block;
+}
