@@ -5,10 +5,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import group.project.bookarchive.models.BookClub;
 import group.project.bookarchive.models.BookClubDTO;
+import group.project.bookarchive.models.BookClubMember;
+import group.project.bookarchive.services.BookClubMemberService;
 import group.project.bookarchive.services.BookClubService;
 
 @RestController
@@ -67,5 +71,28 @@ public class BookClubController {
                 .orElseThrow(() -> new RuntimeException("Book Club not found"));
         BookClubDTO bookClubDTO = bookClubService.convertToDTO(bookClub);
         return ResponseEntity.ok(bookClubDTO);
+    }
+}
+
+@Controller
+@RequestMapping("/bookclubs")
+class BookClubViewController {
+
+    @Autowired
+    private BookClubService bookClubService;
+
+    @Autowired
+    private BookClubMemberService bookClubMemberService;
+
+    @GetMapping("/details/view/{id}")
+    public String getBookClubDetail(@PathVariable Long id, Model model) {
+        BookClub bookClub = bookClubService.findBookClubById(id);
+        if (bookClub == null) {
+            throw new RuntimeException("Book Club not found");
+        }
+        List<BookClubMember> members = bookClubMemberService.getMembers(id);
+        model.addAttribute("bookClub", bookClub);
+        model.addAttribute("members", members);
+        return "bookclubdetail"; // This should be the name of your Thymeleaf template
     }
 }

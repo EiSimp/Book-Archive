@@ -22,7 +22,7 @@ public class BookClub {
     private User manager;
 
     @OneToOne
-    @JoinColumn(name = "bookshelf_id", nullable = false)
+    @JoinColumn(name = "bookshelf_id")
     private Bookshelf bookshelf;
 
     // Getters and Setters
