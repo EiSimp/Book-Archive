@@ -426,6 +426,10 @@ function loadComments() {
         .then(comments => {
             console.log(comments); // Check the format of the response
             if (Array.isArray(comments)) {
+                // Reverse the comments array to display newest first
+                // since database stores newest rows at bottom
+                comments.reverse();
+
                 const commentsContainer = document.getElementById('comments-container');
                 commentsContainer.innerHTML = ''; // Clear existing content
 
@@ -481,7 +485,7 @@ function createCommentCard(comment) {
     <div class="comment-card" data-comment-id="${comment.comment.id}">
         <div class="comment-text-holder">
             <p class="comment-text">${comment.comment.userComment || 'No comment'}</p>
-            <textarea class="edit-textarea" style="display: none;">${comment.comment.userComment || ''}</textarea>
+            <textarea class="edit-textarea" style="display: none;" required maxlength="255" placeholder="Enter your comment here... (max 255 characters)">${comment.comment.userComment || ''}</textarea>
         </div>
         <div class="comment-info-holder">
             <div class="comment-profile-img">
@@ -501,12 +505,12 @@ function createCommentCard(comment) {
         </div>
         ${comment.comment.user.id == currentUserId.value ? `
             <div class="comment-actions">
-                <button class="comment-button" onclick="startEdit(${comment.comment.id})">Edit</button>
-                <button class="comment-button" onclick="deleteComment(${comment.comment.id})">Delete</button>
+                <button class="comment-button edit-button" onclick="startEdit(${comment.comment.id})">Edit</button>
+                <button class="comment-button delete-button" onclick="deleteComment(${comment.comment.id})">Delete</button>
             </div>
             <div class="edit-actions" style="display: none;">
-                <button class="comment-button" onclick="cancelEdit(${comment.comment.id})">Cancel</button>
-                <button class="comment-button" onclick="submitEdit(${comment.comment.id})">Submit</button>
+                <button class="comment-button cancel-button" onclick="cancelEdit(${comment.comment.id})">Cancel</button>
+                <button class="comment-button submit-button" onclick="submitEdit(${comment.comment.id})">Submit</button>
             </div>
         ` : ''}
     </div>
@@ -529,7 +533,11 @@ function startEdit(commentId) {
     textarea.style.display = 'block';
     editActions.style.display = 'block';
     commentActions.style.display = 'none';
+    textarea.focus();
+    // Move caret to the end of the textarea content
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
 }
+
 function submitEdit(commentId) {
     const commentCard = document.querySelector(`[data-comment-id="${commentId}"]`);
     const textarea = commentCard.querySelector('.edit-textarea');
@@ -557,6 +565,7 @@ function submitEdit(commentId) {
                     textarea.style.display = 'none';
                     commentCard.querySelector('.edit-actions').style.display = 'none';
                     commentCard.querySelector('.comment-actions').style.display = 'block';
+                    loadComments();
                 } else {
                     return response.text().then(errorText => {
                         throw new Error(`Failed to update comment. Server responded with status ${response.status}: ${errorText}`);
@@ -568,7 +577,8 @@ function submitEdit(commentId) {
                 alert(`An error occurred while updating the comment: ${error.message}`);
             });
     } else {
-        alert('Comment text cannot be empty.');
+        textarea.reportValidity();
+        // alert('Comment text cannot be empty.');
     }
 }
 
