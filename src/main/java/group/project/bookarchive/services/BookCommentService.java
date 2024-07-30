@@ -48,10 +48,10 @@ public class BookCommentService {
 
             BookComment bookComment = new BookComment();
             bookComment.setUser(user);  // User object should be set
-        bookComment.setGoogleBookId(googleBookId); // GoogleBookId should be set
-        bookComment.setUserComment(commentText); // Comment text should be set
-        bookComment.setCreatedDate(LocalDateTime.now()); // Initialize non-nullable field
-        bookComment.setLastEditedDate(LocalDateTime.now());
+            bookComment.setGoogleBookId(googleBookId); // GoogleBookId should be set
+            bookComment.setUserComment(commentText); // Comment text should be set
+            bookComment.setCreatedDate(LocalDateTime.now()); // Initialize non-nullable field
+        
 
             bookCommentRepository.save(bookComment);
         } else {
@@ -78,9 +78,6 @@ public class BookCommentService {
         bookCommentRepository.deleteById(commentId);
     }
 
-    // public List<BookComment> getCommentsForBook(String googleBookId) {
-    //     return bookCommentRepository.findByGoogleBookId(googleBookId);
-    // }
 
     public List<BookCommentWithRatingDTO> getCommentsWithRatings(String googleBookId) {
         List<BookComment> comments = bookCommentRepository.findByGoogleBookId(googleBookId);

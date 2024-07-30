@@ -165,3 +165,89 @@ li {
 .starpoint_box .star_radio:nth-of-type(9):checked ~ .starpoint_bg{width:90%;}
 .starpoint_box .star_radio:nth-of-type(10):hover ~ .starpoint_bg,
 .starpoint_box .star_radio:nth-of-type(10):checked ~ .starpoint_bg{width:100%;}
+
+/* Ensure the comment card has a consistent layout */
+.comment-card {
+	display: flex; /* Use Flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    width: 100%; /* Full width */
+    max-width: 600px; /* Maximum width */
+    margin-bottom: 10px; /* Space between comments */
+    padding: 10px; /* Padding inside the card */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+/* Style for the comment text holder */
+.comment-text-holder {
+    width: 100%; /* Full width */
+    min-height: 50px; /* Minimum height */
+    height: auto; /* Adjust based on content */
+    overflow: visible; /* Show overflow content */
+    box-sizing: border-box; /* Include padding and border in width */
+    padding: 10px; /* Padding inside */
+}
+
+/* Style for the comment text before edit */
+.comment-text {
+    font-size: 16px; /* Adjust font size to match your design */
+    line-height: 1.5;
+    margin: 0; /* Remove any default margins */
+	box-sizing: border-box;
+	box-sizing: border-box; /* Ensure padding and border are included in the width */
+    overflow-wrap: break-word; /* Break long words */
+    word-wrap: break-word; /* Break long words */
+}
+
+/* Style for the textarea when editing */
+.edit-textarea {
+    display: none; /* Hide initially */
+    width: 100%; /* Match the width of the comment text container */
+	height: fit-content;
+    font-size: 16px; /* Match the font size */
+    line-height: 1.5;
+    border: none; /* Remove border */
+    resize: none; /* Prevent resizing */
+    padding: 0; /* Remove padding */
+    box-shadow: none; /* Remove any shadow */
+    background: transparent; /* Ensure background matches the comment area */
+    margin: 0; /* Remove margin */
+}
+
+/* Ensure the textarea looks like plain text when visible and there's no strange border*/
+.edit-textarea:focus {
+    outline: none; /* Remove focus outline */
+}
+
+/* Style for the original comment text area */
+.comment-text {
+    display: block; /* Show the comment text */
+}
+
+/* Style for actions while editing */
+.edit-actions {
+    display: none; /* Hide by default */
+    margin-top: 0.5rem; /* Space between buttons */
+}
+
+/* Style for the edit and delete buttons */
+.comment-actions button,
+.edit-actions button {
+    margin-right: 0.5rem; /* Space between buttons */
+}
+
+.comment-button {
+    background-color: #007bff; /* Primary button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem; /* Match font size */
+}
+
+/* Change button color on hover */
+.comment-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
