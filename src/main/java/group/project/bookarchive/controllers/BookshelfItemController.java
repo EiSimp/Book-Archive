@@ -20,4 +20,10 @@ public class BookshelfItemController {
         BookshelfItem bookshelfItem = bookshelfItemService.addBookToBookshelf(bookshelfId, book);
         return ResponseEntity.ok(bookshelfItem);
     }
+
+    @DeleteMapping("/{bookshelfId}/{bookId}")
+    public ResponseEntity<Void> deleteBookFromBookshelf(@PathVariable Long bookshelfId, @PathVariable String bookId) {
+        bookshelfItemService.deleteBookFromBookshelf(bookshelfId, bookId);
+        return ResponseEntity.noContent().build();
+    }
 }

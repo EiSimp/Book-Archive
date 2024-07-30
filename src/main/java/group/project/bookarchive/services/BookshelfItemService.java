@@ -52,4 +52,21 @@ public class BookshelfItemService {
         }
         return bookshelfItemRepository.findByBook(book);
     }
+
+    public void deleteBookFromBookshelf(Long bookshelfId, String googleBookId) {
+        Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+                .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+
+        Book book = bookRepository.findByGoogleBookId(googleBookId);
+        if (book == null) {
+            throw new RuntimeException("Book not found");
+        }
+
+        BookshelfItem bookshelfItem = bookshelfItemRepository.findByBookshelfAndBook(bookshelf, book);
+        if (bookshelfItem != null) {
+            bookshelfItemRepository.delete(bookshelfItem);
+        } else {
+            throw new RuntimeException("BookshelfItem not found");
+        }
+    }
 }
