@@ -60,9 +60,10 @@ public class BookshelfItemController {
                     .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
 
             Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
-            if (existingBook == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
-            }
+            // isBookPresent will return false with null anyway
+            // if (existingBook == null) {
+            //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+            // }
 
             boolean isBookPresent = bookshelfItemRepository.existsByBookshelfAndBook(bookshelf, existingBook);
             return ResponseEntity.ok(isBookPresent);

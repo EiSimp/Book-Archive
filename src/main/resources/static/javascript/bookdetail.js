@@ -33,7 +33,54 @@ document.addEventListener("DOMContentLoaded", function () {
     loadCurrentRating();
 
     loadComments();
+
 });
+
+function getSelectedRatingForAddRead() {
+    // Select all radio buttons
+    const radios = document.querySelectorAll('.star_radio');
+
+    for (const radio of radios) {
+        if (radio.checked) {
+            // Find the corresponding label for the checked radio
+            const label = document.querySelector(`label[for="${radio.id}"]`);
+            if (label) {
+                return label.getAttribute('title');
+            }
+        }
+    }
+
+    // Return null if no rating is selected
+    return null;
+}
+
+function submitRatingAndComment() {
+    const ratingValue = getSelectedRatingForAddRead();
+    const comment = document.getElementById('comment').value;
+    console.log('Rating:', ratingValue);
+
+    if (ratingValue) {
+
+        // Check if the comment is not empty and not just white spaces
+        if (comment.length > 0 && !/^\s*$/.test(comment)) {
+            console.log('Comment:', comment);
+            submitComment(comment); // Submit the comment
+        } else {
+            console.log('No comment submitted or comment is only white spaces.');
+        }
+
+        $('#ratingCommentModal').modal('hide');
+
+        // Reload the page after hiding the modal
+        setTimeout(() => {
+            location.reload(); // This reloads the page
+        }, 300); // Adjust the delay if needed to ensure the modal hides properly
+
+    } else {
+        alert('Please select a rating. Adding a comment is optional.');
+    }
+}
+
 
 
 function fetchBookDetails(bookID) {
@@ -168,7 +215,15 @@ function getCsrfToken() {
     };
 }
 
+// function show submitRatingAndComment();
+function showRatingCommentModal() {
+    const ratingCommentModal = new bootstrap.Modal(document.getElementById('ratingCommentModal'));
+    ratingCommentModal.show();
+}
+
 function addRead() {
+    // rating and comment modal only appear when book hasn't been added to Read bookshelf yet
+
     addBookToDefaultBookshelf("Read");
 
     document.getElementById("add-read-img").src = "/images/checked.png";
@@ -190,7 +245,7 @@ function addWishlist() {
 }
 
 function rateBook(selectedLabel) {
-    //TODO:
+
     addBookToDefaultBookshelf("Rating");
     const urlParams = new URLSearchParams(window.location.search);
     const csrf = getCsrfToken();
@@ -341,19 +396,21 @@ function addBookToDefaultBookshelf(name) {
                 data: JSON.stringify(book),
                 success: function (response) {
                     let successMessage;
-                    if (name === "Books-Read") {
+                    if (name === "Read") {
+                        showRatingCommentModal();
                         successMessage = 'Book added to Read bookshelf!';
-                    } else if (name === "Books-Reading") {
+                    } else if (name === "Reading") {
                         successMessage = 'Book added to Reading bookshelf!';
-                    } else if (name === "Books-to-Read") {
+                    } else if (name === "To Read") {
                         successMessage = 'Book added to To Read bookshelf!';
                     } else if (name === "Rating") {
                         successMessage = 'Book rated and added to Read bookshelf!';
                     } else {
                         successMessage = 'Book added to collection successfully!';
                     }
+                    console.log(name);
+                    
                     alert(successMessage);
-                    $('#bookshelfModal').modal('hide');
                 },
                 error: function (xhr) {
                     if (xhr.status === 409) {
@@ -376,8 +433,8 @@ function addBookToDefaultBookshelf(name) {
         });
 }
 
-function submitComment() {
-    const commentText = document.getElementById('create-comment').value;
+function submitComment(commentText) {
+    //const commentText = document.getElementById('create-comment').value;
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('id');
     const csrf = getCsrfToken();
@@ -435,13 +492,18 @@ function loadComments() {
                 const commentsContainer = document.getElementById('comments-container');
                 commentsContainer.innerHTML = ''; // Clear existing content
 
-                comments.forEach(comment => {
-                    // console.log('Comment Properties:', Object.keys(comment));
-                    // console.log('Comment:', comment);
-                    //console.log(comment.comment.user);
-                    const commentCard = createCommentCard(comment);
-                    commentsContainer.appendChild(commentCard);
-                });
+                if (comments.length === 0) {
+                    // Create and display a message if there are no comments
+                    const noCommentsMessage = document.createElement('p');
+                    noCommentsMessage.textContent = 'There are currently no comments.';
+                    commentsContainer.appendChild(noCommentsMessage);
+                } else {
+                    // Create and append comment cards if there are comments
+                    comments.forEach(comment => {
+                        const commentCard = createCommentCard(comment);
+                        commentsContainer.appendChild(commentCard);
+                    });
+                }
             } else {
                 console.error('Expected an array but received:', comments);
             }
