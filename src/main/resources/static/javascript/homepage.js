@@ -189,11 +189,39 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
             }
 
+            setActiveLink(this);
+
             fetchBooks(currentBookshelfId);
         });
     });
+
+    function setActiveLink(activeLink) {
+        bookshelfLinks.forEach(link => {
+            link.classList.remove('active'); // Remove active class from all links
+        });
+        activeLink.classList.add('active'); // Add active class to the clicked link
+    }
+
+    function clickDefaultLink() {
+        const defaultLinkText = 'Read'; // Adjust as necessary
+        const defaultLink = Array.from(bookshelfLinks).find(link => link.textContent.replace(/\s+/g, '') === defaultLinkText);
+
+        if (defaultLink) {
+            defaultLink.click();
+        } else {
+            console.error('Default link not found:', defaultLinkText);
+        }
+    }
+
+    clickDefaultLink();
+
+    
     
 
     // Handle initial fetch based on the default or selected bookshelf
     fetchBooks(currentBookshelfId);
+    
+    
 });
+
+

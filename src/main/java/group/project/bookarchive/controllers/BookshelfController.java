@@ -97,25 +97,7 @@ public class BookshelfController {
         List<BookshelfDTO> bookshelves = bookshelfService.findBookshelvesContainingBook(id, userID);
         return ResponseEntity.ok(bookshelves);
     }
-
-    // @GetMapping("/bookshelves/{bookshelfId}")
-    // public Page<Book> getBooksByBookshelf(@PathVariable Long bookshelfId,
-    //                                        @RequestParam(defaultValue = "0") int page,
-    //                                        @RequestParam(defaultValue = "6") int size) {
-    //                                         Pageable pageable = PageRequest.of(page, size);
-    //                                         return bookshelfItemRepository.findByBookshelfId(bookshelfId, pageable);
-    // }
-
-    // @GetMapping("/{id}/items")
-    // public ResponseEntity<Page<BookshelfItemDTO>> getPaginatedBooksByBookshelf(
-    //         @PathVariable Long id,
-    //         @RequestParam(defaultValue = "0") int page,
-    //         @RequestParam(defaultValue = "6") int size) {
-    //     Pageable pageable = PageRequest.of(page, size);
-    //     Page<BookshelfItemDTO> paginatedBooks = bookshelfItemService.getBooksByBookshelf(id, pageable);
-    //     return ResponseEntity.ok(paginatedBooks);
-    // }
-
+    
     @GetMapping("/{id}/items")
     public ResponseEntity<Page<Book>> getPaginatedBooksByBookshelf(
             @PathVariable Long id,

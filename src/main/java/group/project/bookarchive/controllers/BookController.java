@@ -34,12 +34,4 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    // @GetMapping("/books")
-    // public Page<Book> getBooks(@RequestParam Long bookshelfId, @RequestParam int page, @RequestParam int size) {
-    //     Pageable pageable = PageRequest.of(page, size);
-    //     return booksRepository.findByBookshelfId(bookshelfId, pageable);
-    // }
-
-    
 }
