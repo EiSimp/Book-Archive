@@ -14,6 +14,8 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import group.project.bookarchive.security.SecurityUser;
 import jakarta.servlet.DispatcherType;
@@ -35,53 +37,59 @@ public class SecurityConfig {
 
                 @Override
                 public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                AuthenticationException exception) throws IOException, ServletException {
+                                                    AuthenticationException exception) throws IOException, ServletException {
                         saveException(request, exception);
                         String username = request.getParameter(
-                                        UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
+                                UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
                         String redirectUrl = urlPrefix + username;
                         // Redirect:
                         redirectStrategy.sendRedirect(request, response, redirectUrl);
                 }
-
         }
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
-                                .authorizeHttpRequests((authz) -> authz
-                                                .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)
-                                                .permitAll()
-                                                .requestMatchers("/login", "/signup", "/forgot", "/myaccount", "/profilesetting",
-                                                                "/stylesheet/**", "/javascript/**", "/images/**",
-                                                                "/check-username", "/check-email")
-                                                .permitAll()
-                                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                                .requestMatchers("/bookshelf-items/**").authenticated()
-                                                .requestMatchers("/messages/**").authenticated()
-                                                .requestMatchers("/chat-websocket/**").permitAll()  // Allow WebSocket endpoint
-                                        .anyRequest().hasAnyRole("USER", "ADMIN"))
-                                .formLogin(form -> form
-                                                .loginPage("/login")
-                                                .defaultSuccessUrl("/homepage?loginsuccess", true)
-                                                .successHandler((request, response, authentication) -> {
-                                                        SecurityUser user = (SecurityUser) authentication
-                                                                        .getPrincipal();
-                                                        if (user.getTempPwd()) {
-                                                                response.sendRedirect("/passwordchange");
-                                                        } else {
-                                                                response.sendRedirect("/homepage");
-                                                        }
-                                                })
-                                                .failureHandler(new LoginFailureHandler("/login?error&username="))
-                                                .permitAll())
-                                .logout((logout) -> logout
-                                                .logoutSuccessUrl("/login?logoutsuccess"))
-                                .passwordManagement(customizer -> customizer
-                                                .changePasswordPage("/change-password"));
+                        .authorizeHttpRequests((authz) -> authz
+                                .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)
+                                .permitAll()
+                                .requestMatchers("/login", "/signup", "/forgot", "/myaccount", "/profilesetting",
+                                        "/stylesheet/**", "/javascript/**", "/images/**",
+                                        "/check-username", "/check-email")
+                                .permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/bookshelf-items/**").authenticated()
+                                .requestMatchers("/messages/**").authenticated()
+                                .requestMatchers("/chat-websocket/**").permitAll()  // Allow WebSocket endpoint
+                                .anyRequest().hasAnyRole("USER", "ADMIN"))
+                        .formLogin(form -> form
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/homepage?loginsuccess", true)
+                                .successHandler((request, response, authentication) -> {
+                                        SecurityUser user = (SecurityUser) authentication.getPrincipal();
+                                        if (user.getTempPwd()) {
+                                                response.sendRedirect("/passwordchange");
+                                        } else {
+                                                response.sendRedirect("/homepage");
+                                        }
+                                })
+                                .failureHandler(new LoginFailureHandler("/login?error&username="))
+                                .permitAll())
+                        .logout((logout) -> logout.logoutSuccessUrl("/login?logoutsuccess"))
+                        .passwordManagement(customizer -> customizer.changePasswordPage("/change-password"))
+                        .csrf(csrf -> csrf
+                                .csrfTokenRepository(csrfTokenRepository())
+                                .ignoringRequestMatchers("/chat-websocket/**"));  // Disable CSRF for WebSocket endpoint
+
                 return http.build();
         }
-        
+
+        @Bean
+        public CsrfTokenRepository csrfTokenRepository() {
+                HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+                repository.setHeaderName("X-XSRF-TOKEN");
+                return repository;
+        }
 
         @Bean
         public PasswordEncoder passwordEncoder() {
