@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PagePals</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <link rel="stylesheet" href="/stylesheet/bookclubs.css" />
     <link rel="stylesheet" href="/stylesheet/bookshelf.css" />
@@ -16,81 +16,91 @@
 </head>
 
 <body class="main-body">
-    <!--Header section of the homepage-->
-    <div th:replace="~{fragments/header.html}"></div>
+<!--Header section of the homepage-->
+<div th:replace="~{fragments/header.html}"></div>
 
-    <!-- Hidden input field to store the user ID -->
-    <input type="hidden" id="userId" th:value="${user.id}">
+<!-- Hidden input field to store the user ID -->
+<input type="hidden" id="userId" th:value="${user.id}">
 
-    <!--bookclub landing page starts here-->
-    <div class="content-container">
-        <!--Greeting message image-->
-        <div class="message">
-            <div class="bookclub-message-img"></div>
-        </div>
-        <!--buttons-->
-        <div class="bookclub-buttons-section">
-            <button id="bookclub-join">JOIN</button>
-            <button id="bookclub-create">CREATE</button>
-        </div>
-        <!--List of clubs the user joined/created. Displayed only when the user is in at least one club-->
-        <div class="bookclub-table-section" style="display: none;">
-            <h4>My Clubs</h4>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Club Name</th>
-                            <th>Members</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- The content of the tbody will be dynamically generated -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!--List of existing clubs to join-->
-        <div id="existing-clubs-section" class="bookclub-table-section" style="display: none;">
-            <h4>Existing Clubs</h4>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Club Name</th>
-                            <th>Members</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="existing-clubs-tbody">
-                        <!-- The content of the tbody will be dynamically generated -->
-                    </tbody>
-                </table>
-            </div>
+<!--bookclub landing page starts here-->
+<div class="content-container">
+    <!--Greeting message image-->
+    <div class="message">
+        <div class="bookclub-message-img"></div>
+    </div>
+    <!--buttons-->
+    <div class="bookclub-buttons-section">
+        <button id="bookclub-join">JOIN</button>
+        <button id="bookclub-create">CREATE</button>
+    </div>
+    <!--List of clubs the user joined/created. Displayed only when the user is in at least one club-->
+    <div class="bookclub-table-section" style="display: none;">
+        <h4>My Clubs</h4>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Club Name</th>
+                    <th>Members</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- The content of the tbody will be dynamically generated -->
+                </tbody>
+            </table>
         </div>
     </div>
-    <!--create book club popup-->
-    <div id="create-bookclub-popup" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Create a Book Club</h2>
-            <label for="create-bookclub-name">Club Name</label>
-            <input type="text" id="create-bookclub-name" placeholder="Club Name">
-            <input type="hidden" id="manager-id" value="managerId">
-            <label for="create-bookclub-description">About the Club</label>
-            <textarea id="create-bookclub-description" class="" maxlength="500"
-                placeholder="Write a brief description about the club." name="create-bookclub-description"></textarea>
-            <div class="button-container">
-                <button id="save-btn" class="done-btn create-btn">Create</button>
-            </div>
+    <!--List of existing clubs to join-->
+    <div id="existing-clubs-section" class="bookclub-table-section" style="display: none;">
+        <h4>Existing Clubs</h4>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Club Name</th>
+                    <th>Members</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="existing-clubs-tbody">
+                <!-- The content of the tbody will be dynamically generated -->
+                </tbody>
+            </table>
         </div>
     </div>
-    <div>
-        <footer th:replace="~{fragments/footer.html}"></footer>
+</div>
+<!--create book club popup-->
+<div id="create-bookclub-popup" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Create a Book Club</h2>
+        <label for="create-bookclub-name">Club Name</label>
+        <input type="text" id="create-bookclub-name" placeholder="Club Name">
+        <input type="hidden" id="manager-id" value="managerId">
+        <label for="create-bookclub-description">About the Club</label>
+        <textarea id="create-bookclub-description" class="" maxlength="500"
+                  placeholder="Write a brief description about the club." name="create-bookclub-description"></textarea>
+        <div class="button-container">
+            <button id="save-btn" class="done-btn create-btn">Create</button>
+        </div>
     </div>
-    <script src="/javascript/dropDown.js"></script>
-    <script src="/javascript/bookclub.js"></script>
+</div>
+
+<!-- Club description popup -->
+<div id="description-popup" class="modal">
+    <div class="modal-content">
+        <span class="description-close-btn">&times;</span>
+        <h2>Club Description</h2>
+        <p id="description-content"></p>
+    </div>
+</div>
+
+<div>
+    <footer th:replace="~{fragments/footer.html}"></footer>
+</div>
+<script src="/javascript/dropDown.js"></script>
+<script src="/javascript/bookclub.js"></script>
 </body>
 
 </html>
