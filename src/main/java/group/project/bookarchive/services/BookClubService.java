@@ -6,17 +6,22 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import group.project.bookarchive.models.BookClub;
 import group.project.bookarchive.models.BookClubDTO;
 import group.project.bookarchive.models.BookClubMember;
 import group.project.bookarchive.models.Bookshelf;
 import group.project.bookarchive.models.BookshelfItem;
+import group.project.bookarchive.models.Event;
+import group.project.bookarchive.models.Messages;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.BookClubMemberRepository;
 import group.project.bookarchive.repositories.BookClubRepository;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
+import group.project.bookarchive.repositories.EventRepository;
+import group.project.bookarchive.repositories.MessageRepository;
 import group.project.bookarchive.repositories.UserRepository;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +41,12 @@ public class BookClubService {
 
     @Autowired
     private BookClubMemberRepository bookClubMemberRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -71,13 +82,19 @@ public class BookClubService {
         return bookClubRepository.save(bookClub);
     }
 
+    @Transactional
     public void deleteBookClub(Long id, Long userId) {
         BookClub bookClub = getBookClubByIdAndManager(id, userId);
         List<BookClubMember> members = bookClubMemberRepository.findByBookClubId(bookClub.getId());
         bookClubMemberRepository.deleteAll(members);
-        List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookClub.getBookshelf().getId());
+        Bookshelf bookshelf = bookClub.getBookshelf();
+        List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookshelf.getId());
         bookshelfItemRepository.deleteAll(items);
-        bookshelfRepository.deleteById(bookClub.getBookshelf().getId());
+        bookshelfRepository.deleteById(bookshelf.getId());
+        List<Messages> messages = messageRepository.findByBookClubId(bookClub.getId());
+        messageRepository.deleteAll(messages);
+        List<Event> events = eventRepository.findByBookClubId(bookClub.getId());
+        eventRepository.deleteAll(events);
         bookClubRepository.delete(bookClub);
     }
 
@@ -151,4 +168,7 @@ public class BookClubService {
     public BookClub findBookClubById(Long id) {
         return bookClubRepository.findById(id).orElse(null);
     }
+
 }
+
+

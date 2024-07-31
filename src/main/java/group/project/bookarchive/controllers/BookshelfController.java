@@ -2,7 +2,6 @@ package group.project.bookarchive.controllers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfDTO;
 import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.BookshelfItemDTO;
 import group.project.bookarchive.services.BookshelfService;
@@ -58,13 +58,9 @@ public class BookshelfController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookshelfItemDTO> getBookshelfDetails(@PathVariable Long id) {
-        Optional<Bookshelf> bookshelfOptional = bookshelfService.getBookshelfById(id);
-        if (bookshelfOptional.isPresent()) {
-            Bookshelf bookshelf = bookshelfOptional.get();
-            List<BookshelfItem> items = bookshelfService.getBookshelfItems(id);
-            return ResponseEntity.ok(new BookshelfItemDTO(bookshelf, items));
-        }
-        return ResponseEntity.notFound().build();
+        BookshelfItemDTO bookshelfDetails = bookshelfService.getBookshelfDetails(id);
+        return ResponseEntity.ok(bookshelfDetails);
+
     }
 
     @GetMapping("/{id}/thumbnails")
@@ -77,6 +73,13 @@ public class BookshelfController {
                 .map(item -> item.getBook().getThumbnailUrl())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(thumbnails);
+    }
+
+    @GetMapping("/byBook/{id}")
+    public ResponseEntity<List<BookshelfDTO>> getBookshelvesbyBookId(@PathVariable String id,
+            @RequestParam Long userID) {
+        List<BookshelfDTO> bookshelves = bookshelfService.findBookshelvesContainingBook(id, userID);
+        return ResponseEntity.ok(bookshelves);
     }
 
 }

@@ -18,11 +18,6 @@
     <div th:replace="~{fragments/header.html}"></div>
     <div class="content-container">
         <div class="result-display-container">
-            <div class="result-display-header">
-                <button class="result-display-header-btn" type="button">Books</button>
-                <button class="result-display-header-btn" type="button">Collections</button>
-            </div>
-            <hr class="solid" id="divider-line">
             <span th:text="'(Search Result for: ' + ${query} + ')'"></span>
             <div th:if="${message != null}">
                 <p th:text="${message}" class="text-warning"></p>
