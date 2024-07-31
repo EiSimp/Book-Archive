@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear current book list and pagination
             bookList.innerHTML = '';
             pagination.innerHTML = '';
+            // reverse for newest changes first
+            const items = [...data.content].reverse();
 
             // Populate book list
             data.content.forEach(item => {
@@ -98,32 +100,55 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentPage = data.number;
             const totalPages = data.totalPages;
 
-            if (currentPage > 0) {
-                const prevLink = document.createElement('a');
-                prevLink.href = '#';
-                prevLink.className = 'pagination-link';
-                prevLink.dataset.page = currentPage - 1;
-                prevLink.textContent = ' < ';
-                pagination.appendChild(prevLink);
-            }
+            // Add << button for previous 10 pages
+        if (currentPage > 0) {
+            const prev10Link = document.createElement('a');
+            prev10Link.href = '#';
+            prev10Link.className = 'pagination-link';
+            prev10Link.dataset.page = Math.max(0, currentPage - 10); // Go back up to 10 pages
+            prev10Link.textContent = ' << ';
+            pagination.appendChild(prev10Link);
+        }
 
-            for (let i = 0; i < totalPages; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = '#';
-                pageLink.className = `pagination-link ${i === currentPage ? 'active' : ''}`;
-                pageLink.dataset.page = i;
-                pageLink.textContent = i + 1;
-                pagination.appendChild(pageLink);
-            }
+        // Add single page previous link
+        if (currentPage > 0) {
+            const prevLink = document.createElement('a');
+            prevLink.href = '#';
+            prevLink.className = 'pagination-link';
+            prevLink.dataset.page = currentPage - 1;
+            prevLink.textContent = ' < ';
+            pagination.appendChild(prevLink);
+        }
 
-            if (currentPage < totalPages - 1) {
-                const nextLink = document.createElement('a');
-                nextLink.href = '#';
-                nextLink.className = 'pagination-link';
-                nextLink.dataset.page = currentPage + 1;
-                nextLink.textContent = ' > ';
-                pagination.appendChild(nextLink);
-            }
+        // Add page links
+        for (let i = 0; i < totalPages; i++) {
+            const pageLink = document.createElement('a');
+            pageLink.href = '#';
+            pageLink.className = `pagination-link ${i === currentPage ? 'active' : ''}`;
+            pageLink.dataset.page = i;
+            pageLink.textContent = i + 1;
+            pagination.appendChild(pageLink);
+        }
+
+        // Add single page next link
+        if (currentPage < totalPages - 1) {
+            const nextLink = document.createElement('a');
+            nextLink.href = '#';
+            nextLink.className = 'pagination-link';
+            nextLink.dataset.page = currentPage + 1;
+            nextLink.textContent = ' > ';
+            pagination.appendChild(nextLink);
+        }
+
+        // Add >> button for next 10 pages
+        if (currentPage < totalPages - 1) {
+            const next10Link = document.createElement('a');
+            next10Link.href = '#';
+            next10Link.className = 'pagination-link';
+            next10Link.dataset.page = Math.min(totalPages - 1, currentPage + 10); // Go forward up to 10 pages
+            next10Link.textContent = ' >> ';
+            pagination.appendChild(next10Link);
+        }
 
             // Attach click handlers to pagination links
             document.querySelectorAll('.pagination-link').forEach(link => {

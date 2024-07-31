@@ -1,6 +1,9 @@
 package group.project.bookarchive.services;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +14,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group.project.bookarchive.models.Book;
+import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.repositories.BookRepository;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookService {
@@ -24,6 +30,9 @@ public class BookService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
 
     @Value("${google.api.key}")
     private String apiKey;
@@ -104,4 +113,45 @@ public class BookService {
                 + "&printsec=frontcover&img=1&zoom=0&source=gbs_api";
         return url;
     }
+
+    @Transactional
+public void updateBookAverageRating(Long bookId) {
+    List<BookshelfItem> items = bookshelfItemRepository.findByBookId(bookId);
+
+    if (items.isEmpty()) {
+        // If there are no items or all ratings are zero, set average rating to 0
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+        book.setAverageRating(0);
+        bookRepository.save(book);
+        return;
+    }
+
+    double totalRating = 0;
+    int count = 0;
+
+    for (BookshelfItem item : items) {
+        double rating = item.getUserRating();
+        if (rating > 0) { // Exclude zero ratings
+            totalRating += rating;
+            count++;
+        }
+    }
+
+    // Avoid division by zero if all ratings are zero
+    if (count == 0) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+        book.setAverageRating(0); // Set to 0 if no valid ratings
+        bookRepository.save(book);
+        return;
+    }
+
+    double averageRating = totalRating / count;
+
+    // Round to 2 decimal places
+    BigDecimal roundedRating = new BigDecimal(averageRating).setScale(2, RoundingMode.HALF_UP);
+
+    Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+    book.setAverageRating(roundedRating.doubleValue());
+    bookRepository.save(book);
+}
 }

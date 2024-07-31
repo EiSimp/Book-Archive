@@ -27,5 +27,7 @@ public interface BookshelfItemRepository extends JpaRepository<BookshelfItem, Lo
 
     Page<BookshelfItem> findByBookshelfId(Long bookshelfId, Pageable pageable);
 
+    List<BookshelfItem> findByBookId(Long bookId);
+
 
 }

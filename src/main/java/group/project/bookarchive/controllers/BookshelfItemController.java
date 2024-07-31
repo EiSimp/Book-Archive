@@ -22,6 +22,7 @@ import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.repositories.BookRepository;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
+import group.project.bookarchive.services.BookService;
 import group.project.bookarchive.services.BookshelfItemService;
 
 @RestController
@@ -36,6 +37,9 @@ public class BookshelfItemController {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BookService bookService;
 
     @Autowired
     private BookshelfItemRepository bookshelfItemRepository;
@@ -82,6 +86,7 @@ public class BookshelfItemController {
             Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
 
             BookshelfItem updatedItem = bookshelfItemService.updateBookRating(bookshelfId, existingBook, rating);
+            bookService.updateBookAverageRating(existingBook.getId());
             return ResponseEntity.ok(updatedItem);
         } catch (Exception e) {
             e.printStackTrace();

@@ -24,6 +24,9 @@ public class BookshelfItemService {
     private BookRepository bookRepository;
 
     @Autowired
+    private BookService bookService;
+
+    @Autowired
     private BookshelfItemRepository bookshelfItemRepository;
 
     public BookshelfItem addBookToBookshelf(Long bookshelfId, Book book) {
@@ -100,7 +103,11 @@ public class BookshelfItemService {
         return itemsPage.map(BookshelfItem::getBook);
     }
 
-    
+    public BookshelfItem save(BookshelfItem item) {
+        BookshelfItem savedItem = bookshelfItemRepository.save(item);
+        bookService.updateBookAverageRating(savedItem.getBook().getId());
+        return savedItem;
+    }
 
 
 }

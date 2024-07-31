@@ -355,4 +355,29 @@ h3 {
     border-color: #4dd0e1; /* More vivid blue for active state */
 }
 
+.pagination-link {
+    text-decoration: none;
+    padding: 8px 12px;
+    color: #333; /* Dark text color for readability */
+    background-color: #fff; /* White background */
+    margin: 0 4px;
+    border-radius: 4px;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-link:hover {
+    background-color: #ffcc99; /* Light orange background on hover */
+}
+
+.pagination-link.active {
+    background-color: #ff66003e; /* Orange background for active page */
+    color: #fff; /* White text color for active page */
+    font-weight: bold; /* Bold text for active page */
+}
+
+/* Remove border from links */
+.pagination-link {
+    border: none;
+}
 

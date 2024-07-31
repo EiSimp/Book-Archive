@@ -411,6 +411,8 @@ function addBookToDefaultBookshelf(name) {
                     console.log(name);
                     
                     alert(successMessage);
+                    location.reload();
+                    
                 },
                 error: function (xhr) {
                     if (xhr.status === 409) {
@@ -424,6 +426,7 @@ function addBookToDefaultBookshelf(name) {
                         console.log(xhr.status);
                         alert('Failed to add book to collection.');
                     }
+                    location.reload();
                 }
             });
         })
@@ -431,6 +434,8 @@ function addBookToDefaultBookshelf(name) {
             console.error("Error fetching book details: ", error);
             alert('Failed to fetch book details.');
         });
+
+        
 }
 
 function submitComment(commentText) {
