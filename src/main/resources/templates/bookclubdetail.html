@@ -34,7 +34,7 @@
                     <button id="settings-button">Settings</button>
                     <div class="dropdown-content">
                         <a href="#" onclick="openTransferRoleModal()">Transfer Role</a>
-                        <a href="#" onclick="createBookClubEvent()">Create Event</a>
+                        <a href="#" onclick="openCreateEventModal()">Create Event</a>
                         <a href="#" onclick="renameBookClub()">Rename Book Club</a>
                         <a href="#" onclick="deleteBookClub()">Delete Book Club</a>
                         <a href="#" onclick="openRemoveMemberModal()">Remove Member</a>
@@ -232,6 +232,51 @@
             <h2>Remove Member</h2>
             <select id="removeMemberSelect"></select>
             <button onclick="removeMember()">Remove</button>
+        </div>
+    </div>
+    <!-- Event Create Modal -->
+    <div id="createEventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCreateEventModal()">&times;</span>
+            <h2>Create Event</h2>
+            <form id="createEventForm">
+                <label for="createEventTitle">Title:</label>
+                <input type="text" id="createEventTitle" name="createEventTitle" required><br><br>
+                <label for="createEventDescription">Description:</label>
+                <input type="text" id="createEventDescription" name="createEventDescription" required><br><br>
+                <label for="createEventDateTime">Date and Time (YYYY-MM-DDTHH:MM:SS):</label>
+                <input type="datetime-local" id="createEventDateTime" name="createEventDateTime" required><br><br>
+                <button type="button" onclick="submitCreateEventForm()">Create</button>
+            </form>
+        </div>
+    </div>
+    <!-- Event Update Modal -->
+    <div id="updateEventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUpdateEventModal()">&times;</span>
+            <h2>Update Event</h2>
+            <form id="updateEventForm">
+                <input type="hidden" id="updateEventId">
+                <label for="updateEventTitle">Title:</label>
+                <input type="text" id="updateEventTitle" name="updateEventTitle" required><br><br>
+                <label for="updateEventDescription">Description:</label>
+                <input type="text" id="updateEventDescription" name="updateEventDescription" required><br><br>
+                <label for="updateEventDateTime">Date and Time (YYYY-MM-DDTHH:MM:SS):</label>
+                <input type="datetime-local" id="updateEventDateTime" name="updateEventDateTime" required><br><br>
+                <button type="button" onclick="submitUpdateEventForm()">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Delete Modal -->
+    <div id="deleteEventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteEventModal()">&times;</span>
+            <h2>Delete Event</h2>
+            <p>Are you sure you want to delete this event?</p>
+            <input type="hidden" id="deleteEventId">
+            <button type="button" onclick="submitDeleteEventForm()">Delete</button>
+            <button type="button" onclick="closeDeleteEventModal()">Cancel</button>
         </div>
     </div>
     <div>
