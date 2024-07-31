@@ -18,9 +18,11 @@ import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
 import group.project.bookarchive.repositories.UserRepository;
+import group.project.bookarchive.security.SecurityUser;
 
 @Service
 public class BookshelfService {
+
     @Autowired
     private BookshelfRepository bookshelfRepository;
 
@@ -106,15 +108,31 @@ public class BookshelfService {
         }
     }
 
+    // private User getCurrentUser() {
+    //     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    //     String username;
+    //     if (principal instanceof UserDetails) {
+    //         username = ((UserDetails) principal).getUsername();
+    //     } else {
+    //         username = principal.toString();
+    //     }
+    //     return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    // }
     private User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
+
+        Long userId;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            UserDetails userDetails = (UserDetails) principal;
+            // Assuming you have a way to get the user ID from UserDetails
+            userId = ((SecurityUser) userDetails).getId(); // Modify as per your implementation
         } else {
-            username = principal.toString();
+            // Fallback or handle cases where principal is not UserDetails
+            throw new RuntimeException("User not found");
         }
-        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
     }
 
     public List<BookshelfDTO> findBookshelvesContainingBook(String googleBookId, Long userId) {
