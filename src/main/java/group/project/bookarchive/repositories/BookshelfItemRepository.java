@@ -2,6 +2,8 @@ package group.project.bookarchive.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import group.project.bookarchive.models.Book;
@@ -21,6 +23,9 @@ public interface BookshelfItemRepository extends JpaRepository<BookshelfItem, Lo
     boolean existsByBookshelfIdAndBookId(Long bookshelfId, Long bookId);
 
     // public Object findByBookshelfAndBook(Bookshelf bookshelf, Book existingBook);
+    Page<BookshelfItem> findByBookshelf(Bookshelf bookshelf, Pageable pageable);
+
+    Page<BookshelfItem> findByBookshelfId(Long bookshelfId, Pageable pageable);
 
 
 }

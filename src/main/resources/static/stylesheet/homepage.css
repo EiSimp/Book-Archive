@@ -49,3 +49,255 @@ h3 {
     justify-content: end;
     padding: 10px;
 }
+
+/* Modal common styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border: none;
+    width: 300px; /* Fixed width */
+    height: 400px; /* Fixed height */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between elements */
+    overflow-y: auto; /* Add scroll if content exceeds fixed height */
+}
+
+.modal-content h2 {
+    margin-top: 0; /* Remove default margin */
+    text-align: center; /* Center the title */
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 8px; /* Space below label */
+}
+
+.modal-content input[type="text"] {
+    width: calc(100% - 22px); /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 20px; /* Space below input */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Common checkbox container styling */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* Match the size */
+    margin-bottom: 20px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+    width: 25px; /* Fixed size */
+    height: 25px; /* Fixed size */
+    border: 2px solid #555; /* Dark grey border */
+    border-radius: 4px; /* Rounded corners */
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.checkbox-container input[type="checkbox"]:checked::before {
+    content: '\2713'; /* Checkmark */
+    color: white;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+    font-size: 20px;
+}
+
+.modal-content .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* Add some space between buttons */
+}
+
+.modal-content .done-btn {
+    background-color: #f44336; /* Red background color */
+    color: white; /* White text color */
+    border: none;
+    border-radius: 20px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    width: fit-content;
+    margin-top: 20px; /* Adjust as needed for spacing */
+}
+
+.modal-content .done-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+.modal-content .delete-btn {
+    background-color: transparent; /* No background color */
+    border: none; /* No border */
+    color: inherit; /* Inherit text color */
+    font-size: 16px; /* Font size */
+    cursor: pointer;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+    width: fit-content;
+    margin: 20px 0; /* Adjust as needed for spacing */
+}
+
+.modal-content .delete-btn span {
+    display: block;
+    font-size: 14px; /* Smaller font size for descriptive text */
+    font-weight: normal; /* Normal weight for descriptive text */
+    color: #666; /* Gray color for descriptive text */
+    margin-top: 5px; /* Small space between title and description */
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Design for Create Bookshelf Popup */
+#create-bookshelf-popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border: none;
+    width: 300px; /* Fixed width */
+    height: 400px; /* Fixed height */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* Rounder corners */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between elements */
+    overflow-y: auto; /* Add scroll if content exceeds fixed height */
+}
+
+.popup-content h2 {
+    margin-top: 0; /* Remove default margin */
+    margin-bottom: 20px; /* Increase margin below */
+    text-align: center; /* Center the title */
+    font-size: 24px; /* Match the size */
+}
+
+.popup-content label {
+    display: block;
+    margin-bottom: 2px; /* Bring closer to text box */
+    font-weight: bold;
+    font-size: 16px; /* Match the size */
+}
+
+.popup-content input[type="text"] {
+    width: calc(100% - 22px); /* Full width minus padding */
+    padding: 12px; /* Adjust padding */
+    margin-bottom: 10px; /* Reduce margin below */
+    border: 1px solid #ccc; /* Restore original border color */
+    border-radius: 6px;
+    font-size: 16px; /* Match the size */
+    margin-top: -10px; /* Bring closer to label */
+}
+
+.popup-content .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px; /* Match the size */
+}
+
+.popup-content .checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+    width: 25px; /* Fixed size */
+    height: 25px; /* Fixed size */
+    border: 2px solid #555; /* Dark grey border */
+    border-radius: 4px; /* Rounded corners */
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.popup-content .checkbox-container input[type="checkbox"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.popup-content .checkbox-container input[type="checkbox"]:checked::before {
+    content: '\2713'; /* Checkmark */
+    color: white;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+    font-size: 20px;
+}
+
+.popup-content .button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popup-content button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px; /* Match the size */
+}
+
+.popup-content button:hover {
+    background-color: #0056b3;
+}
+
+.modal-content button.create-btn {
+    background-color: #506aff;
+}
+
+.modal-content button.create-btn:hover {
+    background-color: #0056b3;
+}
