@@ -90,6 +90,7 @@ class BookClubViewController {
         if (bookClub == null) {
             throw new RuntimeException("Book Club not found");
         }
+
         List<BookClubMember> members = bookClubMemberService.getMembers(id);
         model.addAttribute("bookClub", bookClub);
         model.addAttribute("members", members);

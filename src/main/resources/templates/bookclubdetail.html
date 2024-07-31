@@ -11,20 +11,24 @@
     <link rel="stylesheet" href="/stylesheet/bookclubdetail.css" />
     <link rel="stylesheet" href="/stylesheet/card.css" />
     <link rel="stylesheet" href="/stylesheet/homepage.css" />
+    <link rel="stylesheet" href="/stylesheet/chat.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body class="main-body">
+
+    <!--Hidden types-->
     <input type="hidden" id="userId" th:value="${user.id}">
     <input type="hidden" id="bookClubId" th:value="${bookClub.id}">
     <input type="hidden" id="managerId" th:value="${bookClub.manager.id}">
-
+    <!--Header section of the homepage-->
     <div th:replace="~{fragments/header.html}"></div>
     <div class="content-container">
         <div class="bookclub-header">
             <h3 th:text="${bookClub.name}">Book Club Name</h3>
+
             <div class="setting" th:if="${user.id == bookClub.manager.id}">
                 <div class="dropdown">
                     <button id="settings-button">Settings</button>
