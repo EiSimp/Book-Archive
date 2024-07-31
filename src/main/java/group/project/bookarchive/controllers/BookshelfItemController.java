@@ -1,6 +1,9 @@
 package group.project.bookarchive.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -130,5 +133,15 @@ public class BookshelfItemController {
                 return ResponseEntity.ok().build();
             })
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found"));
+    }
+
+    @GetMapping("/books")
+    public Page<BookshelfItem> getBooksByBookshelf(
+        @RequestParam Long bookshelfId,
+        @RequestParam int page,
+        @RequestParam int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return bookshelfItemRepository.findByBookshelfId(bookshelfId, pageable);
     }
 }

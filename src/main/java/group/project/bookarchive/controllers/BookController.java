@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.project.bookarchive.models.Book;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.services.BookService;
-import group.project.bookarchive.services.BookshelfService;
 
 @RestController
 @RequestMapping("/api")
@@ -22,7 +22,7 @@ public class BookController {
     private BookService bookService;
 
     @Autowired
-    private BookshelfService bookshelfService;
+    private BookshelfItemRepository booksRepository;
 
     @GetMapping("/bookdetails/{googleBookId}")
     public ResponseEntity<Book> getBookDetails(@PathVariable String googleBookId) {
@@ -34,6 +34,12 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    // @GetMapping("/books")
+    // public Page<Book> getBooks(@RequestParam Long bookshelfId, @RequestParam int page, @RequestParam int size) {
+    //     Pageable pageable = PageRequest.of(page, size);
+    //     return booksRepository.findByBookshelfId(bookshelfId, pageable);
+    // }
 
     
 }

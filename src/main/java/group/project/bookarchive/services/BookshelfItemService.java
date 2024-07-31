@@ -3,6 +3,8 @@ package group.project.bookarchive.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import group.project.bookarchive.exceptions.BookAlreadyExistsException;
@@ -84,6 +86,18 @@ public class BookshelfItemService {
         bookshelfItem.setUserRating(rating);
 
         return bookshelfItemRepository.save(bookshelfItem);
+    }
+
+    public Page<Book> getBooksByBookshelf(Long bookshelfId, Pageable pageable) {
+        // Retrieve the existing bookshelf entity
+        Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
+            .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
+
+        // Fetch paginated bookshelf items
+        Page<BookshelfItem> itemsPage = bookshelfItemRepository.findByBookshelf(bookshelf, pageable);
+        
+        // Map BookshelfItems to Books
+        return itemsPage.map(BookshelfItem::getBook);
     }
 
     

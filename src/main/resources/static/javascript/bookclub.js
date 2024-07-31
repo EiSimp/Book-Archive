@@ -295,6 +295,48 @@ function joinBookClub(bookClubId) {
             alert('Error checking membership status');
         });
 }
+function joinBookClub(bookClubId) {
+    const userId = getCurrentUserId();
+    const csrf = getCsrfToken();
+
+    fetch(`/bookclubmembers/user/${userId}/bookclubs`)
+        .then(response => response.json())
+        .then(data => {
+            const isMember = data.some(club => club.id === bookClubId);
+            if (isMember) {
+                alert('You are already a member of this book club');
+            } else {
+                fetch('/bookclubmembers/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [csrf.header]: csrf.token
+                    },
+                    body: JSON.stringify({ bookClubId: bookClubId, userId: userId })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Joined the book club successfully');
+                            loadMyClubs();
+                            if (window.existingClubsDisplayed) {
+                                loadExistingClubs();
+                            }
+                        } else {
+                            throw new Error('Failed to join the book club');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error joining the book club');
+                    });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error checking membership status');
+        });
+}
+
 
 function getCurrentUserId() {
     return document.getElementById('userId').value;

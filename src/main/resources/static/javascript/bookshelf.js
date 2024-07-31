@@ -306,12 +306,16 @@ function fetchAndSetThumbnails(bookshelfId) {
 
 // For Displaying Bookshelves
 document.addEventListener("DOMContentLoaded", function () {
+    const excludedBookshelves = ['Read', 'Reading', 'To Read'];
     fetch("/bookshelves/all") // Fetch all bookshelves from the backend
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
             const bookshelfUL = document.getElementById('collection-cardlist');
             bookshelfUL.innerHTML = ''; // Clear the library div
             data.forEach(bookshelf => {
+                if (excludedBookshelves.includes(bookshelf.name)) {
+                    return; // Skip this bookshelf
+                }
                 // Create a div element for each bookshelf
                 const bookshelfElement = document.createElement('li');
                 bookshelfElement.className = 'collection-li';
