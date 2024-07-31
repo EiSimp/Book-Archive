@@ -1,6 +1,12 @@
 package group.project.bookarchive.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "bookshelf_items")
@@ -9,7 +15,7 @@ public class BookshelfItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int userRating;
+    private double userRating;
 
     private String userComment;
 
@@ -40,12 +46,12 @@ public class BookshelfItem {
         this.id = id;
     }
 
-    public int getUserRating() {
+    public double getUserRating() {
         return userRating;
     }
 
-    public void setUserRating(int userRating) {
-        this.userRating = userRating;
+    public void setUserRating(double rating) {
+        this.userRating = rating;
     }
 
     public String getUserComment() {

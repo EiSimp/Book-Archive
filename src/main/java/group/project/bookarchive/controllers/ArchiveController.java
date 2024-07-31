@@ -31,6 +31,7 @@ import group.project.bookarchive.models.SignupFormDTO;
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
 import group.project.bookarchive.security.SecurityUser;
+import group.project.bookarchive.services.BookshelfService;
 import group.project.bookarchive.services.MailService;
 import group.project.bookarchive.services.UserService;
 import jakarta.validation.Valid;
@@ -43,6 +44,9 @@ public class ArchiveController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private BookshelfService bookshelfService;
 
     @Autowired
     private MailService mailService;
@@ -182,6 +186,10 @@ public class ArchiveController {
                 form.getEmail());
 
         service.registerDefaultUser(userRepository.save(user));
+
+        // Call the method to create default bookshelves for the user
+        bookshelfService.createDefaultBookshelvesForUser(user);
+
         return "redirect:/login?signupsuccess";
     }
 

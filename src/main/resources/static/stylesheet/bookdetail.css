@@ -165,3 +165,177 @@ li {
 .starpoint_box .star_radio:nth-of-type(9):checked ~ .starpoint_bg{width:90%;}
 .starpoint_box .star_radio:nth-of-type(10):hover ~ .starpoint_bg,
 .starpoint_box .star_radio:nth-of-type(10):checked ~ .starpoint_bg{width:100%;}
+
+#comments-container{
+	width: 100%;
+}
+
+/* Ensure the comment card has a consistent layout */
+.comment-card {
+	display: flex; /* Use Flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    width: 100%; /* Full width */
+    max-width: 600px; /* Maximum width */
+    margin-bottom: 10px; /* Space between comments */
+    padding: 10px 14px 10px 10px; /* Padding inside the card */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+	height:fit-content;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+/* Style for the comment text holder */
+.comment-text-holder {
+    width: 100%; /* Full width */
+    min-height: 100px; /* Minimum height */
+    height: auto; /* Adjust based on content */
+    overflow: visible; /* Show overflow content */
+    box-sizing: border-box; /* Include padding and border in width */
+    padding: 10px; /* Padding inside */
+}
+
+/* Style for the comment text before edit */
+.comment-text {
+    font-size: 16px; /* Adjust font size to match your design */
+    line-height: 1.5;
+    margin: 0; /* Remove any default margins */
+	box-sizing: border-box; /* Ensure padding and border are included in the width */
+    overflow-wrap: break-word; /* Break long words */
+    word-wrap: break-word; /* Break long words */
+	white-space: pre-wrap; /* preserve white space*/
+}
+
+/* Style for the textarea when editing */
+.edit-textarea {
+    display: none; /* Hide initially */
+    width: 100%; /* Match the width of the comment text container */
+	height: fit-content;
+	min-height:100px;
+    font-size: 16px; /* Match the font size */
+    line-height: 1.5;
+    border: none; /* Remove border */
+    resize: none; /* Prevent resizing */
+    padding: 0; /* Remove padding */
+    box-shadow: none; /* Remove any shadow */
+    background: transparent; /* Ensure background matches the comment area */
+    margin: 0; /* Remove margin */
+}
+
+.comment-text, .edit-textarea {
+    box-sizing: border-box; /* Include padding and border in width and height */
+}
+
+/* Hide scrollbar in WebKit browsers (e.g., Chrome, Safari) */
+.edit-textarea::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbar in Firefox */
+.edit-textarea {
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbar in IE and Edge */
+.edit-textarea {
+    -ms-overflow-style: none; /* Hide scrollbar */
+}
+
+/* Ensure the textarea looks like plain text when visible and there's no strange border*/
+.edit-textarea:focus {
+    outline: none; /* Remove focus outline */
+}
+
+/* Style for the original comment text area */
+.comment-text {
+    display: block; /* Show the comment text */
+}
+
+/* Style for actions while editing */
+.edit-actions {
+    display: none; /* Hide by default */
+    /* margin-top: 0.5rem; */
+}
+
+/* Style for the edit and delete buttons */
+.comment-actions button,
+.edit-actions button {
+    margin-right: 0.5rem; /* Space between buttons */
+}
+
+.comment-button {
+    color: #fff;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem; /* Match font size */
+
+	padding: 5px 10px;
+}
+
+/* Edit Button Styles */
+.edit-button {
+    background-color: #007bff; /* Blue color for Edit button */
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #0056b3; /* Darker blue for hover effect */
+}
+
+/* Delete Button Styles */
+.delete-button {
+    background-color: #dc3545; /* Red color for Delete button */
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* Darker red for hover effect */
+}
+
+/* Submit Button Styles */
+.submit-button {
+    background-color: #28a745; /* Green color for Submit button */
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #218838; /* Darker green for hover effect */
+}
+
+/* Cancel Button Styles */
+.cancel-button {
+    background-color: #007bff; /* Blue color for Cancel button */
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #0056b3; /* Darker blue for hover effect */
+}
+
+textarea#comment {
+    width: 100%; /* Full width of its container */
+    height: 150px; /* Adjust the height as needed */
+    padding: 10px; /* Padding inside the textarea */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    line-height: 1.5; /* Line height for better readability */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* Inner shadow for depth */
+    resize: vertical; /* Allow resizing only vertically */
+    background-color: #f9f9f9; /* Light background color */
+    color: #333; /* Dark text color */
+    transition: border-color 0.2s, box-shadow 0.2s; /* Smooth transition for interactions */
+	resize: none; /* Prevent resizing */
+}
+
+textarea#comment:focus {
+    border-color: #007bff; /* Border color when focused */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Shadow when focused */
+    outline: none; /* Remove default outline */
+}
+
+textarea#comment::placeholder {
+    color: #aaa; /* Placeholder text color */
+    font-style: italic; /* Italic style for placeholder text */
+}

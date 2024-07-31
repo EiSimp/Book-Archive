@@ -6,17 +6,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import group.project.bookarchive.models.Bookshelf;
 import group.project.bookarchive.models.BookshelfDTO;
 import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.BookshelfItemDTO;
+import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.repositories.BookshelfRepository;
-// Newly added imports
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import group.project.bookarchive.models.User;
 import group.project.bookarchive.repositories.UserRepository;
 
 @Service
@@ -39,6 +39,7 @@ public class BookshelfService {
         bookshelf.setName(name);
         bookshelf.setSecret(isSecret);
         bookshelf.setUserId(user.getId());
+        bookshelf.setDefault(false);
         return bookshelfRepository.save(bookshelf);
     }
 
@@ -118,5 +119,27 @@ public class BookshelfService {
 
     private BookshelfDTO convertToDTO(Bookshelf bookshelf) {
         return new BookshelfDTO(bookshelf);
+    }
+
+    public void createDefaultBookshelvesForUser(User user) {
+        // Set to private by default
+        createDefaultBookshelf(user, "Read", true);
+        createDefaultBookshelf(user, "Reading", true);
+        createDefaultBookshelf(user, "To Read", true);
+        createDefaultBookshelf(user, "Wishlist", true);
+    }
+
+    public Bookshelf createDefaultBookshelf(User user, String name, boolean isSecret) {
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setName(name);
+        bookshelf.setSecret(isSecret);
+        bookshelf.setUserId(user.getId());
+        bookshelf.setDefault(true);
+        return bookshelfRepository.save(bookshelf);
+    }
+
+    public boolean isBookInBookshelf(Long bookshelfId, Long bookId) {
+
+        return bookshelfItemRepository.existsByBookshelfIdAndBookId(bookshelfId, bookId);
     }
 }
