@@ -11,6 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
+    updateBookStatusByDefaultBookshelves(bookID);
+    loadCurrentRating();
+
+    loadComments();
+
     fetchBookDetails(bookID);
 
     document.getElementById("add-comment-btn").addEventListener("click", function () {
@@ -29,10 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    updateBookStatusByDefaultBookshelves(bookID);
-    loadCurrentRating();
-
-    loadComments();
+    
 
 });
 
@@ -272,11 +274,12 @@ function rateBook(selectedLabel) {
             console.log('Rating updated successfully:', updatedItem);
             loadComments();
             // Optionally update the UI to reflect the changes
-
+            
         })
         .catch(error => {
             console.error('Error:', error);
         });
+
 }
 
 function updateBookStatusByDefaultBookshelves(bookID) {
@@ -411,8 +414,6 @@ function addBookToDefaultBookshelf(name) {
                     console.log(name);
                     
                     alert(successMessage);
-                    location.reload();
-                    
                 },
                 error: function (xhr) {
                     if (xhr.status === 409) {
@@ -426,7 +427,6 @@ function addBookToDefaultBookshelf(name) {
                         console.log(xhr.status);
                         alert('Failed to add book to collection.');
                     }
-                    location.reload();
                 }
             });
         })
@@ -434,8 +434,6 @@ function addBookToDefaultBookshelf(name) {
             console.error("Error fetching book details: ", error);
             alert('Failed to fetch book details.');
         });
-
-        
 }
 
 function submitComment(commentText) {

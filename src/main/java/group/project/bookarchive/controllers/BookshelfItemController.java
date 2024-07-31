@@ -48,6 +48,9 @@ public class BookshelfItemController {
     public ResponseEntity<BookshelfItem> addBookToBookshelf(@RequestParam Long bookshelfId, @RequestBody Book book) {
         System.out.println("Received bookshelfId: " + bookshelfId);
         BookshelfItem bookshelfItem = bookshelfItemService.addBookToBookshelf(bookshelfId, book);
+        Long id = book.getId();
+        // Book existingBook = bookRepository.findById(id);
+        bookService.updateBookAverageRating(id);
         return ResponseEntity.ok(bookshelfItem);
     }
 
@@ -86,7 +89,7 @@ public class BookshelfItemController {
             Book existingBook = bookRepository.findByGoogleBookId(googleBookId);
 
             BookshelfItem updatedItem = bookshelfItemService.updateBookRating(bookshelfId, existingBook, rating);
-            bookService.updateBookAverageRating(existingBook.getId());
+            
             return ResponseEntity.ok(updatedItem);
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,6 +116,8 @@ public class BookshelfItemController {
                 return ResponseEntity.ok(0.0); // Return 0.0 if no rating is found
 
             }
+
+            bookService.updateBookAverageRating(existingBook.getId());
 
             double rating = bookshelfItem.getUserRating();
             return ResponseEntity.ok(rating);

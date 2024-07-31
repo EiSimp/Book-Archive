@@ -33,8 +33,15 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear current book list and pagination
             bookList.innerHTML = '';
             pagination.innerHTML = '';
-            // reverse for newest changes first
-            const items = [...data.content].reverse();
+            
+             // Check if there are no books
+            if (data.content.length === 0) {
+                const noBooksMessage = document.createElement('p');
+                noBooksMessage.textContent = 'There are currently no books here. Use the search bar above to find and add books.';
+                noBooksMessage.classList.add('no-books-message');
+                bookList.appendChild(noBooksMessage);
+                return; // Exit the function early if no books
+            }
 
             // Populate book list
             data.content.forEach(item => {
