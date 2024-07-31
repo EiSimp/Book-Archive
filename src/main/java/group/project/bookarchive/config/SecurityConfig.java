@@ -61,6 +61,7 @@ public class SecurityConfig {
                                 .requestMatchers("/bookshelf-items/**").authenticated()
                                 .requestMatchers("/messages/**").authenticated()
                                 .requestMatchers("/chat-websocket/**").permitAll()  // Allow WebSocket endpoint
+                                .requestMatchers("/bookclubs/**").authenticated()
                                 .anyRequest().hasAnyRole("USER", "ADMIN"))
                         .formLogin(form -> form
                                 .loginPage("/login")

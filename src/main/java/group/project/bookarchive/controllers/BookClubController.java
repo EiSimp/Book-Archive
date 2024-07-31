@@ -2,6 +2,8 @@ package group.project.bookarchive.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +12,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import group.project.bookarchive.models.BookClub;
+import group.project.bookarchive.models.Bookshelf;
+import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.BookClubDTO;
 import group.project.bookarchive.models.BookClubMember;
 import group.project.bookarchive.services.BookClubMemberService;
+import group.project.bookarchive.repositories.BookshelfRepository;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
 import group.project.bookarchive.services.BookClubService;
+
+import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping("/bookclubs")
@@ -21,6 +30,33 @@ public class BookClubController {
 
     @Autowired
     private BookClubService bookClubService;
+
+    @Autowired
+    private BookshelfRepository bookshelfRepository;
+
+    @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
+
+    @GetMapping("/{id}/bookshelf")
+    public ResponseEntity<Map<String, Object>> getBookshelfByBookClubId(@PathVariable Long id) {
+        BookClub bookClub = bookClubService.findBookClubById(id);
+        if (bookClub == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        Bookshelf bookshelf = bookClub.getBookshelf();
+        if (bookshelf == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        List<BookshelfItem> items = bookshelfItemRepository.findByBookshelfId(bookshelf.getId());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("bookshelf", bookshelf);
+        response.put("items", items);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<BookClub> createBookClub(@RequestBody Map<String, String> request) {
@@ -96,4 +132,6 @@ class BookClubViewController {
         model.addAttribute("members", members);
         return "bookclubdetail"; // This should be the name of your Thymeleaf template
     }
+
+
 }
