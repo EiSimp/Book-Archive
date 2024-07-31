@@ -8,6 +8,8 @@ public class BookDTO {
     private String bookId;
     private double averageRating;
     private String thumbnail;
+    private String author;
+    private String category;
 
     public BookDTO() {
     }
@@ -26,6 +28,8 @@ public class BookDTO {
         this.bookId = book.getId().toString();
         this.averageRating = book.getAverageRating();
         this.thumbnail = book.getThumbnailUrl();
+        this.author = book.getAuthor();
+        this.category = book.getCategory();
     }
 
     public String getTitle() {
@@ -66,6 +70,22 @@ public class BookDTO {
 
     public void setGoogleBookID(String googleBookId) {
         this.googleBookId = googleBookId;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
 }

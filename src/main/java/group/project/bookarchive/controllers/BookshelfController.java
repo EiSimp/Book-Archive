@@ -63,10 +63,9 @@ public class BookshelfController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookshelfItemDTO> getBookshelfDetails(@PathVariable Long id) {
-        BookshelfItemDTO bookshelfDetails = bookshelfService.getBookshelfDetails(id);
+    public ResponseEntity<List<BookshelfItemDTO>> getBookshelfDetails(@PathVariable Long id) {
+        List<BookshelfItemDTO> bookshelfDetails = bookshelfService.getBookshelfDetails(id);
         return ResponseEntity.ok(bookshelfDetails);
-
     }
 
     @GetMapping("/{id}/thumbnails")

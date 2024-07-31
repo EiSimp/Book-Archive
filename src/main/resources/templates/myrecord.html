@@ -69,15 +69,15 @@
                 <div class="record-rating-numbers">
                     <ul class="record-rating-numbers-ul">
                         <li class="record-rating-numbers-li">
-                            <div class="record-rating-numbers-digit">3.5</div>
+                            <div class="record-rating-numbers-digit" id="average-rating">3.5</div>
                             <div class="record-rating-numbers-text">Average Rating</div>
                         </li>
                         <li class="record-rating-numbers-li">
-                            <div class="record-rating-numbers-digit">100</div>
+                            <div class="record-rating-numbers-digit"id="number-of-rating">100</div>
                             <div class="record-rating-numbers-text">Number of Ratings</div>
                         </li>
                         <li class="record-rating-numbers-li">
-                            <div class="record-rating-numbers-digit">3.0</div>
+                            <div class="record-rating-numbers-digit" id="most-frequent-rating">3.0</div>
                             <div class="record-rating-numbers-text">Most Frequent</div>
                         </li>
                     </ul>
@@ -85,15 +85,15 @@
             </div>
             <div class="record-analysis">
                 <div class="analysis-text">
-                    <p><span class="analysis-userinfo">Username</span></p>
+                    <p><span class="analysis-userinfo" th:text="${loggedinUser}">Username</span></p>
                     <p><span>So far, you have</span></p>
-                    <p><span>read </span><span class="analysis-userinfo">100</span><span> books</span></p>
+                    <p><span>read </span><span class="analysis-userinfo" id="number-of-books-read">100</span><span> books</span></p>
 
-                    <p><span>rated </span><span class="analysis-userinfo">100</span><span> books</span></p>
+                    <p><span>rated </span><span class="analysis-userinfo" id="number-of-books-rated">100</span><span> books</span></p>
 
-                    <p><span>made </span><span class="analysis-userinfo">5</span><span> collections</span></p>
+                    <p><span>made </span><span class="analysis-userinfo" id="number-of-collections-made">5</span><span> collections</span></p>
 
-                    <p><span>left </span><span class="analysis-userinfo">50</span><span> comments</span></p>
+                    <p><span>left </span><span class="analysis-userinfo" id="number-of-comments-left">50</span><span> comments</span></p>
                 </div>
             </div>
         </div>
@@ -225,137 +225,16 @@
                     <h2>Favorite Categories</h2>
                 </div>
                 <div class="category-wrapper">
-                    <div id="tag-cloud"></div>
-                </div>
-            </div>
-            <!--div class="record-favorite-category">
-                <div class="record-favorite-category-header">
-                    <h4>Favorite Categories</h4>
-                </div>
-                <div class="record-favorite-category-rank">
-                    <div class="record-favorite-category-rank-scroll">
-                        <ul class="record-favorite-category-rank-ul">
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">1</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">Drama</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">2</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">Sci-Fi</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">3</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">4</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">5</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">6</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">7</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">8</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">9</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="record-favorite-category-rank-li">
-                                <div class="category-rank-li-wrapper">
-                                    <div class="record-favorite-category-rank-num">
-                                        <div class="ranknum">10</div>
-                                    </div>
-                                    <div class="record-favorite-category-rank-name">
-                                        <div class="rankname">J.K. Rowling</div>
-                                        <span class="record-favorite-category-score">Scored 90</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                    <div id="tag-cloud">
                     </div>
                 </div>
-            </div-->
+            </div>
         </div>
     </div>
     <div>
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
     <script src="/javascript/dropDown.js"></script>
-    <script src="/javascript/tagcloud.js"></script>
+    <script src="/javascript/myrecord.js"></script>
 </body>
-
 </html>
