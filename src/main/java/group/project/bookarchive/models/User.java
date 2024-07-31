@@ -55,6 +55,12 @@ public class User {
         this.profilePhoto = "/images/defaultProfile.png";
     }
 
+    // public User(String username, String password) {
+    //     this.username = username;
+    //     this.password = password;
+    //     this.profilePhoto = "/images/defaultProfile.png";
+    // }
+
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;

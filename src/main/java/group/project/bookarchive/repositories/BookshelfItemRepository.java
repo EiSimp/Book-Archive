@@ -18,9 +18,4 @@ public interface BookshelfItemRepository extends JpaRepository<BookshelfItem, Lo
     BookshelfItem findByBookshelfAndBook(Bookshelf bookshelf, Book book);
 
     boolean existsByBookshelfAndBook(Bookshelf bookshelf, Book book);
-    boolean existsByBookshelfIdAndBookId(Long bookshelfId, Long bookId);
-
-    // public Object findByBookshelfAndBook(Bookshelf bookshelf, Book existingBook);
-
-
 }

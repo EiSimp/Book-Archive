@@ -69,24 +69,4 @@ public class BookshelfItemService {
             throw new RuntimeException("BookshelfItem not found");
         }
     }
-
-    public BookshelfItem updateBookRating(Long bookshelfId, Book book, double rating) {
-        Bookshelf bookshelf = bookshelfRepository.findById(bookshelfId)
-                .orElseThrow(() -> new RuntimeException("Bookshelf not found"));
-
-        Book existingBook = bookRepository.findByGoogleBookId(book.getGoogleBookId());
-        if (existingBook == null) {
-            existingBook = bookRepository.save(book);
-        }
-
-        BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository.findByBookshelfAndBook(bookshelf, existingBook);
-
-        bookshelfItem.setUserRating(rating);
-
-        return bookshelfItemRepository.save(bookshelfItem);
-    }
-
-    
-
-
 }
