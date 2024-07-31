@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -11,25 +11,40 @@
     <link rel="stylesheet" href="/stylesheet/bookclubdetail.css" />
     <link rel="stylesheet" href="/stylesheet/card.css" />
     <link rel="stylesheet" href="/stylesheet/homepage.css" />
+    <link rel="stylesheet" href="/stylesheet/chat.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body class="main-body">
+
+    <!--Hidden types-->
+    <input type="hidden" id="userId" th:value="${user.id}">
+    <input type="hidden" id="bookClubId" th:value="${bookClub.id}">
+    <input type="hidden" id="managerId" th:value="${bookClub.manager.id}">
     <!--Header section of the homepage-->
     <div th:replace="~{fragments/header.html}"></div>
-    <!--bookclub landing page starts here-->
     <div class="content-container">
         <div class="bookclub-header">
-            <h3>Book Club Name</h3>
-            <div class="setting">
+            <h3 th:text="${bookClub.name}">Book Club Name</h3>
+
+            <div class="setting" th:if="${user.id == bookClub.manager.id}">
+                <div class="dropdown">
+                    <button id="settings-button">Settings</button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="openTransferRoleModal()">Transfer Role</a>
+                        <a href="#" onclick="createBookClubEvent()">Create Event</a>
+                        <a href="#" onclick="renameBookClub()">Rename Book Club</a>
+                        <a href="#" onclick="deleteBookClub()">Delete Book Club</a>
+                        <a href="#" onclick="openRemoveMemberModal()">Remove Member</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <!--section 1: calendar, members, chatroom-->
         <hr class="solid divider-line">
         <div class="bookclubdetail-section1">
-            <!--left side of section 1-->
             <div class="section1-left">
-                <!--Event calendar-->
                 <div class="calendar-wrap">
                     <div class="calendar-container">
                         <div class="calendar-header">
@@ -53,48 +68,29 @@
                         </div>
                     </div>
                 </div>
-                <!--memebers-->
+                <div class="upcoming-events">
+                    <h4>Upcoming Events</h4>
+                    <ul id="event-list"></ul>
+                </div>
                 <div class="club-member-wrap">
                     <h4>Members</h4>
                     <ul class="club-member-ul">
-                        <li>
-                            <div class="manager-member">
-                                <span>😎</span>
-                                <span>
-                                    manager username
-                                </span>
-                            </div>
-                        </li>
-                        <li>
+                        <li th:each="member : ${members}">
                             <div>
                                 <span>🐛</span>
-                                <span>
-                                    member username
-                                </span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="myself-member">
-                                <span>😮</span>
-                                <span>
-                                    member username(me)
-                                </span>
+                                <span th:text="${member.user.username}">member username</span>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-            <!--chatroom-->
             <div class="chatroom-wrap">
                 <div class="chat-container">
                     <div class="search-container">
                         <input type="text" id="search-input" placeholder="Search messages..." />
                         <button id="search-icon" class="search-icon">&#128269;</button>
                     </div>
-                    <!--The messages will be displayed in this chat-box-->
-                    <!--these messages are samples-->
                     <div class="chat-box" id="chat-box">
-                        <!-- Message 1 -->
                         <div class="message">
                             <div class="header">
                                 <img src="/images/sun.jpg" alt="user1's profile picture">
@@ -113,8 +109,6 @@
                                 <span class="reaction">😡</span>
                             </div>
                         </div>
-
-                        <!-- Message 2 -->
                         <div class="message mine">
                             <div class="header">
                                 <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
@@ -133,8 +127,6 @@
                                 <span class="reaction">😡</span>
                             </div>
                         </div>
-
-                        <!-- Message 3 -->
                         <div class="message">
                             <div class="header">
                                 <img src="/images/blue_Thumb.jpg" alt="user2's profile picture">
@@ -143,7 +135,8 @@
                                     <span class="timestamp">Yesterday, 11:49 PM</span>
                                 </div>
                             </div>
-                            <p class="text">hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow </p>
+                            <p class="text">hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow
+                                hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow </p>
                             <div class="reactions">
                                 <span class="reaction">👍</span>
                                 <span class="reaction">❤️</span>
@@ -154,8 +147,6 @@
                             </div>
                         </div>
                         <div class="date-divider">July 25, 2024</div>
-
-                        <!-- Message 4 -->
                         <div class="message mine">
                             <div class="header">
                                 <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
@@ -174,8 +165,6 @@
                                 <span class="reaction">😡</span>
                             </div>
                         </div>
-
-                        <!-- Message 5 -->
                         <div class="message">
                             <div class="header">
                                 <img src="/images/orange_Thumb.png" alt="user3's profile picture">
@@ -203,12 +192,10 @@
             </div>
         </div>
         <hr class="solid divider-line">
-        <!--section 2-->
         <div class="bookshelf-container">
             <div class="bookshelf-rack">
                 <ul class="cardlist">
                     <li class="card-li">
-                        <!-- display purpose-->
                         <a class="detail-link">
                             <div class="book-card">
                                 <div class="card-thumbnail-holder">
@@ -221,8 +208,6 @@
                                 <ul class="card-description-li">
                                     <li class="card-title">Book Title</li>
                                     <li class="card-rate">Rated ★ 0.0</li>
-                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'. 
-                                 others displays 'Avg ★ 0.0' -->
                                 </ul>
                             </div>
                         </a>
@@ -231,12 +216,34 @@
             </div>
         </div>
     </div>
+    <!-- Modal for transferring role -->
+    <div id="transferRoleModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTransferRoleModal()">&times;</span>
+            <h2>Transfer Role</h2>
+            <select id="newManagerSelect"></select>
+            <button onclick="transferRole()">Transfer Role</button>
+        </div>
+    </div>
+    <!-- Modal for removing member -->
+    <div id="removeMemberModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRemoveMemberModal()">&times;</span>
+            <h2>Remove Member</h2>
+            <select id="removeMemberSelect"></select>
+            <button onclick="removeMember()">Remove</button>
+        </div>
+    </div>
     <div>
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
+
     <script src="/javascript/chatroom.js"></script>
     <script src="/javascript/dropDown.js"></script>
     <script src="/javascript/calendar.js"></script>
+    <script src="/javascript/setting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </body>
 
 </html>

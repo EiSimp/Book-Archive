@@ -1,23 +1,60 @@
 .bookclub-header {
-    display:flex;
+    display: flex;
     width: 100%;
     padding-inline: 3%;
     padding-top: 20px;
     justify-content: space-between;
 }
+
 .setting {
     width: 40px;
-    height:40px;
-    background-image: url("/images/setting.png");
-    background-size: cover;
+    height: 40px;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.show {
+    display: block;
+}
+
+.dropdown button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+}
+
 
 
 .bookclubdetail-section1 {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height:100%;
+    height: 100%;
     padding-inline: 5%;
 }
 
@@ -25,7 +62,7 @@
     display: flex;
     flex-direction: column;
     width: 50%;
-    gap:20px;
+    gap: 20px;
 }
 
 /* calendar style*/
@@ -55,7 +92,7 @@
 }
 
 .calendar-header button:hover {
-    color:  #298dff;
+    color: #298dff;
     background-color: #edf7fe;
 }
 
@@ -67,8 +104,9 @@
     display: flex;
     justify-content: space-between;
 }
+
 .calendar-days .weekends {
-    color:#ff8787
+    color: #ff8787
 }
 
 .calendar-days div {
@@ -97,7 +135,7 @@
 
 .calendar-dates div:hover {
     background-color: #ecf7ff;
-    color:#727272;
+    color: #727272;
 }
 
 /* today */
@@ -130,7 +168,7 @@
 
 /* user themselves */
 .myself-member {
-    color:#4c8d70;
+    color: #4c8d70;
 }
 
 /* Style for chatroom*/
@@ -139,6 +177,7 @@
     justify-content: center;
     width: 50%;
 }
+
 .chat-container {
     max-width: 550px;
     background-color: white;
@@ -157,6 +196,7 @@
     align-items: center;
     justify-content: end;
 }
+
 #search-icon {
     background: none;
     border: none;
@@ -171,7 +211,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     outline: none;
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
 }
 
 .chat-box {
@@ -189,6 +230,7 @@
     padding: 8px;
     border-radius: 4px;
 }
+
 .message .header {
     display: flex;
     align-items: center;
@@ -230,12 +272,15 @@
     margin-top: 5px;
     margin-inline: 30px;
 }
+
 .message.show-reactions .reactions {
-    display: flex; /* Show reactions when the message is clicked */
+    display: flex;
+    /* Show reactions when the message is clicked */
 }
 
 .message.has-reactions .reactions {
-    display: flex; /* Show reactions if the message already has reactions */
+    display: flex;
+    /* Show reactions if the message already has reactions */
 }
 
 .message .reactions .reaction {
@@ -279,6 +324,7 @@
     color: gray;
     font-size: 12px;
 }
+
 .date-divider::before,
 .date-divider::after {
     content: '';
@@ -298,17 +344,58 @@
 .mine {
     align-items: end;
 }
+
 .mine .header {
     flex-direction: row-reverse;
 }
+
 .mine .details {
     text-align: end;
 }
+
 .mine img {
     margin-right: 0;
     margin-left: 10px;
 }
+
 .mine .text {
     margin-right: 30px;
     background-color: #e0fff1;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
