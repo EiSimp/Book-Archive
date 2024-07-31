@@ -65,6 +65,10 @@ h3 {
     align-items: center;
 }
 
+.book-content-container{
+    margin-top: 20px;
+}
+
 .modal-content {
     background-color: #fff;
     padding: 20px;
@@ -301,3 +305,28 @@ h3 {
 .modal-content button.create-btn:hover {
     background-color: #0056b3;
 }
+
+.cardlist{
+    min-width: 1000px;
+    min-height: 320px;
+    max-width: 1000px;
+    max-height: 320px;
+}
+
+.book-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+

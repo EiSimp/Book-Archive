@@ -175,13 +175,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Determine the bookshelf ID based on the link text
             switch (this.textContent.replace(/\s+/g, '')) {
-                case '00Read':
+                case 'Read':
                     currentBookshelfId = bookshelfIds.read;
                     break;
-                case '00Reading':
+                case 'Reading':
                     currentBookshelfId = bookshelfIds.reading;
                     break;
-                case '00ToRead':
+                case 'ToRead':
                     currentBookshelfId = bookshelfIds.toRead;
                     break;
                 default:
