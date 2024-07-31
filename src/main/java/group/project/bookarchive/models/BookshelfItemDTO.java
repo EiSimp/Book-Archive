@@ -1,23 +1,49 @@
 package group.project.bookarchive.models;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class BookshelfItemDTO {
     private BookshelfDTO bookshelf;
-    private List<BookDTO> items;
+    private BookDTO book;
+    private String userComment;
+    private double userRating;
 
-    public BookshelfItemDTO(Bookshelf bookshelf, List<BookshelfItem> items) {
+    public BookshelfItemDTO(Bookshelf bookshelf, Book book, BookshelfItem item) {
         this.bookshelf = new BookshelfDTO(bookshelf);
-        this.items = items.stream().map(item -> new BookDTO(item.getBook())).collect(Collectors.toList());
+        this.book = new BookDTO(book);
+        this.userComment = item.getUserComment();
+        this.userRating = item.getUserRating();
 
     }
 
     public BookshelfDTO getBookshelf() {
-        return bookshelf;
+        return this.bookshelf;
     }
 
-    public List<BookDTO> getItems() {
-        return items;
+    public void setBookshelf(BookshelfDTO bookshelf) {
+        this.bookshelf = bookshelf;
     }
+
+    public BookDTO getBook() {
+        return this.book;
+    }
+
+    public void setBook(BookDTO book) {
+        this.book = book;
+    }
+
+    public String getUserComment() {
+        return this.userComment;
+    }
+
+    public void setUserComment(String userComment) {
+        this.userComment = userComment;
+    }
+
+    public double getUserRating() {
+        return this.userRating;
+    }
+
+    public void setUserRating(double userRating) {
+        this.userRating = userRating;
+    }
+
 }

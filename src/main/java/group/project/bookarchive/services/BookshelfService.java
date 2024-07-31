@@ -85,12 +85,18 @@ public class BookshelfService {
         return bookshelfItemRepository.findByBookshelfId(bookshelfId);
     }
 
-    public BookshelfItemDTO getBookshelfDetails(Long bookshelfId) {
+    public List<BookshelfItemDTO> getBookshelfDetails(Long bookshelfId) {
         Optional<Bookshelf> optionalBookshelf = bookshelfRepository.findById(bookshelfId);
         if (optionalBookshelf.isPresent()) {
             Bookshelf bookshelf = optionalBookshelf.get();
             List<BookshelfItem> items = getBookshelfItems(bookshelfId);
-            return new BookshelfItemDTO(bookshelf, items);
+
+            // Create a list of BookshelfItemDTO from the list of BookshelfItem
+            List<BookshelfItemDTO> bookshelfItemDTOs = items.stream()
+                    .map(item -> new BookshelfItemDTO(bookshelf, item.getBook(), item))
+                    .collect(Collectors.toList());
+
+            return bookshelfItemDTOs;
         } else {
             throw new RuntimeException("Bookshelf not found");
         }
