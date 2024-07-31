@@ -54,7 +54,7 @@ public class BookClubService {
     public BookClub createBookClub(String name, String description) {
         User manager = getCurrentUser();
         Bookshelf bookshelf = new Bookshelf();
-        bookshelf.setName(name + " Bookshelf");
+        bookshelf.setName(name + " BookClub's Bookshelf");
         bookshelf.setUserId(manager.getId());
         bookshelf = bookshelfRepository.save(bookshelf);
 
@@ -79,6 +79,9 @@ public class BookClubService {
     public BookClub renameBookClub(Long id, String newName, Long userId) {
         BookClub bookClub = getBookClubByIdAndManager(id, userId);
         bookClub.setName(newName);
+        Bookshelf bookshelf = bookClub.getBookshelf();
+        bookshelf.setName(newName + " BookClub's Bookshelf");
+        bookshelfRepository.save(bookshelf);
         return bookClubRepository.save(bookClub);
     }
 
@@ -170,5 +173,3 @@ public class BookClubService {
     }
 
 }
-
-

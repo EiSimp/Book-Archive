@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     })
         .then(response => response.json())
         .then(data => {
-            const bookshelf = data.bookshelf;
-            const items = data.items;
+            const bookshelf = data[0].bookshelf;
+            const items = data.map(entry=>entry.book);
 
             if (!bookshelf) {
                 throw new Error("Bookshelf not found");
