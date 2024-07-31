@@ -59,7 +59,8 @@ public class SecurityConfig {
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .requestMatchers("/bookshelf-items/**").authenticated()
                                                 .requestMatchers("/messages/**").authenticated()
-                                                .anyRequest().hasAnyRole("USER", "ADMIN"))
+                                                .requestMatchers("/chat-websocket/**").permitAll()  // Allow WebSocket endpoint
+                                        .anyRequest().hasAnyRole("USER", "ADMIN"))
                                 .formLogin(form -> form
                                                 .loginPage("/login")
                                                 .defaultSuccessUrl("/homepage?loginsuccess", true)
