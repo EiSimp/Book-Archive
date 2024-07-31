@@ -69,8 +69,10 @@ public class ArchiveController {
     }
 
     @GetMapping("/homepage")
-    public String homepage(Model model) {
-        model.addAttribute("bookshelves", bookshelfService.getAllBookshelvesByUser());
+    public String homepage(Model model, @AuthenticationPrincipal SecurityUser user) {
+        //model.addAttribute("bookshelves", bookshelfService.getAllBookshelvesByUser());
+
+        model.addAttribute("bookshelves", bookshelfService.getAllBookshelvesByUserId(user.getId()));
         return "homepage";
     }
 

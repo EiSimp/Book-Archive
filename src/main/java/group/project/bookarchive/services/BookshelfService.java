@@ -77,6 +77,10 @@ public class BookshelfService {
         return bookshelfRepository.findByUserId(user.getId());
     }
 
+    public List<Bookshelf> getAllBookshelvesByUserId(Long id) {
+        return bookshelfRepository.findByUserId(id);
+    }
+
     public Optional<Bookshelf> getBookshelfById(Long id) {
         return bookshelfRepository.findById(id);
     }
