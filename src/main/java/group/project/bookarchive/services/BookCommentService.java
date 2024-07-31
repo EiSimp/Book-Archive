@@ -47,11 +47,10 @@ public class BookCommentService {
             User user = optionalUser.get();
 
             BookComment bookComment = new BookComment();
-            bookComment.setUser(user);  // User object should be set
+            bookComment.setUser(user); // User object should be set
             bookComment.setGoogleBookId(googleBookId); // GoogleBookId should be set
             bookComment.setUserComment(commentText); // Comment text should be set
             bookComment.setCreatedDate(LocalDateTime.now()); // Initialize non-nullable field
-        
 
             bookCommentRepository.save(bookComment);
         } else {
@@ -78,11 +77,15 @@ public class BookCommentService {
         bookCommentRepository.deleteById(commentId);
     }
 
+    public List<BookComment> getCommentsfromUser(Long userId) {
+        List<BookComment> comments = bookCommentRepository.findByUserId(userId);
+        return comments;
+    }
 
     public List<BookCommentWithRatingDTO> getCommentsWithRatings(String googleBookId) {
         List<BookComment> comments = bookCommentRepository.findByGoogleBookId(googleBookId);
         List<BookCommentWithRatingDTO> result = new ArrayList<>();
-        
+
         for (BookComment comment : comments) {
             Long userId = comment.getUser().getId();
 
@@ -96,7 +99,8 @@ public class BookCommentService {
 
                 if (book != null) {
                     // Find the BookshelfItem based on the bookshelf and book
-                    BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository.findByBookshelfAndBook(readBookshelf, book);
+                    BookshelfItem bookshelfItem = (BookshelfItem) bookshelfItemRepository
+                            .findByBookshelfAndBook(readBookshelf, book);
 
                     // Extract rating
                     Double rating = (bookshelfItem != null) ? bookshelfItem.getUserRating() : null;

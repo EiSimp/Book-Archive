@@ -8,4 +8,6 @@ import group.project.bookarchive.models.BookComment;
 
 public interface BookCommentRepository extends JpaRepository<BookComment, Long> {
     List<BookComment> findByGoogleBookId(String googleBookId);
+
+    List<BookComment> findByUserId(Long userId);
 }

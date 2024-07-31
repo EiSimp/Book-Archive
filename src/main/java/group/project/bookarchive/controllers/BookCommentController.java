@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import group.project.bookarchive.models.BookComment;
 import group.project.bookarchive.models.BookCommentWithRatingDTO;
 import group.project.bookarchive.services.BookCommentService;
 
@@ -24,17 +25,17 @@ public class BookCommentController {
     private BookCommentService bookCommentService;
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addComment(@RequestParam String username, 
-                                            @RequestParam String googleBookId, 
-                                            @RequestParam String commentText) {
-                                                
+    public ResponseEntity<Void> addComment(@RequestParam String username,
+            @RequestParam String googleBookId,
+            @RequestParam String commentText) {
+
         bookCommentService.addComment(username, googleBookId, commentText);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update/{commentId}")
-    public ResponseEntity<Void> updateComment(@PathVariable Long commentId, 
-                                               @RequestParam String newCommentText) {
+    public ResponseEntity<Void> updateComment(@PathVariable Long commentId,
+            @RequestParam String newCommentText) {
         bookCommentService.updateComment(commentId, newCommentText);
         return ResponseEntity.ok().build();
     }
@@ -50,4 +51,11 @@ public class BookCommentController {
         List<BookCommentWithRatingDTO> comments = bookCommentService.getCommentsWithRatings(googleBookId);
         return ResponseEntity.ok(comments);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<BookComment>> getCommentsFromUser(@PathVariable Long id) {
+        List<BookComment> comments = bookCommentService.getCommentsfromUser(id);
+        return ResponseEntity.ok(comments);
+    }
+
 }
