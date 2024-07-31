@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import group.project.bookarchive.models.Book;
 import group.project.bookarchive.models.Bookshelf;
 import group.project.bookarchive.models.BookshelfDTO;
 import group.project.bookarchive.models.BookshelfItem;
 import group.project.bookarchive.models.BookshelfItemDTO;
+import group.project.bookarchive.repositories.BookshelfItemRepository;
+import group.project.bookarchive.services.BookshelfItemService;
 import group.project.bookarchive.services.BookshelfService;
 
 @RestController
@@ -25,6 +31,11 @@ import group.project.bookarchive.services.BookshelfService;
 public class BookshelfController {
     @Autowired
     private BookshelfService bookshelfService;
+      @Autowired
+    private BookshelfItemRepository bookshelfItemRepository;
+
+    @Autowired
+    private BookshelfItemService bookshelfItemService;
 
     @PostMapping("/create")
     public ResponseEntity<Bookshelf> createBookshelf(@RequestBody Map<String, String> request) {
@@ -85,6 +96,34 @@ public class BookshelfController {
             @RequestParam Long userID) {
         List<BookshelfDTO> bookshelves = bookshelfService.findBookshelvesContainingBook(id, userID);
         return ResponseEntity.ok(bookshelves);
+    }
+
+    // @GetMapping("/bookshelves/{bookshelfId}")
+    // public Page<Book> getBooksByBookshelf(@PathVariable Long bookshelfId,
+    //                                        @RequestParam(defaultValue = "0") int page,
+    //                                        @RequestParam(defaultValue = "6") int size) {
+    //                                         Pageable pageable = PageRequest.of(page, size);
+    //                                         return bookshelfItemRepository.findByBookshelfId(bookshelfId, pageable);
+    // }
+
+    // @GetMapping("/{id}/items")
+    // public ResponseEntity<Page<BookshelfItemDTO>> getPaginatedBooksByBookshelf(
+    //         @PathVariable Long id,
+    //         @RequestParam(defaultValue = "0") int page,
+    //         @RequestParam(defaultValue = "6") int size) {
+    //     Pageable pageable = PageRequest.of(page, size);
+    //     Page<BookshelfItemDTO> paginatedBooks = bookshelfItemService.getBooksByBookshelf(id, pageable);
+    //     return ResponseEntity.ok(paginatedBooks);
+    // }
+
+    @GetMapping("/{id}/items")
+    public ResponseEntity<Page<Book>> getPaginatedBooksByBookshelf(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Book> paginatedBooks = bookshelfItemService.getBooksByBookshelf(id, pageable);
+        return ResponseEntity.ok(paginatedBooks);
     }
 
 }

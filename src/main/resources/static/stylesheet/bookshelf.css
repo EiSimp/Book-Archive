@@ -63,6 +63,13 @@
     cursor: pointer;
 }
 
+.content-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap onto multiple lines if needed */
+    gap: 10px; /* Space between items */
+}
+
+
 .checkbox-container input[type="checkbox"]:checked {
     background-color: #007bff;
     border-color: #007bff;

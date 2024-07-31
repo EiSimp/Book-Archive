@@ -67,9 +67,60 @@ function displayEvents(events) {
             if (parseInt(div.textContent) === eventDate) {
                 div.classList.add('event');
                 div.title = event.title;
+                if (!div.events) {
+                    div.events = [];
+                }
+                div.events.push(event);
+
+                div.classList.add('clickable');
+                div.onclick = function () {
+                    openEventOptionsModal(div.events);
+                };
             }
         });
     });
+}
+
+
+function openEventOptionsModal(events) {
+    const userId = document.getElementById("userId").value;
+    const managerId = document.getElementById("managerId").value;
+    const optionsModal = document.createElement('div');
+    optionsModal.classList.add('modal');
+    let modalContent = `
+        <div class="modal-content">
+            <span class="close" onclick="closeEventOptionsModal()">&times;</span>
+            <h2>Events</h2>
+            <ul>
+    `;
+
+    events.forEach(event => {
+        modalContent += `
+            <li>
+                ${event.title} - ${new Date(event.dateTime).toLocaleString()}
+                <p>--${event.description}</p>
+        `;
+        if (userId === managerId) {
+            modalContent += `
+                <button onclick="closeEventOptionsModal(); openUpdateEventModal(${event.id}, '${event.title}', '${event.description}', '${event.dateTime}')">Update</button>
+                <button onclick="closeEventOptionsModal(); openDeleteEventModal(${event.id})">Delete</button>
+            `;
+        }
+        modalContent += `</li>`;
+    });
+
+    modalContent += `
+            </ul>
+        </div>
+    `;
+
+    optionsModal.innerHTML = modalContent;
+    document.body.appendChild(optionsModal);
+    optionsModal.style.display = 'block';
+
+    window.closeEventOptionsModal = function () {
+        optionsModal.remove();
+    };
 }
 
 renderCalendar();

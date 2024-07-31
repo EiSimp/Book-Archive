@@ -9,9 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
     <link rel="stylesheet" href="/stylesheet/style.css" />
+    
     <link rel="stylesheet" href="/stylesheet/card.css" />
-    <link rel="stylesheet" href="/stylesheet/homepage.css" />
     <link rel="stylesheet" href="/stylesheet/bookshelf.css" />
+    <link rel="stylesheet" href="/stylesheet/homepage.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
 
     <!-- CSRF Meta Tags -->
@@ -26,62 +27,66 @@
     <!-- Hidden input field to store the user ID -->
     <input type="hidden" id="userId" th:value="${user.id}">
 
+    <option id="readSelect" style="display: none;" th:each="bookshelf : ${bookshelves}"
+        th:if="${bookshelf.name == 'Read'}" th:value="${bookshelf.id}">
+    </option>
+    <option id="readingSelect" style="display: none;" th:each="bookshelf : ${bookshelves}"
+        th:if="${bookshelf.name == 'Reading'}"
+        th:value="${bookshelf.id}">
+    </option>
+    <option id="toReadSelect" style="display: none;" th:each="bookshelf : ${bookshelves}"
+        th:if="${bookshelf.name == 'To Read'}"
+        th:value="${bookshelf.id}">
+    </option>
+
     <!--content starts here-->
+    
     <div class="content-container">
+        
         <!--numbers are for display purpose, need to represent actual data later-->
         <!--"div.short-record" is a navigation tab for the default bookshelves-->
-        <div class="short-record">
-            <div class="short-record-column">
-                <div><!-- link to 'books Read' bookshelf-->
-                    <!--Total number of books the user read-->
-                    <span class="short-record-number">00</span>
-                    <span class="short-record-label">Read</span>
-                </div>
-            </div>
-            <div class="short-record-column">
-                <div><!-- link to 'books Reading' bookshelf-->
-                    <!--Total number of books the user is currently reading-->
-                    <span class="short-record-number">00</span>
-                    <span class="short-record-label">Reading</span>
-                </div>
-            </div>
-            <div class="short-record-column">
-                <div><!-- link to 'books to read' bookshelf-->
-                    <!--Number of collections the user made-->
-                    <span class="short-record-number">00</span>
-                    <span class="short-record-label">To read</span>
-                </div>
-            </div>
-        </div>
-        <!-- divider-->
-        <hr class="solid divider-line">
-        <!--personalized bookshelf, shows 'books read' bookshelf by default-->
-        <h3> Books Display</h3>
-        <div class="bookshelf-container">
-            <!--6 books are displayed for each line-->
-            <div class="bookshelf-rack">
-                <ul class="cardlist">
-                    <li class="card-li">
-                        <!-- display purpose-->
-                        <a class="detail-link">
-                            <div class="book-card">
-                                <div class="card-thumbnail-holder">
-                                    <div class="thumbnail-m">
-                                        <div class="thumbnail-image-m"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-description">
-                                <ul class="card-description-li">
-                                    <li class="card-title">Book Title</li>
-                                    <li class="card-rate">Rated ★ 0.0</li>
-                                    <!-- Only Books in the books read displays 'Rated ★ 0.0'. 
-                                 others displays 'Avg ★ 0.0' -->
-                                </ul>
-                            </div>
+        <div class="book-content-container">
+            <!-- Navigation tabs for default bookshelves -->
+            <div class="short-record">
+                <div class="short-record-column">
+                    <div class = "bookshelf">
+                        <a href="#" class="bookshelf-link"> <!-- Random ID for 'Read' -->
+                            <span class="short-record-number" id="read-count"></span>
+                            <span class="short-record-label">Read</span>
                         </a>
-                    </li>
-                </ul>
+                    </div>
+                </div>
+                <div class="short-record-column">
+                    <div class = "bookshelf">
+                        <a href="#" class="bookshelf-link" data-id="2"> <!-- Random ID for 'Reading' -->
+                            <span class="short-record-number" id="reading-count"></span>
+                            <span class="short-record-label">Reading</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="short-record-column">
+                    <div class = "bookshelf">
+                        <a href="#" class="bookshelf-link" data-id="3"> <!-- Random ID for 'To Read' -->
+                            <span class="short-record-number" id="to-read-count"></span>
+                            <span class="short-record-label">To Read</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- divider -->
+            <hr class="solid divider-line">
+            <!-- Personalized bookshelf, shows selected bookshelf -->
+            <h3>Books Display</h3>
+            <div class="bookshelf-container">
+                <div class="bookshelf-rack">
+                    <ul class="cardlist" id="book-list">
+                        <!-- Books will be dynamically inserted here -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Pagination Controls -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination links will be inserted here -->
             </div>
         </div>
         <!--divider-->
@@ -176,6 +181,7 @@
 
     <script src="/javascript/dropDown.js"></script>
     <script src="/javascript/bookshelf.js"></script>
+    <script src="/javascript/homepage.js"></script>
 </body>
 
 </html>
