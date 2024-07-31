@@ -18,16 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import group.project.bookarchive.models.User;
 import group.project.bookarchive.models.UserUpdateRequest;
+import group.project.bookarchive.repositories.BookClubRepository;
 import group.project.bookarchive.repositories.UserRepository;
+import group.project.bookarchive.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 //Each method returns a domain object and not a view
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BookClubRepository bookClubRepository;
 
     // Returns a list of all users
     @GetMapping

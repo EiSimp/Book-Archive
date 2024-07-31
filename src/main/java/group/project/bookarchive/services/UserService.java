@@ -3,6 +3,7 @@ package group.project.bookarchive.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import group.project.bookarchive.models.User;
@@ -15,6 +16,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     UserRoleRepository roleRepo;
@@ -37,5 +41,6 @@ public class UserService {
 
         userRepo.save(user);
     }
+
 
 }

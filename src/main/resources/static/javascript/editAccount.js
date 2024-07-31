@@ -53,7 +53,7 @@ function deleteUser() {
     fetch(`/user/${userId}`, {
         method: 'DELETE',
         headers: {
-            'X-CSRF-TOKEN': csrfToken
+            'X-XSRF-TOKEN': csrfToken
         },
     })
         .then(response => {
@@ -185,7 +185,7 @@ function submitFormData(formData, endpoint, csrfToken) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
+            'X-XSRF-TOKEN': csrfToken
         },
         body: JSON.stringify(data)
     })
