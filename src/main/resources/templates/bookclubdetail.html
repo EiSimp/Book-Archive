@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta name="user-id" th:content="${user.id}" />
     <title>PagePals</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheet/style.css" />
-    <link rel="stylesheet" href="/stylesheet/bookclubdetail.css" />
     <link rel="stylesheet" href="/stylesheet/card.css" />
     <link rel="stylesheet" href="/stylesheet/homepage.css" />
     <link rel="stylesheet" href="/stylesheet/chat.css" />
+    <link rel="stylesheet" href="/stylesheet/bookshelf.css" />
+    <link rel="stylesheet" href="/stylesheet/bookclubdetail.css" />
     <link href='https://fonts.googleapis.com/css?family=Koulen' rel='stylesheet'>
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 
 <body class="main-body">
+<!--Hidden types-->
+<input type="hidden" id="userId" th:value="${user.id}">
+<input type="hidden" id="bookClubId" th:value="${bookClub.id}">
+<input type="hidden" id="managerId" th:value="${bookClub.manager.id}">
+<!--Header section of the homepage-->
+<div th:replace="~{fragments/header.html}"></div>
+<div class="content-container">
+    <div class="bookclub-header">
+        <h3 th:text="${bookClub.name}">Book Club Name</h3>
 
     <!--Hidden types-->
     <input type="hidden" id="userId" th:value="${user.id}">
@@ -42,198 +54,183 @@
                 </div>
             </div>
         </div>
-        <hr class="solid divider-line">
-        <div class="bookclubdetail-section1">
-            <div class="section1-left">
-                <div class="calendar-wrap">
-                    <div class="calendar-container">
-                        <div class="calendar-header">
-                            <button id="prev-btn">Prev</button>
-                            <div id="month-year"></div>
-                            <button id="next-btn">Next</button>
-                        </div>
-                        <div class="calendar-body">
-                            <div class="calendar-days">
-                                <div class="weekends">S</div>
-                                <div>M</div>
-                                <div>T</div>
-                                <div>W</div>
-                                <div>T</div>
-                                <div>F</div>
-                                <div class="weekends">S</div>
-                            </div>
-                            <div class="calendar-dates" id="calendar-dates">
-                                <!-- Dates will be generated here -->
-                            </div>
-                        </div>
+    </div>
+    <hr class="solid divider-line">
+    <div class="bookclubdetail-section1">
+        <div class="section1-left">
+            <div class="calendar-wrap">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prev-btn">Prev</button>
+                        <div id="month-year"></div>
+                        <button id="next-btn">Next</button>
                     </div>
-                </div>
-                <div class="upcoming-events">
-                    <h4>Upcoming Events</h4>
-                    <ul id="event-list"></ul>
-                </div>
-                <div class="club-member-wrap">
-                    <h4>Members</h4>
-                    <ul class="club-member-ul">
-                        <li th:each="member : ${members}">
-                            <div>
-                                <span>🐛</span>
-                                <span th:text="${member.user.username}">member username</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="chatroom-wrap">
-                <div class="chat-container">
-                    <div class="search-container">
-                        <input type="text" id="search-input" placeholder="Search messages..." />
-                        <button id="search-icon" class="search-icon">&#128269;</button>
-                    </div>
-                    <div class="chat-box" id="chat-box">
-                        <div class="message">
-                            <div class="header">
-                                <img src="/images/sun.jpg" alt="user1's profile picture">
-                                <div class="details">
-                                    <span class="username">user1</span>
-                                    <span class="timestamp">Yesterday, 10:00 PM</span>
-                                </div>
-                            </div>
-                            <p class="text">hello</p>
-                            <div class="reactions">
-                                <span class="reaction">👍</span>
-                                <span class="reaction">❤️</span>
-                                <span class="reaction">😂</span>
-                                <span class="reaction">😮</span>
-                                <span class="reaction">😢</span>
-                                <span class="reaction">😡</span>
-                            </div>
+                    <div class="calendar-body">
+                        <div class="calendar-days">
+                            <div class="weekends">S</div>
+                            <div>M</div>
+                            <div>T</div>
+                            <div>W</div>
+                            <div>T</div>
+                            <div>F</div>
+                            <div class="weekends">S</div>
                         </div>
-                        <div class="message mine">
-                            <div class="header">
-                                <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
-                                <div class="details">
-                                    <span class="timestamp">Yesterday, 10:44 PM</span>
-                                    <span class="username">Me</span>
-                                </div>
-                            </div>
-                            <p class="text">hello</p>
-                            <div class="reactions">
-                                <span class="reaction">👍</span>
-                                <span class="reaction">❤️</span>
-                                <span class="reaction">😂</span>
-                                <span class="reaction">😮</span>
-                                <span class="reaction">😢</span>
-                                <span class="reaction">😡</span>
-                            </div>
+                        <div class="calendar-dates" id="calendar-dates">
+                            <!-- Dates will be generated here -->
                         </div>
-                        <div class="message">
-                            <div class="header">
-                                <img src="/images/blue_Thumb.jpg" alt="user2's profile picture">
-                                <div class="details">
-                                    <span class="username">user2</span>
-                                    <span class="timestamp">Yesterday, 11:49 PM</span>
-                                </div>
-                            </div>
-                            <p class="text">hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow
-                                hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow </p>
-                            <div class="reactions">
-                                <span class="reaction">👍</span>
-                                <span class="reaction">❤️</span>
-                                <span class="reaction">😂</span>
-                                <span class="reaction">😮</span>
-                                <span class="reaction">😢</span>
-                                <span class="reaction">😡</span>
-                            </div>
-                        </div>
-                        <div class="date-divider">July 25, 2024</div>
-                        <div class="message mine">
-                            <div class="header">
-                                <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
-                                <div class="details">
-                                    <span class="timestamp">Today, 7:00 AM</span>
-                                    <span class="username">Me</span>
-                                </div>
-                            </div>
-                            <p class="text">llonglonglonglong</p>
-                            <div class="reactions">
-                                <span class="reaction">👍</span>
-                                <span class="reaction">❤️</span>
-                                <span class="reaction">😂</span>
-                                <span class="reaction">😮</span>
-                                <span class="reaction">😢</span>
-                                <span class="reaction">😡</span>
-                            </div>
-                        </div>
-                        <div class="message">
-                            <div class="header">
-                                <img src="/images/orange_Thumb.png" alt="user3's profile picture">
-                                <div class="details">
-                                    <span class="username">user3</span>
-                                    <span class="timestamp">Today, 3:00 PM</span>
-                                </div>
-                            </div>
-                            <p class="text">hehe</p>
-                            <div class="reactions">
-                                <span class="reaction">👍</span>
-                                <span class="reaction">❤️</span>
-                                <span class="reaction">😂</span>
-                                <span class="reaction">😮</span>
-                                <span class="reaction">😢</span>
-                                <span class="reaction">😡</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-container">
-                        <input type="text" id="chat-input" placeholder="Type a message..." />
-                        <button id="send-btn">Send</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <hr class="solid divider-line">
-        <div class="bookshelf-container">
-            <div class="bookshelf-rack">
-                <ul class="cardlist">
-                    <li class="card-li">
-                        <a class="detail-link">
-                            <div class="book-card">
-                                <div class="card-thumbnail-holder">
-                                    <div class="thumbnail-m">
-                                        <div class="thumbnail-image-m"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-description">
-                                <ul class="card-description-li">
-                                    <li class="card-title">Book Title</li>
-                                    <li class="card-rate">Rated ★ 0.0</li>
-                                </ul>
-                            </div>
-                        </a>
+            <div class="upcoming-events">
+                <h4>Upcoming Events</h4>
+                <ul id="event-list"></ul>
+            </div>
+            <div class="club-member-wrap">
+                <h4>Members</h4>
+                <ul class="club-member-ul">
+                    <li th:each="member : ${members}">
+                        <div>
+                            <span>🐛</span>
+                            <span th:text="${member.user.username}">member username</span>
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
-    </div>
-    <!-- Modal for transferring role -->
-    <div id="transferRoleModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeTransferRoleModal()">&times;</span>
-            <h2>Transfer Role</h2>
-            <select id="newManagerSelect"></select>
-            <button onclick="transferRole()">Transfer Role</button>
+        <div class="chatroom-wrap">
+            <div class="chat-container">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search messages..." />
+                    <button id="search-icon" class="search-icon">&#128269;</button>
+                </div>
+                <div class="chat-box" id="chat-box">
+                    <div class="message">
+                        <div class="header">
+                            <img src="/images/sun.jpg" alt="user1's profile picture">
+                            <div class="details">
+                                <span class="username">user1</span>
+                                <span class="timestamp">Yesterday, 10:00 PM</span>
+                            </div>
+                        </div>
+                        <p class="text">hello</p>
+                        <div class="reactions">
+                            <span class="reaction">👍</span>
+                            <span class="reaction">❤️</span>
+                            <span class="reaction">😂</span>
+                            <span class="reaction">😮</span>
+                            <span class="reaction">😢</span>
+                            <span class="reaction">😡</span>
+                        </div>
+                    </div>
+                    <div class="message mine">
+                        <div class="header">
+                            <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
+                            <div class="details">
+                                <span class="timestamp">Yesterday, 10:44 PM</span>
+                                <span class="username">Me</span>
+                            </div>
+                        </div>
+                        <p class="text">hello</p>
+                        <div class="reactions">
+                            <span class="reaction">👍</span>
+                            <span class="reaction">❤️</span>
+                            <span class="reaction">😂</span>
+                            <span class="reaction">😮</span>
+                            <span class="reaction">😢</span>
+                            <span class="reaction">😡</span>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="header">
+                            <img src="/images/blue_Thumb.jpg" alt="user2's profile picture">
+                            <div class="details">
+                                <span class="username">user2</span>
+                                <span class="timestamp">Yesterday, 11:49 PM</span>
+                            </div>
+                        </div>
+                        <p class="text">hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow
+                            hello!!!!wowowowowowoowowow hello!!!!wowowowowowoowowow </p>
+                        <div class="reactions">
+                            <span class="reaction">👍</span>
+                            <span class="reaction">❤️</span>
+                            <span class="reaction">😂</span>
+                            <span class="reaction">😮</span>
+                            <span class="reaction">😢</span>
+                            <span class="reaction">😡</span>
+                        </div>
+                    </div>
+                    <div class="date-divider">July 25, 2024</div>
+                    <div class="message mine">
+                        <div class="header">
+                            <img src="/images/GreyRobot.jpg" alt="Me's profile picture">
+                            <div class="details">
+                                <span class="timestamp">Today, 7:00 AM</span>
+                                <span class="username">Me</span>
+                            </div>
+                        </div>
+                        <p class="text">llonglonglonglong</p>
+                        <div class="reactions">
+                            <span class="reaction">👍</span>
+                            <span class="reaction">❤️</span>
+                            <span class="reaction">😂</span>
+                            <span class="reaction">😮</span>
+                            <span class="reaction">😢</span>
+                            <span class="reaction">😡</span>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="header">
+                            <img src="/images/orange_Thumb.png" alt="user3's profile picture">
+                            <div class="details">
+                                <span class="username">user3</span>
+                                <span class="timestamp">Today, 3:00 PM</span>
+                            </div>
+                        </div>
+                        <p class="text">hehe</p>
+                        <div class="reactions">
+                            <span class="reaction">👍</span>
+                            <span class="reaction">❤️</span>
+                            <span class="reaction">😂</span>
+                            <span class="reaction">😮</span>
+                            <span class="reaction">😢</span>
+                            <span class="reaction">😡</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="chat-input" placeholder="Type a message..." />
+                    <button id="send-btn">Send</button>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- Modal for removing member -->
-    <div id="removeMemberModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeRemoveMemberModal()">&times;</span>
-            <h2>Remove Member</h2>
-            <select id="removeMemberSelect"></select>
-            <button onclick="removeMember()">Remove</button>
+    <hr class="solid divider-line">
+    <!--Bookshelf display below-->
+    <div class="bookshelf-container">
+        <div class="bookshelf-rack">
+            <ul class="cardlist" id="book-list">
+                <!-- Books will be dynamically inserted here -->
+
+            </ul>
         </div>
     </div>
+</div>
+<!-- Modal for transferring role -->
+<div id="transferRoleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTransferRoleModal()">&times;</span>
+        <h2>Transfer Role</h2>
+        <select id="newManagerSelect"></select>
+        <button onclick="transferRole()">Transfer Role</button>
+    </div>
+</div>
+<!-- Modal for removing member -->
+<div id="removeMemberModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeRemoveMemberModal()">&times;</span>
+        <h2>Remove Member</h2>
+        <select id="removeMemberSelect"></select>
+        <button onclick="removeMember()">Remove</button>
     <!-- Event Create Modal -->
     <div id="createEventModal" class="modal">
         <div class="modal-content">
@@ -282,13 +279,18 @@
     <div>
         <footer th:replace="~{fragments/footer.html}"></footer>
     </div>
+</div>
+<div>
+    <footer th:replace="~{fragments/footer.html}"></footer>
+</div>
 
-    <script src="/javascript/chatroom.js"></script>
-    <script src="/javascript/dropDown.js"></script>
-    <script src="/javascript/calendar.js"></script>
-    <script src="/javascript/setting.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/javascript/bookclubdetails.js"></script>
+<script src="/javascript/chatroom.js"></script>
+<script src="/javascript/dropDown.js"></script>
+<script src="/javascript/calendar.js"></script>
+<script src="/javascript/setting.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </body>
 
 </html>

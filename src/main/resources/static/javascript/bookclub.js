@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var modal = document.getElementById("create-bookclub-popup");
     var closeButton = document.querySelector(".close-btn");
     var saveButton = document.getElementById("save-btn");
+    var descriptionPopup = document.getElementById("description-popup");
+    var descriptionCloseButton = document.querySelector(".description-close-btn");
+    var descriptionContent = document.getElementById("description-content"); // Correctly declared here
     window.existingClubsDisplayed = false;
 
     createButton.onclick = function () {
@@ -19,9 +22,16 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "none";
     });
 
+    descriptionCloseButton.addEventListener('click', () => {
+        descriptionPopup.style.display = "none";
+    });
+
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
+        }
+        if (event.target == descriptionPopup) {
+            descriptionPopup.style.display = "none";
         }
     };
 
@@ -119,7 +129,7 @@ function updateBookClubsUI(bookClubs) {
         bookClubs.forEach(bookClub => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="table-name"><a href="/bookclubs/details/view/${bookClub.id}">${bookClub.name}</a></td>
+                <td class="table-name"><a href="#" onclick="handleClubClick(event, ${bookClub.id}, '${bookClub.description}')">${bookClub.name}</a></td>
                 <td class="table-count"><span id="members-count-${bookClub.id}">Loading...</span></td>
                 <td class="table-button"><button onclick="leaveBookClub(${bookClub.id}, ${bookClub.manager.id})">Leave</button></td>
             `;
@@ -128,6 +138,51 @@ function updateBookClubsUI(bookClubs) {
             loadMembersCount(bookClub.id);
         });
     }
+}
+
+function updateExistingClubsUI(clubs) {
+    const existingClubsSection = document.getElementById('existing-clubs-section');
+    const existingClubsTbody = document.getElementById('existing-clubs-tbody');
+
+    if (clubs.length === 0) {
+        existingClubsSection.style.display = 'none';
+    } else {
+        existingClubsSection.style.display = 'flex';
+        existingClubsTbody.innerHTML = '';
+
+        clubs.forEach(club => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="table-name"><a href="#" onclick="handleClubClick(event, ${club.id}, '${club.description}')">${club.name}</a></td>
+                <td class="table-count"><span id="members-count-${club.id}">Already a member</span></td>
+                <td class="table-button"><button onclick="joinBookClub(${club.id})">Join</button></td>
+            `;
+            existingClubsTbody.appendChild(row);
+
+            loadMembersCount(club.id);
+        });
+    }
+}
+
+function handleClubClick(event, bookClubId, description) {
+    event.preventDefault();
+    const userId = getCurrentUserId();
+
+    fetch(`/bookclubmembers/isMember?bookClubId=${bookClubId}&userId=${userId}`)
+        .then(response => response.json())
+        .then(isMember => {
+            if (isMember) {
+                window.location.href = `/bookclubs/details/view/${bookClubId}`;
+            } else {
+                var descriptionContent = document.getElementById("description-content"); // Ensure this is declared within function scope
+                descriptionContent.textContent = description;
+                var descriptionPopup = document.getElementById("description-popup"); // Ensure this is declared within function scope
+                descriptionPopup.style.display = 'flex';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function loadMembersCount(bookClubId) {
@@ -200,28 +255,45 @@ function loadExistingClubs() {
         });
 }
 
-function updateExistingClubsUI(clubs) {
-    const existingClubsSection = document.getElementById('existing-clubs-section');
-    const existingClubsTbody = document.getElementById('existing-clubs-tbody');
+function joinBookClub(bookClubId) {
+    const userId = getCurrentUserId();
+    const csrf = getCsrfToken();
 
-    if (clubs.length === 0) {
-        existingClubsSection.style.display = 'none';
-    } else {
-        existingClubsSection.style.display = 'flex';
-        existingClubsTbody.innerHTML = '';
-
-        clubs.forEach(club => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="table-name"><a href="/bookclubs/details/view/${club.id}">${club.name}</a></td>
-                <td class="table-count"><span id="members-count-${club.id}">Already a member</span></td>
-                <td class="table-button"><button onclick="joinBookClub(${club.id})">Join</button></td>
-            `;
-            existingClubsTbody.appendChild(row);
-
-            loadMembersCount(club.id);
+    fetch(`/bookclubmembers/user/${userId}/bookclubs`)
+        .then(response => response.json())
+        .then(data => {
+            const isMember = data.some(club => club.id === bookClubId);
+            if (isMember) {
+                alert('You are already a member of this book club');
+            } else {
+                fetch('/bookclubmembers/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [csrf.header]: csrf.token
+                    },
+                    body: JSON.stringify({ bookClubId: bookClubId, userId: userId })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to join the book club');
+                        }
+                    })
+                    .then(data => {
+                        window.location.href = `/bookclubs/details/view/${bookClubId}`;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error joining the book club');
+                    });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error checking membership status');
         });
-    }
 }
 function joinBookClub(bookClubId) {
     const userId = getCurrentUserId();
